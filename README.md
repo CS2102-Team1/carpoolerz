@@ -9,6 +9,8 @@ Go to the directory **apache2/conf/bitnami/bitnami-apps-prefix.conf** and replac
 <br> with <br>
 `Include "/Applications/mappstack-7.0.23-0/apps/carpoolerz/conf/httpd-prefix.conf"`
 
+Copy and paste the **conf** files from the demo folder to the carpoolerz folder and replace all instances of the word **demo** with the word **carpoolerz**.
+
 ## **Team Version Control Guidelines**
 1. Each team member is to clone this repository into the relevant apps folder on their local machine and create a development branch.
 
