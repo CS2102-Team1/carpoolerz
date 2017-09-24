@@ -9,14 +9,6 @@ DROP TABLE user_bid;
 --3. systemuser table
 --4. user_bid tabke
 
-CREATE TABLE systemuser (
-    username VARCHAR(64) PRIMARY KEY,
-    password VARCHAR(64) NOT NULL,
-    fullName VARCHAR(64) NOT NULL,
-    licenseNum VARCHAR(64) NOT NULL,
-    numPlate VARCHAR(64) DEFAULT NULL REFERENCES Car(numPlate) ON UPDATE CASCADE ON DELETE SET NULL
-);
-
 CREATE TABLE car (
     numPlate VARCHAR(64) PRIMARY KEY,
     brand VARCHAR(64) NOT NULL,
@@ -32,6 +24,14 @@ CREATE TABLE ride (
     endtime_date TIMESTAMP NOT NULL
 );
 ALTER SEQUENCE ride_id OWNED BY ride.ride_id;
+
+CREATE TABLE systemuser (
+    username VARCHAR(64) PRIMARY KEY,
+    password VARCHAR(64) NOT NULL,
+    fullName VARCHAR(64) NOT NULL,
+    licenseNum VARCHAR(64) NOT NULL,
+    numPlate VARCHAR(64) DEFAULT NULL REFERENCES Car(numPlate) ON UPDATE CASCADE ON DELETE SET NULL
+);
 
 CREATE TABLE user_bid (
     bidAmount NUMERIC,
