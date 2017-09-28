@@ -8,6 +8,12 @@
 </head>
 
 <body>
+	<!-- Connect to DB -->
+	<?php
+			$dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
+	    				or die('Could not connect: ' . pg_last_error());
+	?>
+
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<a class="navbar-brand" href="#">Carpoolerz</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
