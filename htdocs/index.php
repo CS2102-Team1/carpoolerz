@@ -10,8 +10,8 @@
 <body>
 	<!-- Connect to DB -->
 	<?php
-			$dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
-	    				or die('Could not connect: ' . pg_last_error());
+		$dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
+    				or die('Could not connect: ' . pg_last_error());
 	?>
 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -33,9 +33,32 @@
 	</nav>
 
 	<div class=container>
-		<p1>
-			Hello World
-		</p1>
+		<!-- Display all current driver offered rides -->
+		<table class="table table-striped table-hover">
+			<thead class="thead-inverse">
+				<tr>
+					<th>Ride ID</th>
+					<th>Start Location</th>
+					<th>End Location</th>
+					<th>Start Time/Date</th>
+					<th>End Time/Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					$query = 'SELECT * FROM ride';
+					$result = pg_query($query);
+					while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+						echo "\t<tr>\n";
+						foreach ($line as $col_value) {
+							echo "\t\t<td>$col_value</td>\n";
+						}
+						echo "\t</tr>\n";
+					}
+				?>
+			</tbody>
+		</table>
+
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
