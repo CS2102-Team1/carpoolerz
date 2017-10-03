@@ -26,26 +26,13 @@
 					<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">Login</a>
+					<a class="nav-link" href="login.php">Login</a>
 				</li>
 			</ul>
 		</div>
 	</nav>
 
 	<div class=container>
-		<form>
-			<div class "form-group">
-				<label for="username">Username: </label>
-				<input type="text" class="form-control" id="usr" />
-			</div>
-			<div class="form-group">
-				<label for "password">Password: </label>
-				<input type="password" class="form-control" id="pwd" />
-			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
-			<br />
-		</form>
-
 
 		<!-- Display all current driver offered rides -->
 		<table class="table table-striped table-hover">
