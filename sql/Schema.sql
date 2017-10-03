@@ -1,14 +1,13 @@
 DROP TABLE user_bid;
 DROP TABLE systemuser;
-DROP TABLE car;
 DROP TABLE ride;
-DROP TABLE user_bid;
+DROP TABLE car;
 
 --Order of Implementation
 --1. car table
 --2. ride table
 --3. systemuser table
---4. user_bid tabke
+--4. user_bid table
 
 CREATE TABLE car (
     numPlate VARCHAR(64) PRIMARY KEY,
