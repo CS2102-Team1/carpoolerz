@@ -1,3 +1,4 @@
+DROP TABLE user_bid;
 DROP TABLE systemuser;
 DROP TABLE car;
 DROP TABLE ride;
