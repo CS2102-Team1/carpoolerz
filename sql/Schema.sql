@@ -20,8 +20,8 @@ CREATE TABLE ride (
     ride_id NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
     startpoint VARCHAR(64) NOT NULL,
     endpoint VARCHAR(64) NOT NULL,
-    starttime_date TIMESTAMP NOT NULL,
-    endtime_date TIMESTAMP NOT NULL
+    starttime TIME NOT NULL,
+    endtime TIME NOT NULL
 );
 ALTER SEQUENCE ride_id OWNED BY ride.ride_id;
 
