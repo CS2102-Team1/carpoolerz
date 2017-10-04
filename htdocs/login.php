@@ -2,10 +2,11 @@
     session_start();
 
     // if(isset($_SESSION['username'])!="") {
-    //     if ($_SESSION['usr_role'] === 1) {
-    //       header("Location: admin/");
+    //     if ($_SESSION['username'] == 'admin@admin.com'
+    //         && $SESSION['password'] != "") {
+    //         header("Location: admin.php");
     //     } else {
-    //       header("Location: user/");
+    //         header("Location: users.php");
     //     }
     // }
 
@@ -15,13 +16,16 @@
     if(isset($_POST['loginbutton']) != "") {
         $username = $_POST['username'];
         $password = $_POST['password'];
-        // echo <h1>$_POST['pswd']</h1>;
 
-        $query = "SELECT * FROM systemuser s WHERE s.username = $username AND s.password = $password";
-        $result = pg_query($query);
-        // echo <p>$result</p>;
+        // echo "$username";
+        // echo "$password";
+
+        $query = "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password'";
+
+        $result = pg_query($dbconn, $query);
 
         // while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+        //     echo "<p>In LIne loop</p>";
         //     echo "\t<tr>\n";
         //     foreach ($line as $col_value) {
         //         echo "\t\t<td>$col_value</td>\n";
@@ -29,13 +33,20 @@
         //     echo "\t</tr>\n";
         // }
 
-        if (pg_num_rows($result) == 0) {
+        if (pg_num_rows($result) == 1) {
+            $_SESSION['username'] = $username;
+            $_SESSION['password'] = $password;
+
             ob_start();
-            header("Location: users.php");
+            if ($_SESSION['username'] == 'admin@admin.com') {
+                header("Location: admin.php");
+            } else {
+                header("Location: users.php");
+            }
             ob_end_flush();
             end();
         } else {
-            echo "\n Error. Cannot Log In... \n";
+            echo "\n Error. Incorrect Email or Password... \n";
         }
 
     } else {

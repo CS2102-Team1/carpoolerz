@@ -7,12 +7,18 @@
     $dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
                 or die('Could not connect: ' . pg_last_error());
 
-    $query = "SELECT * FROM systemuser WHERE '$username' = 'user@user.com' AND '$password' = 'password'";
+    $query = "SELECT * FROM systemuser WHERE '$username' = 'admin@admin.com' AND '$password' = 'password'";
 
     $result = pg_query($dbconn, $query);
 
     if (pg_num_rows($result) == 0) {
-        header("Location: login.php");
+
+        $_SESSION['username'] = $username;
+        $_SESSION['password'] = $password;
+
+        if (pg_num_rows($result) == 0) {
+            header("Location: login.php");
+        }
     }
 ?>
 
@@ -26,8 +32,7 @@
 </head>
 
 <body>
-
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<a class="navbar-brand" href="#">Carpoolerz</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	    	<span class="navbar-toggler-icon"></span>
@@ -45,8 +50,7 @@
 		</div>
 	</nav>
 
-    <div class=container>
-
+	<div class=container>
 		<div class=container>
 			<!-- Display all current driver offered rides -->
 			<table class="table table-striped table-hover">
@@ -74,7 +78,6 @@
 				</tbody>
 			</table>
 		</div>
-
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
