@@ -18,10 +18,7 @@
 
         if (pg_num_rows($result) == 0) {
             header("Location: login.php");
-        } else if ($username == 'user@user.com') {
-            header("Location: user.php");
         }
-
     }
 ?>
 
