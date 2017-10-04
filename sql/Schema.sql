@@ -1,7 +1,7 @@
-DROP TABLE systemuser;
-DROP TABLE car;
-DROP TABLE ride;
 DROP TABLE user_bid;
+DROP TABLE systemuser;
+DROP TABLE ride;
+DROP TABLE car;
 
 --Order of Implementation
 --1. car table
@@ -20,8 +20,8 @@ CREATE TABLE ride (
     ride_id NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
     startpoint VARCHAR(64) NOT NULL,
     endpoint VARCHAR(64) NOT NULL,
-    starttime_date TIMESTAMP NOT NULL,
-    endtime_date TIMESTAMP NOT NULL
+    starttime TIME NOT NULL,
+    endtime TIME NOT NULL
 );
 ALTER SEQUENCE ride_id OWNED BY ride.ride_id;
 
