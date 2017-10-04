@@ -55,7 +55,7 @@
 				<div class = "card-header" role = "tab" id = "headingOne">
 					<h5 class="mb-0">
 						<a data-toggle = "collapse" href = "#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-							View All Users
+							View All Hitch Drivers
 						</a>
 					</h5>
 				</div>
@@ -63,11 +63,7 @@
 
 			<div id = "collapseOne" class = "collapse" role = "tabpanel" aria-labelledby = "headingOne" data-parent = "#accordion">
 				<div class="card-body">
-					<ul>
-						<form name="allusers" action="index.php" method = "POST">
-							<li></li>
-						</form>
-					</ul>
+
 				</div>
 			</div>
 
@@ -75,7 +71,7 @@
 				<div class = "card-header" role = "tab" id = "headingTwo">
 					<h5 class="mb-0">
 						<a data-toggle = "collapse" href = "#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-							View All Rides
+							View All Users
 						</a>
 					</h5>
 				</div>
@@ -85,20 +81,79 @@
 				<div class="card-body">
 					<div class=container>
 						<div class=container>
+							<form name="search-userid" action="admin.php" method="POST">
+								<div class="form-group">
+									<label for="userid-search">Search UserID</label>
+									<input type="text" name="userid" required class="form-control" id="usrid" placeholder="UserID/Email" />
+								</div>
+								<button type="submit" name="search-user-info" required class="form-control btn btn-primary">Submit</button>
+								<br />
+							</form>
+						</div>
+
+						<div class=container>
+							<?php
+								$result = pg_query($dbconn, "SELECT * FROM systemuser WHERE username = '$_POST[userid]'");
+								$row = pg_fetch_assoc($result);
+								if (isset($_POST['search-user-info'])) {
+									echo
+									"
+										<form name='update' action='admin.php' method='POST'>
+											<div class=form-group>
+												<label for='userid-update'>Username</label>
+												<input type='text' name='userid-updated' value='$row[username]' />
+											</div>
+											<div class=form-group>
+												<label for='password-update'>Password</label>
+												<input type='text' name='password-updated' value='$row[password]' />
+											</div>
+											<div class=form-group>
+												<label for='fullname-update'>Full Name</label>
+												<input type='text' name='fullname-updated' value='$row[fullname]' />
+											</div>
+											<div class=form-group>
+												<label for='licensenum-update'>License Number</label>
+												<input type='text' name='licensenum-updated' value='$row[licensenum]' />
+											</div>
+											<div class=form-group>
+												<label for='numplate-update'>Number Plate</label>
+												<input type='text' name='numplate-updated' value='$row[numplate]' />
+											</div>
+											<button type='submit' name='submit-update' required class='form-control btn btn-danger'>Update</button>
+										</form>
+									";
+								}
+                                //TODO: Fix push to database. May be because of a missing WHERE statement in the query
+								// if (isset($_POST['submit-update'])) {
+								// 	$result = pg_query($dbconn, "UPDATE systemuser SET username='$_POST[userid-updated]',
+								// 			password='$_POST[password-updated]', fullname='$_POST[fullname-updated]',
+								// 			licensenum='$_POST[licensenum-updated]', numplate='$_POST[numplate-updated]'");
+                                //
+								// 	if (!$result) {
+								// 		echo "<h2>Update Failed!</h2>";
+								// 	} else {
+								// 		echo "<h2>Update Suceeded!</h2>"
+								// 	}
+                                //
+								// }
+							?>
+						</div>
+
+						<div class=container>
 							<!-- Display all current driver offered rides -->
-							<table class="table table-striped table-hover" style="overflow:auto, height:500px, height: 500px">
+							<table class="table table-striped table-hover" style="overflow:auto; height: 500px">
 								<thead class="thead-inverse">
 									<tr>
-										<th>Ride ID</th>
-										<th>Start Location</th>
-										<th>End Location</th>
-										<th>Start Time/Date</th>
-										<th>End Time/Date</th>
+										<th>Username</th>
+										<th>Password</th>
+										<th>Full Name</th>
+										<th>License Number</th>
+										<th>Vehicle Plate Number</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php
-										$query = 'SELECT * FROM ride';
+										$query = 'SELECT * FROM systemuser';
 										$result = pg_query($query);
 										while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 											echo "\t<tr>\n";
@@ -110,17 +165,8 @@
 									?>
 								</tbody>
 							</table>
-
-							<form name="search-userid" action="admin.php" method="POST">
-								<div class="form-group">
-									<label for="userid-search">Search UserID</label>
-									<input type="text" name="userid" required class="form-control" id="usrid" placeholder="UserID/Email" />
-								</div>
-								<button type="submit" name="search-user-info" required class="form-control btn btn-primary">Submit</button>
-								<br />
-							</form>
-
 						</div>
+
 				</div>
 			</div>
 
