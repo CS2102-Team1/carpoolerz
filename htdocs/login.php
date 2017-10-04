@@ -67,7 +67,7 @@
     <body>
         <div class="container">
             <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="login-form"/>
-                <div class "form-group">
+                <div class="form-group">
                     <label for="username">Username: </label>
                     <input type="text" name="username" required class="form-control" id="usr" placeholder="Email"/>
                 </div>

@@ -50,34 +50,82 @@
 		</div>
 	</nav>
 
-	<div class=container>
-		<div class=container>
-			<!-- Display all current driver offered rides -->
-			<table class="table table-striped table-hover">
-				<thead class="thead-inverse">
-					<tr>
-						<th>Ride ID</th>
-						<th>Start Location</th>
-						<th>End Location</th>
-						<th>Start Time/Date</th>
-						<th>End Time/Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
-						$query = 'SELECT * FROM ride';
-						$result = pg_query($query);
-						while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-							echo "\t<tr>\n";
-							foreach ($line as $col_value) {
-								echo "\t\t<td>$col_value</td>\n";
-							}
-							echo "\t</tr>\n";
-						}
-					?>
-				</tbody>
-			</table>
+		<div id = "accordion" role="tablist">
+			<div class = "card">
+				<div class = "card-header" role = "tab" id = "headingOne">
+					<h5 class="mb-0">
+						<a data-toggle = "collapse" href = "#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+							View All Users
+						</a>
+					</h5>
+				</div>
+			</div>
+
+			<div id = "collapseOne" class = "collapse" role = "tabpanel" aria-labelledby = "headingOne" data-parent = "#accordion">
+				<div class="card-body">
+					<ul>
+						<form name="allusers" action="index.php" method = "POST">
+							<li></li>
+						</form>
+					</ul>
+				</div>
+			</div>
+
+			<div class = "card">
+				<div class = "card-header" role = "tab" id = "headingTwo">
+					<h5 class="mb-0">
+						<a data-toggle = "collapse" href = "#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+							View All Rides
+						</a>
+					</h5>
+				</div>
+			</div>
+
+			<div id = "collapseTwo" class = "collapse" role = "tabpanel" aria-labelledby = "headingOne" data-parent = "#accordion">
+				<div class="card-body">
+					<div class=container>
+						<div class=container>
+							<!-- Display all current driver offered rides -->
+							<table class="table table-striped table-hover" style="overflow:auto, height:500px, height: 500px">
+								<thead class="thead-inverse">
+									<tr>
+										<th>Ride ID</th>
+										<th>Start Location</th>
+										<th>End Location</th>
+										<th>Start Time/Date</th>
+										<th>End Time/Date</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+										$query = 'SELECT * FROM ride';
+										$result = pg_query($query);
+										while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+											echo "\t<tr>\n";
+											foreach ($line as $col_value) {
+												echo "\t\t<td>$col_value</td>\n";
+											}
+											echo "\t</tr>\n";
+										}
+									?>
+								</tbody>
+							</table>
+
+							<form name="search-userid" action="admin.php" method="POST">
+								<div class="form-group">
+									<label for="userid-search">Search UserID</label>
+									<input type="text" name="userid" required class="form-control" id="usrid" placeholder="UserID/Email" />
+								</div>
+								<button type="submit" name="search-user-info" required class="form-control btn btn-primary">Submit</button>
+								<br />
+							</form>
+
+						</div>
+				</div>
+			</div>
+
 		</div>
+
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
