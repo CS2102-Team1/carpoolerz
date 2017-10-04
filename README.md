@@ -22,6 +22,6 @@ Copy and paste the **conf** files from the demo folder to the carpoolerz folder 
 
 5. WARNING: Do not push straight into master by using `git push origin master` or equivalent.
 
-4. To update your development branch with changes from this master branch, perform a Git Pull by entering `git pull --rebase`.
+4. To update your development branch with changes from this master branch, perform a Git Pull by entering `git pull --rebase`
 
 
