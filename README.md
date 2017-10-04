@@ -16,4 +16,4 @@ Copy and paste the **conf** files from the demo folder to the carpoolerz folder 
 
 2. All changes are to be made on the development branch, with pull requests made to the master branch or between branches for transfer of new features.
 
-3. `git pull --rebase` is to be used to grab changes from the remote repository, and transfer of changes are to be made strictly through pull requests, not `git merge`.
+3. `git pull --rebase` is to be used to grab changes from the remote repository, and transfer of changes are to be made strictly through pull requests, not `git push origin master`.
