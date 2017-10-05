@@ -20,6 +20,32 @@
             header("Location: login.php");
         }
     }
+
+	$targetusername = $_SESSION['targetusername'];
+
+	if (isset($_POST['new'])) {
+		echo "Writing data to database";
+		echo "<p>username = '$username'</p>";
+		echo "<p>password = '$password'</p>";
+		echo "<p>targetusername = '$targetusername'</p>";
+		// echo "<p>row[username] = '$_SESSION['targetpassword']'</p>";
+		// echo "<p>post[password] = '$_SESSION['targetpassword']'</p>";
+
+		// $updatequery = "UPDATE systemuser SET password = '$_POST[password-updated]',
+		// fullname = '$_POST[fullname-updated]', licensenum = '$_POST[licensenum-updated]',
+    	// numplate = '$_POST[numplate_updated]' WHERE username = '$targetusername'";
+		//
+		// $updatedResult = pg_query($dbconn, $updatequery);
+		//
+		// if (!$updatedResult) {
+		// 	echo "<h2>Update Failed!</h2>";
+		// 	die("Error in query: " . pg_last_error());
+		// } else {
+		// 	echo "<h2>Update Suceeded!</h2>"
+		// }
+
+	}
+
 ?>
 
 <!DOCTYPE html>
@@ -95,47 +121,35 @@
 							<?php
 								$result = pg_query($dbconn, "SELECT * FROM systemuser WHERE username = '$_POST[userid]'");
 								$row = pg_fetch_assoc($result);
+								$_SESSION['targetusername'] = $row[username];
+								$_SESSION['targetpassword'] = $_POST['password-updated'];
 								if (isset($_POST['search-user-info'])) {
 									echo
 									"
 										<form name='update' action='admin.php' method='POST'>
-											<div class=form-group>
-												<label for='userid-update'>Username</label>
-												<input type='text' name='userid-updated' value='$row[username]' />
-											</div>
+											<h2 for='userid-update'>Username: '$row[username]' </h2>
 											<div class=form-group>
 												<label for='password-update'>Password</label>
-												<input type='text' name='password-updated' value='$row[password]' />
+												<input type='text' required class='form-control' name='password-updated' value='$row[password]' />
 											</div>
 											<div class=form-group>
 												<label for='fullname-update'>Full Name</label>
-												<input type='text' name='fullname-updated' value='$row[fullname]' />
+												<input type='text' required class='form-control' name='fullname-updated' value='$row[fullname]' />
 											</div>
 											<div class=form-group>
 												<label for='licensenum-update'>License Number</label>
-												<input type='text' name='licensenum-updated' value='$row[licensenum]' />
+												<input type='text' required class='form-control' name='licensenum-updated' value='$row[licensenum]' />
 											</div>
 											<div class=form-group>
 												<label for='numplate-update'>Number Plate</label>
-												<input type='text' name='numplate-updated' value='$row[numplate]' />
+												<input type='text' class='form-control' name='numplate-updated'  value='$row[numplate]' />
 											</div>
-											<button type='submit' name='submit-update' required class='form-control btn btn-danger'>Update</button>
+											<button type='submit' name='new' class='form-control btn btn-danger'>Update</button>
 										</form>
 									";
 								}
-                                //TODO: Fix push to database. May be because of a missing WHERE statement in the query
-								// if (isset($_POST['submit-update'])) {
-								// 	$result = pg_query($dbconn, "UPDATE systemuser SET username='$_POST[userid-updated]',
-								// 			password='$_POST[password-updated]', fullname='$_POST[fullname-updated]',
-								// 			licensenum='$_POST[licensenum-updated]', numplate='$_POST[numplate-updated]'");
-                                //
-								// 	if (!$result) {
-								// 		echo "<h2>Update Failed!</h2>";
-								// 	} else {
-								// 		echo "<h2>Update Suceeded!</h2>"
-								// 	}
-                                //
-								// }
+
+								echo "falkefjcwaeljaksce";
 							?>
 						</div>
 
