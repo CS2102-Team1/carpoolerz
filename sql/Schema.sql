@@ -3,12 +3,6 @@ DROP TABLE ride;
 DROP TABLE systemuser;
 DROP TABLE car;
 
---Order of Implementation
---1. car table
---2. systemuser table
---3. ride table
---4. user_bid tabke
-
 CREATE TABLE car (
     numplate VARCHAR(64) PRIMARY KEY,
     brand VARCHAR(64) NOT NULL,
