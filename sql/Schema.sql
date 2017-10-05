@@ -1,18 +1,20 @@
-﻿/*DROP TABLE user_bid;
-DROP TABLE systemuser;
+DROP TABLE user_bid;
 DROP TABLE ride;
+DROP TABLE systemuser;
 DROP TABLE car;
-*/
---Order of Implementation
---1. car table
---2. ride table
---3. systemuser table
---4. user_bid tabke
 
 CREATE TABLE car (
-    numPlate VARCHAR(64) PRIMARY KEY,
+    numplate VARCHAR(64) PRIMARY KEY,
     brand VARCHAR(64) NOT NULL,
     model VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE systemuser (
+    username VARCHAR(64) PRIMARY KEY,
+    password VARCHAR(64) NOT NULL,
+    fullname VARCHAR(64) NOT NULL,
+    licensenum VARCHAR(64) NOT NULL,
+    numplate VARCHAR(64) DEFAULT NULL REFERENCES Car(numplate) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE SEQUENCE ride_id;
@@ -25,16 +27,8 @@ CREATE TABLE ride (
 );
 ALTER SEQUENCE ride_id OWNED BY ride.ride_id;
 
-CREATE TABLE systemuser (
-    username VARCHAR(64) PRIMARY KEY,
-    password VARCHAR(64) NOT NULL,
-    fullName VARCHAR(64) NOT NULL,
-    licenseNum VARCHAR(64) NOT NULL,
-    numPlate VARCHAR(64) DEFAULT NULL REFERENCES Car(numPlate) ON UPDATE CASCADE ON DELETE SET NULL
-);
-
 CREATE TABLE user_bid (
-    bidAmount NUMERIC,
+    bidamount NUMERIC,
     success BOOLEAN,
     passgsrcdest VARCHAR(64),
     passgfindest VARCHAR(64),
