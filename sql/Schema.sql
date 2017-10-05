@@ -1,8 +1,8 @@
-DROP TABLE user_bid;
+﻿/*DROP TABLE user_bid;
 DROP TABLE systemuser;
 DROP TABLE ride;
 DROP TABLE car;
-
+*/
 --Order of Implementation
 --1. car table
 --2. ride table
