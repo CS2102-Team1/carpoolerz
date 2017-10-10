@@ -17,8 +17,8 @@ ride_id		NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
 numplate	VARCHAR(10) REFERENCES car(numplate),
 driver		VARCHAR(40) REFERENCES systemuser(username),
 ridedate	DATE,
-frompt		VARCHAR(40),
-topt		VARCHAR(40),
+from_point  VARCHAR(40),
+to_point  VARCHAR(40),
 starttime	TIMESTAMP NOT NULL, --KIV
 endtime		TIMESTAMP DEFAULT NULL --KIV
 );
@@ -27,7 +27,7 @@ CREATE TABLE bid (
 amount 		NUMERIC CHECK (amount > 0),
 ride_id		NUMERIC REFERENCES ride(ride_id),
 passenger	VARCHAR(40) REFERENCES systemuser(username),
-PRIMARY KEY (amount, ride_id, passenger)
+PRIMARY KEY (amount, ride_id, passenger),
 success BOOLEAN DEFAULT FALSE
 );
 
