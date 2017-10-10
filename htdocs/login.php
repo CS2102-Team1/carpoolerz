@@ -61,25 +61,29 @@
     </head>
 
     <body>
-        <div class="container">
-            <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="login-form">
-                <div class="form-group">
-                    <label for="username">Username: </label>
-                    <input type="text" name="username" required class="form-control" id="usr" placeholder="Username"/>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password: </label>
-                    <input type="password" name="password" required class="form-control" id="pwd" placeholder="Password"/>
-                </div>
-                <button type="submit" name="userLogin" class="form-control btn btn-primary">Login as a Rider</button>
-                <br />
-                <br />
-                <button type="submit" name="driverLogin" class="form-control btn btn-success">Login as a Driver</button>
-                <br />
-                <br />
-                <button type="submit" name="adminLogin" class="form-control btn btn-danger">Login as a Admin</button>
-                <br />
-            </form>
+        <div class="container-fluid">
+            <br/>
+            <div class="panel panel-default">
+                <h1 class="text-center">Log Into Carpoolerz</h1>
+                <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="login-form">
+                    <div class="form-group">
+                        <label for="username">Username: </label>
+                        <input type="text" name="username" required class="form-control" id="usr" placeholder="Username"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password: </label>
+                        <input type="password" name="password" required class="form-control" id="pwd" placeholder="Password"/>
+                    </div>
+                    <button type="submit" name="userLogin" class="form-control btn btn-primary">Login as a Rider</button>
+                    <br />
+                    <br />
+                    <button type="submit" name="driverLogin" class="form-control btn btn-success">Login as a Driver</button>
+                    <br />
+                    <br />
+                    <button type="submit" name="adminLogin" class="form-control btn btn-danger">Login as a Admin</button>
+                    <br />
+                </form>
+            </div>
         </div>
     </body>
 
