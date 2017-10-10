@@ -23,17 +23,17 @@
 
         }
     }
-//
-//    if (isset($_POST['driverLogin']) != "") {
-//        if (pg_num_rows($result) == 1) {
-//            $_SESSION['username'] = $username;
-//            $_SESSION['password'] = $password;
-//
-//            ob_start();
-//            header("Location: drivers.php");
-//            ob_end_flush();
-//        }
-//    }
+
+    if (isset($_POST['driverLogin']) != "") {
+        if (pg_num_rows($result) == 1) {
+            $_SESSION['username'] = $username;
+            $_SESSION['password'] = $password;
+
+            ob_start();
+            header("Location: driver.php");
+            ob_end_flush();
+        }
+    }
 
     if(isset($_POST['adminLogin']) != "") {
 
@@ -65,19 +65,19 @@
             <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="login-form">
                 <div class="form-group">
                     <label for="username">Username: </label>
-                    <input type="text" name="username" required class="form-control" id="usr" placeholder="Email"/>
+                    <input type="text" name="username" required class="form-control" id="usr" placeholder="Username"/>
                 </div>
                 <div class="form-group">
                     <label for="password">Password: </label>
                     <input type="password" name="password" required class="form-control" id="pwd" placeholder="Password"/>
                 </div>
-                <button type="submit" name="userLogin" class="form-control btn btn-primary">Login as Rider</button>
+                <button type="submit" name="userLogin" class="form-control btn btn-primary">Login as a Rider</button>
                 <br />
                 <br />
-                <button type="submit" name="driverLogin" class="form-control btn btn-success">Login as Driver</button>
+                <button type="submit" name="driverLogin" class="form-control btn btn-success">Login as a Driver</button>
                 <br />
                 <br />
-                <button type="submit" name="adminLogin" class="form-control btn btn-danger">Login as Admin</button>
+                <button type="submit" name="adminLogin" class="form-control btn btn-danger">Login as a Admin</button>
                 <br />
             </form>
         </div>
