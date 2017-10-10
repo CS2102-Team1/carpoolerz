@@ -10,10 +10,10 @@ SELECT * FROM systemuser WHERE username = 'admin@admin.com' AND password = 'admi
 ------------------------------------- PASSENGER USER INTERFACE -------------------------------------
 
 --passenger wants to view all available rides WITH FULL DETAILS from '$startpt' to '$endpt'. Passenger not allowed to bid cheaper than the current maximum bid
-SELECT r.ride_id, r.from_address, r.to_address, r.starttime, r.ridedate, r.numplate, driver.fullname, driver.licensenum, c.model, c.brand, max(b.amount) from ride r, systemuser driver, car c, bid b where r.numplate = c.numplate and r.driver = driver.username and b.ride_id = r.ride_id and r.ridedate = '$date' and starttime > '$currtime' and r.from_address = '$frompt' and r.to_address ='$topt' group by r.ride_id;
+SELECT r.ride_id, r.from_address, r.to_address, r.start_time, r.ridedate, r.numplate, driver.fullname, driver.licensenum, c.model, c.brand, max(b.amount) from ride r, systemuser driver, car c, bid b where r.numplate = c.numplate and r.driver = driver.username and b.ride_id = r.ride_id and r.ridedate = '$date' and start_time > '$currtime' and r.from_address = '$frompt' and r.to_address ='$topt' group by r.ride_id;
 
 --passenger to view his bid history including the details of that ride
-SELECT r.ride_id, driver.fullname, driver.licensenum, r.numplate, r.from_address, r.to_address, r.starttime, r.endtime, r.ridedate, b.amount from ride r, systemuser driver, bid b where r.driver = driver.username and r.ride_id = b.ride_id and b.passenger = '$username';
+SELECT r.ride_id, driver.fullname, driver.licensenum, r.numplate, r.from_address, r.to_address, r.start_time, r.end_time, r.ridedate, b.amount from ride r, systemuser driver, bid b where r.driver = driver.username and r.ride_id = b.ride_id and b.passenger = '$username';
 
 --**passenger ride history: select all, successful or not
 
@@ -24,10 +24,10 @@ INSERT INTO bid VALUES ('$bidamt', '$ride_id', '$username');
 ------------------------------------- DRIVER USER INTERFACE -------------------------------------
 
 --driver views his ride offers history **varies based on design: include his future ride offers? ya
-SELECT r.ride_id, r.numplate, r.date, r.from_address, r.to_address, r.starttime, r.endtime, r.date, b.amount, b.passenger from ride r, bid b where r.ride_id = b.ride_id and driver = '$username' order by r.date, r.starttime ASC;
+SELECT r.ride_id, r.numplate, r.date, r.from_address, r.to_address, r.start_time, r.end_time, r.date, b.amount, b.passenger from ride r, bid b where r.ride_id = b.ride_id and driver = '$username' order by r.date, r.start_time ASC;
 
 --driver creates new ride offer. **Scrape off minimum bid by driver? No more bid entry
-INSERT INTO ride(numplate,driver,date, from_address,to_address,starttime) VALUES ('$numplate', '$username', '$date', '$from', '$to', '$starttime'); --*estimated end date? when ride finish press finish button? ride.endtime default null?
+INSERT INTO ride(numplate,driver,date, from_address,to_address,start_time) VALUES ('$numplate', '$username', '$date', '$from', '$to', '$starttime'); --*estimated end date? when ride finish press finish button? ride.end_time default null?
 
 --**assumption: end time specified by driver
 

@@ -18,8 +18,8 @@ numplate	VARCHAR(10) REFERENCES car(numplate),
 driver		VARCHAR(40) REFERENCES systemuser(username),
 from_address		VARCHAR(40),
 to_address		VARCHAR(40),
-starttime	TIMESTAMP NOT NULL,
-endtime		TIMESTAMP DEFAULT NULL -- driver to press endtime button. eliminate all estimated time complications
+start_time	TIMESTAMP NOT NULL,
+end_time		TIMESTAMP DEFAULT NULL -- driver to press end_time button. eliminate all estimated time complications
 );
 
 CREATE TABLE bid (
