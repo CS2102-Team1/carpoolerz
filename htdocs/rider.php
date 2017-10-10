@@ -7,7 +7,8 @@
     $dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
                 or die('Could not connect: ' . pg_last_error());
 
-    $query = "SELECT * FROM systemuser WHERE '$username' = 'user@user.com' AND '$password' = 'password'";
+    $query = /** @lang text */
+        "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password'";
 
     $result = pg_query($dbconn, $query);
 

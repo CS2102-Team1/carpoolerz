@@ -28,7 +28,7 @@ amount 		NUMERIC CHECK (amount > 0),
 ride_id		NUMERIC REFERENCES ride(ride_id),
 passenger	VARCHAR(40) REFERENCES systemuser(username),
 PRIMARY KEY (amount, ride_id, passenger)
---success BOOLEAN DEFAULT FALSE 
+success BOOLEAN DEFAULT FALSE
 );
 
 --**passenger ride history: filter by success, date <= currdate, time <= currtime
