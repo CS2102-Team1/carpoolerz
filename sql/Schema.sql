@@ -16,19 +16,20 @@ CREATE TABLE ride (
 ride_id		NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
 numplate	VARCHAR(10) REFERENCES car(numplate),
 driver		VARCHAR(40) REFERENCES systemuser(username),
-ridedate	DATE,
-from_point  VARCHAR(40),
-to_point  VARCHAR(40),
-starttime	TIMESTAMP NOT NULL, --KIV
-endtime		TIMESTAMP DEFAULT NULL --KIV
+from_address		VARCHAR(40),
+to_address		VARCHAR(40),
+starttime	TIMESTAMP NOT NULL,
+endtime		TIMESTAMP DEFAULT NULL -- driver to press endtime button. eliminate all estimated time complications
 );
 
 CREATE TABLE bid (
-amount 		NUMERIC CHECK (amount > 0),
+amount 		NUMERIC CHECK(amount > O OR amount IS NULL) DEFAULT NULL,
 ride_id		NUMERIC REFERENCES ride(ride_id),
 passenger	VARCHAR(40) REFERENCES systemuser(username),
-PRIMARY KEY (amount, ride_id, passenger),
+PRIMARY KEY (ride_id, passenger),
 success BOOLEAN DEFAULT FALSE
 );
 
---**passenger ride history: filter by success, date <= currdate, time <= currtime
+--**passenger ride "history": select all current bids, successful or not
+--** first ride offer, got bid but amount is null. passenger is driver himself.
+--**amount is not a primary key, each user can only have 1 bid for 1 ride, if he wants to increase his bid amt, he will update his current bid entry

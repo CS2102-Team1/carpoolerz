@@ -15,7 +15,7 @@ SELECT r.ride_id, r.frompt, r.topt, r.starttime, r.ridedate, r.numplate, driver.
 --passenger to view his bid history including the details of that ride
 SELECT r.ride_id, driver.fullname, driver.licensenum, r.numplate r.frompt, r.topt, r.starttime, r.endtime, r.ridedate, b.amount from ride r, systemuser driver, bid b where r.driver = driver.username and r.ride_id = b.ride_id and b.passenger = '$username';
 
---**passenger ride history: filter by success, date <= currdate, time <= currtime
+--**passenger ride history: select all, successful or not
 
 --passenger creates bid, inserts '$bidamt'. If less than the current maximum bid, ignore.
 INSERT INTO bid VALUES ('$bidamt', '$ride_id', '$username');
@@ -23,13 +23,13 @@ INSERT INTO bid VALUES ('$bidamt', '$ride_id', '$username');
 
 ------------------------------------- DRIVER USER INTERFACE -------------------------------------
 
---driver views his ride offers history **varies based on design: include his future ride offers?
+--driver views his ride offers history **varies based on design: include his future ride offers? ya
 SELECT r.ride_id, r.numplate, r.date, r.frompt, r.topt, r.starttime, r.endtime, r.date, b.amount, b.passenger from ride r, bid b where r.ride_id = b.ride_id and driver = '$username' order by r.date, r.starttime ASC;
 
---driver creates new ride offer. **Scrape off minimum bid by driver?
+--driver creates new ride offer. **Scrape off minimum bid by driver? No more bid entry
 INSERT INTO ride(numplate,driver,date, frompt,topt,starttime) VALUES ('$numplate', '$username', '$date', '$from', '$to', '$starttime'); --*estimated end date? when ride finish press finish button? ride.endtime default null?
 
---**assumption: no particular cars are used by 2 or more ride offers at an instance
+--**assumption: end time specified by driver
 
 ------------------------------------- ADMIN USER INTERFACE -------------------------------------
 --view all users
