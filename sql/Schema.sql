@@ -1,46 +1,34 @@
-DROP TABLE user_bid;
-DROP TABLE ride;
-DROP TABLE systemuser;
-DROP TABLE car;
-
-CREATE TABLE car (
-    numplate VARCHAR(64) PRIMARY KEY,
-    brand VARCHAR(64) NOT NULL,
-    model VARCHAR(64) NOT NULL
+﻿CREATE TABLE systemuser (
+username	VARCHAR(40) PRIMARY KEY,
+fullname	VARCHAR(40) NOT NULL,
+password 	VARCHAR(10) NOT NULL,
+licensenum 	VARCHAR(10)
 );
 
-CREATE TABLE systemuser (
-    username VARCHAR(64) PRIMARY KEY,
-    password VARCHAR(64) NOT NULL,
-    fullname VARCHAR(64) NOT NULL,
-    licensenum VARCHAR(64) NOT NULL,
-    numplate VARCHAR(64) DEFAULT NULL REFERENCES Car(numplate) ON UPDATE CASCADE ON DELETE SET NULL
+CREATE TABLE car (
+numplate	VARCHAR(10) PRIMARY KEY,
+model		VARCHAR(20) NOT NULL,
+brand		VARCHAR(20)	NOT NULL
 );
 
 CREATE SEQUENCE ride_id;
 CREATE TABLE ride (
-    ride_id NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
-    startpoint VARCHAR(64) NOT NULL,
-    endpoint VARCHAR(64) NOT NULL,
-    starttime TIME NOT NULL,
-    endtime TIME NOT NULL
-);
-ALTER SEQUENCE ride_id OWNED BY ride.ride_id;
-
-CREATE TABLE user_bid (
-    bidamount NUMERIC,
-    success BOOLEAN,
-    passgsrcdest VARCHAR(64),
-    passgfindest VARCHAR(64),
-    username VARCHAR(64),
-    ride_id NUMERIC(64),
-    FOREIGN KEY (username) REFERENCES systemuser (username),
-    FOREIGN KEY (ride_id)  REFERENCES ride (ride_id),
-    PRIMARY KEY (username, ride_id)
+ride_id		NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
+numplate	VARCHAR(10) REFERENCES car(numplate),
+driver		VARCHAR(40) REFERENCES systemuser(username),
+ridedate	DATE,
+frompt		VARCHAR(40),
+topt		VARCHAR(40),
+starttime	TIMESTAMP NOT NULL, --KIV
+endtime		TIMESTAMP DEFAULT NULL --KIV
 );
 
-/*--KIV-- To be decided later
-CREATE VIEW user_owns (
-   FOREIGN KEY (numPlate) REFERENCES car(numPlate) ON UPDATE CASCADE ON DELETE CASCADE,
-   FOREIGN KEY (username) REFERENCES systemuser(username) ON UPDATE CASCADE ON DELETE
-);*/
+CREATE TABLE bid (
+amount 		NUMERIC CHECK (amount > 0),
+ride_id		NUMERIC REFERENCES ride(ride_id),
+passenger	VARCHAR(40) REFERENCES systemuser(username),
+PRIMARY KEY (amount, ride_id, passenger)
+success BOOLEAN DEFAULT FALSE
+);
+
+--**passenger ride history: filter by success, date <= currdate, time <= currtime
