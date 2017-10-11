@@ -16,3 +16,23 @@ if (pg_num_rows($result) == 0) {
     header("Location: login.php");
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <?php include 'common/header.shtml'; ?>
+</head>
+
+<body>
+<?php include 'common/navbar.shtml'; ?>
+
+<div class=container>
+    <h1>Hello World Driver page</h1>
+</div>
+
+<?php include 'common/footer.shtml'; ?>
+</body>
+
+</html>
+
