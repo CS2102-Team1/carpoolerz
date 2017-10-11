@@ -5,6 +5,12 @@
   licensenum 	VARCHAR(10)
 );
 
+CREATE TABLE is_admin (
+  username VARCHAR(40),
+  FOREIGN KEY (username) REFERENCES systemuser(username),
+  PRIMARY KEY (username)
+);
+
 CREATE TABLE car (
   numplate	VARCHAR(10) PRIMARY KEY,
   model		VARCHAR(20) NOT NULL,

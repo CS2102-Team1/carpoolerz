@@ -3,8 +3,8 @@
     $dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
                 or die('Could not connect: ' . pg_last_error());
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = $_SESSION['username'];
+    $password = $_SESSION['password'];
 
     $query = /** @lang text */
         "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password'";
