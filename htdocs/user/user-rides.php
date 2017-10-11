@@ -13,7 +13,7 @@
     $result = pg_query($dbconn, $query);
 
     if (pg_num_rows($result) == 0) {
-        header("Location: login.php");
+        header("Location: htdocs/login.php");
     }
 ?>
 
@@ -21,12 +21,13 @@
 <html lang="en">
 
 <head>
-    <?php include 'common/header.shtml'; ?>
+    <?php include '../header.shtml'; ?>
+    <link href="../main.css" rel="stylesheet" />
 </head>
 
 <body>
 
-    <?php include 'common/navbar-authenticated.shtml'; ?>
+    <?php include 'navbar-user.shtml'; ?>
 
     <div class=container>
 
@@ -56,9 +57,14 @@
 					?>
 				</tbody>
 			</table>
+
+            <br/>
+
+
+
 		</div>
 
 	</div>
 
-    <?php include 'common/footer.shtml'; ?>
+    <?php include '../footer.shtml'; ?>
 </body>

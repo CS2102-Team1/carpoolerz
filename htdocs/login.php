@@ -5,6 +5,7 @@
 
     $username = $_SESSION['username'];
     $password = $_SESSION['password'];
+    $is_admin = $_SESSION['is_admin'];
 
     $query = /** @lang text */
         "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password'";
@@ -18,20 +19,9 @@
             $_SESSION['password'] = $password;
 
             ob_start();
-            header("Location: rider.php");
+            header("Location: ./user/user-rides.php");
             ob_end_flush();
 
-        }
-    }
-
-    if (isset($_POST['driverLogin']) != "") {
-        if (pg_num_rows($result) == 1) {
-            $_SESSION['username'] = $username;
-            $_SESSION['password'] = $password;
-
-            ob_start();
-            header("Location: driver.php");
-            ob_end_flush();
         }
     }
 
@@ -40,9 +30,10 @@
         if (pg_num_rows($result) == 1) {
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
+            $_SESSION['is_admin'] = $is_admin;
 
             ob_start();
-            header("Location: admin.php");
+            header("Location: ./admin/admin.php");
             ob_end_flush();
 
         }
@@ -56,8 +47,7 @@
     <head>
         <title>Carpoolerz: Login</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-        <!-- <link href="./main.css" , rel="stylesheet" /> -->
-
+        <link href="main.css" rel="stylesheet" />
     </head>
 
     <body>
@@ -75,9 +65,6 @@
                         <input type="password" name="password" required class="form-control" id="pwd" placeholder="Password"/>
                     </div>
                     <button type="submit" name="userLogin" class="form-control btn btn-primary">Login as a Rider</button>
-                    <br />
-                    <br />
-                    <button type="submit" name="driverLogin" class="form-control btn btn-success">Login as a Driver</button>
                     <br />
                     <br />
                     <button type="submit" name="adminLogin" class="form-control btn btn-danger">Login as a Admin</button>
