@@ -64,7 +64,7 @@
                         <label for="password">Password: </label>
                         <input type="password" name="password" required class="form-control" id="pwd" placeholder="Password"/>
                     </div>
-                    <button type="submit" name="userLogin" class="form-control btn btn-primary">Login as a Rider</button>
+                    <button type="submit" name="userLogin" class="form-control btn btn-primary">Login as a User</button>
                     <br />
                     <br />
                     <button type="submit" name="adminLogin" class="form-control btn btn-danger">Login as a Admin</button>
