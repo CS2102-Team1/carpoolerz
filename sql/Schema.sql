@@ -2,13 +2,8 @@
   username	VARCHAR(40) PRIMARY KEY,
   fullname	VARCHAR(40) NOT NULL,
   password 	VARCHAR(10) NOT NULL,
-  licensenum 	VARCHAR(10)
-);
-
-CREATE TABLE is_admin (
-  username VARCHAR(40),
-  FOREIGN KEY (username) REFERENCES systemuser(username),
-  PRIMARY KEY (username)
+  licensenum 	VARCHAR(10),
+  is_admin BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE car (
