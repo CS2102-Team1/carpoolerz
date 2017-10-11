@@ -11,6 +11,13 @@ CREATE TABLE car (
   brand		VARCHAR(20)	NOT NULL
 );
 
+CREATE TABLE owns_car (
+  username VARCHAR(40),
+  numplate VARCHAR(10),
+  FOREIGN KEY (username) REFERENCES systemuser(username),
+  FOREIGN KEY (numplate) REFERENCES car(numplate)
+);
+
 CREATE SEQUENCE ride_id;
 CREATE TABLE ride (
   ride_id		NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
@@ -34,12 +41,12 @@ CREATE TABLE bid (
   success BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE car_used_in_ride (
-  ride_id NUMERIC,
-  numplate VARCHAR(10),
-  FOREIGN KEY (ride_id) REFERENCES ride(ride_id),
-  PRIMARY KEY (ride_id, numplate)
-);
+-- CREATE TABLE car_used_in_ride (
+--   ride_id NUMERIC,
+--   numplate VARCHAR(10),
+--   FOREIGN KEY (ride_id) REFERENCES ride(ride_id),
+--   PRIMARY KEY (ride_id, numplate)
+-- );
 
 CREATE TABLE created_rides (
   username VARCHAR(40),
