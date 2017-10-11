@@ -19,7 +19,7 @@
             $_SESSION['password'] = $password;
 
             ob_start();
-            header("Location: ./user/user-rides.php");
+            header("Location: ./user/user-profile.php");
             ob_end_flush();
 
         }

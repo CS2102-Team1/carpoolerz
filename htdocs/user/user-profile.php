@@ -45,7 +45,7 @@
 				</thead>
 				<tbody>
 					<?php
-						$query = 'SELECT * FROM ride';
+						$query = 'SELECT * FROM systemuser';
 						$result = pg_query($query);
 						while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";
