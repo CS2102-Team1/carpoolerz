@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <?php include 'common/navbar.shtml'; ?>
+    <?php include 'common/navbar-public.shtml'; ?>
 
     <div class=container>
         <h1>Hello World Index page</h1>

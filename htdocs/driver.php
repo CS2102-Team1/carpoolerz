@@ -25,7 +25,7 @@ if (pg_num_rows($result) == 0) {
 </head>
 
 <body>
-<?php include 'common/navbar.shtml'; ?>
+<?php include 'common/navbar-authenticated.shtml'; ?>
 
 <div class=container>
     <h1>Hello World Driver page</h1>

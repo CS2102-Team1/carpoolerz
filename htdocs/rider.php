@@ -26,7 +26,7 @@
 
 <body>
 
-    <?php include 'common/navbar.shtml'; ?>
+    <?php include 'common/navbar-authenticated.shtml'; ?>
 
     <div class=container>
 
