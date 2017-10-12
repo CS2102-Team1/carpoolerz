@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Carpoolerz: Login</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <?php include './header.shtml'; ?>
         <link href="main.css" rel="stylesheet" />
     </head>
 
@@ -14,18 +13,21 @@
                 <form role="form" action="login.php" method="post" name="login-form">
                     <div class="form-group">
                         <label for="username">Username: </label>
-                        <input type="text" name="username" required class="form-control" id="usr" placeholder="Username"/>
+                        <input type="text" name="username" class="form-control" id="usr" placeholder="Username"/>
                     </div>
                     <div class="form-group">
                         <label for="password">Password: </label>
-                        <input type="password" name="password" required class="form-control" id="pwd" placeholder="Password"/>
+                        <input type="password" name="password" class="form-control" id="pwd" placeholder="Password"/>
                     </div>
                     <button type="submit" name="userLogin" class="form-control btn btn-primary">Login as a User</button>
                     <br />
                     <br />
                     <button type="submit" name="adminLogin" class="form-control btn btn-danger">Login as a Admin</button>
                     <br />
+                    <br />
+                    <button type="submit" name="registerUser" class="form-control btn btn-success">Register Now</button>
                 </form>
+
             </div>
         </div>
 
@@ -35,7 +37,6 @@
         or die('Could not connect: ' . pg_last_error());
 
         if(isset($_POST['userLogin'])) {
-
             $_SESSION['username'] = $_POST['username'];
             $_SESSION['password'] = $_POST['password'];
             $username = $_SESSION['username'];
@@ -66,6 +67,12 @@
         //
         //        }
         //    }
+
+        if (isset($_POST['registerUser'])) {
+            ob_start();
+            header("Location: register.php");
+            ob_end_flush();
+        }
 
         ?>
 
