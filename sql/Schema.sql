@@ -24,7 +24,7 @@ CREATE TABLE ride (
   ride_id		NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
   numplate	VARCHAR(10),
   driver		VARCHAR(40),
-  FOREIGN KEY (driver) REFERENCES car(numplate),
+  FOREIGN KEY (numplate) REFERENCES car(numplate),
   FOREIGN KEY (driver) REFERENCES systemuser(username),
   from_address		VARCHAR(40),
   to_address		VARCHAR(40),
@@ -41,13 +41,6 @@ CREATE TABLE bid (
   FOREIGN KEY (ride_id) REFERENCES ride(ride_id),
   success BOOLEAN DEFAULT FALSE
 );
-
--- CREATE TABLE car_used_in_ride (
---   ride_id NUMERIC,
---   numplate VARCHAR(10),
---   FOREIGN KEY (ride_id) REFERENCES ride(ride_id),
---   PRIMARY KEY (ride_id, numplate)
--- );
 
 CREATE TABLE created_rides (
   username VARCHAR(40),
