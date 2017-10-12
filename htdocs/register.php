@@ -34,7 +34,6 @@
                 <button type="submit" name="createNewAccount" class="form-control btn btn-success">Create New Account</button>
             </form>
             <br/>
-            <br/>
         </div>
     </div>
 
@@ -75,15 +74,10 @@
                     pg_query($dbconn, $add_user_query);
                 }
 
-                echo "<h2 class='text-center'>User created successfully. Redirecting you to login page...</h2>";
-                echo "<button type='submit' name='returnToLogin' class='btn btn-primary'>Return To Login Page</button>";
-
-                //TODO: Add header link back to login page
-                //TODO: Fix centering of the Return To Login Page button
+                echo "<h2 class='text-center'>User created successfully.</h2><br/>";
+                echo "<div class='container-fluid'><div class='panel panel-default'><form action='login.php'><button type='submit' class='form-control btn btn-primary'>Return To Login Page</button><form/></div></div>";
             }
         }
-
     ?>
-
 </body>
 </html>
