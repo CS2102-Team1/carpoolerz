@@ -6,26 +6,20 @@
   is_admin BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE car (
-  numplate	VARCHAR(10) PRIMARY KEY,
-  model		VARCHAR(20) NOT NULL,
-  brand		VARCHAR(20)	NOT NULL
-);
-
 CREATE TABLE owns_car (
-  username VARCHAR(40),
+  driver VARCHAR(40),
   numplate VARCHAR(10),
-  FOREIGN KEY (username) REFERENCES systemuser(username),
-  FOREIGN KEY (numplate) REFERENCES car(numplate)
+  model		VARCHAR(20) NOT NULL,
+  brand		VARCHAR(20)	NOT NULL,
+  FOREIGN KEY (driver) REFERENCES systemuser(driver) ON DELETE CASCADE,
+  PRIMARY KEY (numplate, driver)
 );
 
 CREATE SEQUENCE ride_id;
 CREATE TABLE ride (
   ride_id		NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
-  numplate	VARCHAR(10),
-  driver		VARCHAR(40),
-  FOREIGN KEY (numplate) REFERENCES car(numplate),
-  FOREIGN KEY (driver) REFERENCES systemuser(username),
+  highest_bid NUMERIC DEFAULT '0',
+  driver VARCHAR(40) NOT NULL,
   from_address		VARCHAR(40),
   to_address		VARCHAR(40),
   start_time	TIMESTAMP NOT NULL,
@@ -37,16 +31,17 @@ CREATE TABLE bid (
   ride_id		NUMERIC,
   passenger	VARCHAR(40),
   PRIMARY KEY (ride_id, passenger),
-  FOREIGN KEY (passenger) REFERENCES systemuser(username),
-  FOREIGN KEY (ride_id) REFERENCES ride(ride_id),
+  FOREIGN KEY (passenger) REFERENCES systemuser(username) ON DELETE CASCADE,
+  FOREIGN KEY (ride_id) REFERENCES ride(ride_id) ON DELETE CASCADE,
   success BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE created_rides (
-  username VARCHAR(40),
+  driver VARCHAR(40),
   ride_id NUMERIC,
-  FOREIGN KEY (username) REFERENCES systemuser(username),
-  FOREIGN KEY (ride_id) REFERENCES ride(ride_id)
+  FOREIGN KEY (driver) REFERENCES systemuser(username) ON DELETE CASCADE,
+  FOREIGN KEY (ride_id) REFERENCES ride(ride_id) ON DELETE CASCADE,
+  PRIMARY KEY (driver, ride_id)
 );
 
 --**passenger ride "history": select all current bids, successful or not
