@@ -11,7 +11,7 @@ CREATE TABLE owns_car (
   numplate VARCHAR(10),
   model		VARCHAR(20) NOT NULL,
   brand		VARCHAR(20)	NOT NULL,
-  FOREIGN KEY (driver) REFERENCES systemuser(driver) ON DELETE CASCADE,
+  FOREIGN KEY (driver) REFERENCES systemuser(username) ON DELETE CASCADE,
   PRIMARY KEY (numplate, driver)
 );
 
