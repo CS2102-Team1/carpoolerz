@@ -2,7 +2,7 @@
   username	VARCHAR(40) PRIMARY KEY,
   fullname	VARCHAR(40) NOT NULL,
   password 	VARCHAR(10) NOT NULL,
-  licensenum 	VARCHAR(10),
+  licensenum 	VARCHAR(10) DEFAULT NULL,
   is_admin BOOLEAN DEFAULT FALSE
 );
 
