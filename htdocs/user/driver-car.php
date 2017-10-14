@@ -57,20 +57,22 @@
 
                     <div class="form-group">
                         <label for="p_numplate">Car Number Plate: </label>
-                        <input type="text" name="p_numplate" class="form-control" id="car_plate" value="<?php echo $numplate?>" placeholder="Enter Car Plate Number"/>
+                        <input type="text" name="p_numplate" required class="form-control" id="car_plate" value="<?php echo $numplate?>" placeholder="Enter Car Plate Number"/>
                     </div>
 
                     <div class="form-group">
                         <label for="p_brand">Car Brand (OPTIONAL): </label>
-                        <input type="text" name="p_brand" class="form-control" id="car_brand" value="<?php echo $brand?>" placeholder="Enter Car Brand"/>
+                        <input type="text" name="p_brand" required class="form-control" id="car_brand" value="<?php echo $brand?>" placeholder="Enter Car Brand"/>
                     </div>
 
                     <div class="form-group">
                         <label for="p_model">Car Model (OPTIONAL): </label>
-                        <input type="text" name="p_model" class="form-control" id="car_model" value="<?php echo $model?>" placeholder="Enter Car Model"/>
+                        <input type="text" name="p_model" required class="form-control" id="car_model" value="<?php echo $model?>" placeholder="Enter Car Model"/>
                     </div>
 
-                    <button type="submit" name="updateCarTrigger" class="form-control btn btn-danger">UPDATE CAR DETAILS</button>
+                    <button type="submit" name="updateCarTrigger" class="form-control btn btn-primary">UPDATE CAR DETAILS</button>
+                    <br/>
+                    <button type="submit" name="deleteCarTrigger" class="form-control btn btn-danger">DELETE CAR DETAILS</button>
                 </form>
             </div>
         </div>
@@ -92,17 +94,7 @@
                 $car_created = true;
             }
 
-            $result = pg_query($dbconn, $action_query);
-
-            //Cleanup by brand values
-            $cleanup_brand_query = /** @php text */
-                "UPDATE owns_car SET brand = DEFAULT WHERE brand = ''";
-            $cleanup_brand = pg_query($dbconn, $cleanup_brand_query);
-
-            //Cleanup by model values
-            $cleanup_model_query = /** @php text */
-                "UPDATE owns_car SET model = DEFAULT WHERE model = ''";
-            $cleanup_model = pg_query($dbconn, $cleanup_model_query);
+            $update_car_result = pg_query($dbconn, $action_query);
 
             //Delete if number plate is not there
             if ($numplate_updated == '') {
@@ -110,6 +102,16 @@
                     "DELETE FROM owns_car WHERE driver = '$username'";
                 $delete_if_no_numplate = pg_query($dbconn, $delete_if_no_numplate_query);
             }
+            //Refresh page
+            header("Refresh:0");
+        }
+
+        if (isset($_POST['deleteCarTrigger'])) {
+            $delete_if_no_numplate_query = /** @php text */
+                "DELETE FROM owns_car WHERE driver = '$username'";
+            $delete_if_no_numplate = pg_query($dbconn, $delete_if_no_numplate_query);
+
+            echo "<br/><h1>Car Details have been deleted successfully. Updating page now. Please wait...<h2/>";
 
             //Refresh page
             header("Refresh:0");
