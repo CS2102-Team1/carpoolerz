@@ -94,3 +94,4 @@
 
     <?php include '../footer.shtml'; ?>
 </body>
+<html/>
