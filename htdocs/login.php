@@ -42,7 +42,7 @@
             $username = $_SESSION['username'];
             $password = $_SESSION['password'];
 
-            $query = /** @lang text */
+            $query = /** @php text */
                 "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password'";
 
             $result = pg_query($dbconn, $query);

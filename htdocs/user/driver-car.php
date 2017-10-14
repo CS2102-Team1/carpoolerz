@@ -8,7 +8,7 @@
     $dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
     or die('Could not connect: ' . pg_last_error());
 
-    $query = /** @lang text */
+    $query = /** @php text */
         "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password' AND licensenum IS NOT NULL";
 
     $result = pg_query($dbconn, $query);
@@ -17,7 +17,7 @@
         header("Location: ./driver-car-error.php");
     }
 
-    $getCarDetailsQuery = /** @lang text */
+    $getCarDetailsQuery = /** @php text */
         "SELECT * FROM owns_car WHERE driver = '$username'";
 
     $carResult = pg_query($dbconn, $getCarDetailsQuery);
@@ -83,22 +83,11 @@
             $model_updated = $_POST['p_model'];
             $action_query = "";
 
-            echo "<h1>$numplate_updated<h1/><br/>";
-            echo "<h1>$brand_updated<h1/><br/>";
-            echo "<h1>$model_updated<h1/><br/>";
-
-//            if ($car_created) {
-//                echo "<h2>Car Created loh<h2/>";
-//            } else {
-//                echo "<h2>Car Not Yet Created loh<h2/>";
-//            }
-
             if ($car_created) {
-                $action_query = /** @lang text */
-                    "UPDATE owns_car SET numplate = '$numplate_updated', model = '$model_updated', brand = '$brand_updated'
-                            WHERE driver = '$username'";
+                $action_query = /** @php text */
+                    "UPDATE owns_car SET numplate = '$numplate_updated', model = '$model_updated', brand = '$brand_updated' WHERE driver = '$username'";
             } else {
-                $action_query = /** @lang text */
+                $action_query = /** @php text */
                     "INSERT INTO owns_car (driver, numplate, model, brand) VALUES ('$username', '$numplate_updated', '$model_updated', '$brand_updated')";
                 $car_created = true;
             }
@@ -106,18 +95,18 @@
             $result = pg_query($dbconn, $action_query);
 
             //Cleanup by brand values
-            $cleanup_brand_query = /** @lang text */
+            $cleanup_brand_query = /** @php text */
                 "UPDATE owns_car SET brand = DEFAULT WHERE brand = ''";
             $cleanup_brand = pg_query($dbconn, $cleanup_brand_query);
 
             //Cleanup by model values
-            $cleanup_model_query = /** @lang text */
+            $cleanup_model_query = /** @php text */
                 "UPDATE owns_car SET model = DEFAULT WHERE model = ''";
             $cleanup_model = pg_query($dbconn, $cleanup_model_query);
 
             //Delete if number plate is not there
             if ($numplate_updated == '') {
-                $delete_if_no_numplate_query = /** @lang text */
+                $delete_if_no_numplate_query = /** @php text */
                     "DELETE FROM owns_car WHERE driver = '$username'";
                 $delete_if_no_numplate = pg_query($dbconn, $delete_if_no_numplate_query);
             }

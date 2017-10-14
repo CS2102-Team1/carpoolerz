@@ -50,7 +50,7 @@
             $new_fullname = $_POST['n_fullname'];
             $new_license = $_POST['n_license'];
 
-            $check_username_query = /** @lang text */
+            $check_username_query = /** @php text */
                 "SELECT * FROM systemuser WHERE username = '$new_username'";
 
             $username_check_result = pg_query($dbconn, $check_username_query);
@@ -62,13 +62,13 @@
             } else {
 
                 if ($new_license == "") {
-                    $add_user_query = /** @lang text */
+                    $add_user_query = /** @php text */
                         "INSERT INTO systemuser (username, password, fullname) VALUES ('$new_username', '$new_password', '$new_fullname')";
 
                     pg_query($dbconn, $add_user_query);
 
                 } else {
-                    $add_user_query = /** @lang text */
+                    $add_user_query = /** @php text */
                         "INSERT INTO systemuser (username, password, fullname, licensenum) VALUES ('$new_username', '$new_password', '$new_fullname', '$new_license')";
 
                     pg_query($dbconn, $add_user_query);
