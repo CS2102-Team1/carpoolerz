@@ -72,6 +72,7 @@
 
                     <button type="submit" name="updateCarTrigger" class="form-control btn btn-primary">UPDATE CAR DETAILS</button>
                     <br/>
+                    <br/>
                     <button type="submit" name="deleteCarTrigger" class="form-control btn btn-danger">DELETE CAR DETAILS</button>
                 </form>
             </div>
