@@ -119,6 +119,10 @@
                     "INSERT INTO owns_car(driver, numplate) VALUES('$username', '$numplate_updated')";
                 $create_new_car_relation_result = pg_query($dbconn, $create_new_car_relation_query);
             }
+
+            echo "<br/><h1 class='text-center'>Car details updated successfully...<h1/>";
+            echo "<br/><h2 class='text-center'>Updating page now. Please wait...</h2>";
+
             //Refresh page
             header("Refresh:0");
         }
@@ -130,10 +134,10 @@
             $delete_if_no_numplate = pg_query($dbconn, $delete_if_no_numplate_query);
 
             echo "<br/><h1 class='text-center'>Car Details have been deleted successfully...<h1/>";
+            echo "<br/><h2 class='text-center'>Updating page now. Please wait...</h2>";
 
             //Refresh page
             header("Refresh:0");
         }
-        echo "<br/><h2 class='text-center'>Updating page now. Please wait...</h2>";
     ?>
 </html>
