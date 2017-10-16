@@ -7,20 +7,17 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="user-profile.php">Profile</a>
+                <a class="nav-link" href="admin-users.php">Users</a>               
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="driver-car.php">Your Car</a>
+                <a class="nav-link" href="admin-rides.php">Rides</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="drive.php">Drive!</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../bid-ride.php">BID!</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="../login.php">Sign Out</a>
-            </li>
-        </ul>
-    </div>
+               <a class="nav-link" href="admin-cars.php">Cars</a>
+           </li>
+           <li class="nav-item">
+            <a class="nav-link" href="admin-bids.php">Bids</a>
+        </li>
+    </ul>
+</div>
 </nav>
