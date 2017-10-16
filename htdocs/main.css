@@ -2,3 +2,8 @@
     padding-top: 1%;
     background-color: white;
 }
+
+.custom-table {
+    height: 300px;
+    overflow: auto;
+}

@@ -1,46 +1,49 @@
-DROP TABLE user_bid;
-DROP TABLE ride;
-DROP TABLE systemuser;
-DROP TABLE car;
-
-CREATE TABLE car (
-    numplate VARCHAR(64) PRIMARY KEY,
-    brand VARCHAR(64) NOT NULL,
-    model VARCHAR(64) NOT NULL
+﻿CREATE TABLE systemuser (
+  username	VARCHAR(40) PRIMARY KEY,
+  fullname	VARCHAR(40) NOT NULL,
+  password 	VARCHAR(10) NOT NULL,
+  licensenum 	VARCHAR(10) DEFAULT NULL,
+  is_admin BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE systemuser (
-    username VARCHAR(64) PRIMARY KEY,
-    password VARCHAR(64) NOT NULL,
-    fullname VARCHAR(64) NOT NULL,
-    licensenum VARCHAR(64) NOT NULL,
-    numplate VARCHAR(64) DEFAULT NULL REFERENCES Car(numplate) ON UPDATE CASCADE ON DELETE SET NULL
+CREATE TABLE owns_car (
+  driver VARCHAR(40),
+  numplate VARCHAR(10),
+  model		VARCHAR(20) NOT NULL,
+  brand		VARCHAR(20)	NOT NULL,
+  FOREIGN KEY (driver) REFERENCES systemuser(username) ON DELETE CASCADE,
+  PRIMARY KEY (numplate, driver)
 );
 
 CREATE SEQUENCE ride_id;
 CREATE TABLE ride (
-    ride_id NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
-    startpoint VARCHAR(64) NOT NULL,
-    endpoint VARCHAR(64) NOT NULL,
-    starttime TIME NOT NULL,
-    endtime TIME NOT NULL
-);
-ALTER SEQUENCE ride_id OWNED BY ride.ride_id;
-
-CREATE TABLE user_bid (
-    bidamount NUMERIC,
-    success BOOLEAN,
-    passgsrcdest VARCHAR(64),
-    passgfindest VARCHAR(64),
-    username VARCHAR(64),
-    ride_id NUMERIC(64),
-    FOREIGN KEY (username) REFERENCES systemuser (username),
-    FOREIGN KEY (ride_id)  REFERENCES ride (ride_id),
-    PRIMARY KEY (username, ride_id)
+  ride_id		NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
+  highest_bid NUMERIC DEFAULT '0',
+  driver VARCHAR(40) NOT NULL,
+  from_address		VARCHAR(40),
+  to_address		VARCHAR(40),
+  start_time	TIMESTAMP NOT NULL,
+  end_time		TIMESTAMP DEFAULT NULL -- driver to press end_time button. eliminate all estimated time complications
 );
 
-/*--KIV-- To be decided later
-CREATE VIEW user_owns (
-   FOREIGN KEY (numPlate) REFERENCES car(numPlate) ON UPDATE CASCADE ON DELETE CASCADE,
-   FOREIGN KEY (username) REFERENCES systemuser(username) ON UPDATE CASCADE ON DELETE
-);*/
+CREATE TABLE bid (
+  amount 		NUMERIC CHECK(amount > 0 OR amount IS NULL) DEFAULT NULL,
+  ride_id		NUMERIC,
+  passenger	VARCHAR(40),
+  PRIMARY KEY (ride_id, passenger),
+  FOREIGN KEY (passenger) REFERENCES systemuser(username) ON DELETE CASCADE,
+  FOREIGN KEY (ride_id) REFERENCES ride(ride_id) ON DELETE CASCADE,
+  success BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE created_rides (
+  driver VARCHAR(40),
+  ride_id NUMERIC,
+  FOREIGN KEY (driver) REFERENCES systemuser(username) ON DELETE CASCADE,
+  FOREIGN KEY (ride_id) REFERENCES ride(ride_id) ON DELETE CASCADE,
+  PRIMARY KEY (driver, ride_id)
+);
+
+--**passenger ride "history": select all current bids, successful or not
+--** first ride offer, got bid but amount is null. passenger is driver himself.
+--**amount is not a primary key, each user can only have 1 bid for 1 ride, if he wants to increase his bid amt, he will update his current bid entry
