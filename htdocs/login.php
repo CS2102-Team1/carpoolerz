@@ -6,10 +6,11 @@
     </head>
 
     <body>
+        <?php include "./public-navbar.shtml" ?>
         <div class="container-fluid">
             <br/>
             <div class="panel panel-default">
-                <h1 class="text-center">Log Into Carpoolerz</h1>
+                <h1 class="text-center">Log In to Carpoolerz</h1>
                 <form role="form" action="login.php" method="post" name="login-form">
                     <div class="form-group">
                         <label for="username">Username: </label>
@@ -30,51 +31,49 @@
 
             </div>
         </div>
-
         <?php
-        session_start();
-        $dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
-        or die('Could not connect: ' . pg_last_error());
+            session_start();
+            $dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
+            or die('Could not connect: ' . pg_last_error());
 
-        if(isset($_POST['userLogin'])) {
-            $_SESSION['username'] = $_POST['username'];
-            $_SESSION['password'] = $_POST['password'];
-            $username = $_SESSION['username'];
-            $password = $_SESSION['password'];
+            if(isset($_POST['userLogin'])) {
+                $_SESSION['username'] = $_POST['username'];
+                $_SESSION['password'] = $_POST['password'];
+                $username = $_SESSION['username'];
+                $password = $_SESSION['password'];
 
-            $query = /** @php text */
-                "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password'";
+                $query = /** @php text */
+                    "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password'";
 
-            $result = pg_query($dbconn, $query);
+                $result = pg_query($dbconn, $query);
 
-            if (pg_num_rows($result) == 1) {
+                if (pg_num_rows($result) == 1) {
+                    ob_start();
+                    header("Location: ./user/user-profile.php");
+                    ob_end_flush();
+                }
+            }
+
+            //    if(isset($_POST['adminLogin'])) {
+            //
+            //        if (pg_num_rows($result) == 1) {
+            //            $_SESSION['username'] = $username;
+            //            $_SESSION['password'] = $password;
+            //            $_SESSION['is_admin'] = $is_admin;
+            //
+            //            ob_start();
+            //            header("Location: ./admin/admin.php");
+            //            ob_end_flush();
+            //
+            //        }
+            //    }
+
+            if (isset($_POST['registerUser'])) {
                 ob_start();
-                header("Location: ./user/user-profile.php");
+                header("Location: register.php");
                 ob_end_flush();
             }
-        }
-
-        //    if(isset($_POST['adminLogin'])) {
-        //
-        //        if (pg_num_rows($result) == 1) {
-        //            $_SESSION['username'] = $username;
-        //            $_SESSION['password'] = $password;
-        //            $_SESSION['is_admin'] = $is_admin;
-        //
-        //            ob_start();
-        //            header("Location: ./admin/admin.php");
-        //            ob_end_flush();
-        //
-        //        }
-        //    }
-
-        if (isset($_POST['registerUser'])) {
-            ob_start();
-            header("Location: register.php");
-            ob_end_flush();
-        }
-
         ?>
-
+        <?php include "./footer.shtml" ?>
     </body>
 </html>
