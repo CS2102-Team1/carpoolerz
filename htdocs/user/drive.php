@@ -39,10 +39,34 @@
             <div class="container-fluid">
                 <h1 class="text-center">RIDE OFFERS YOU MADE</h1>
                 <br/>
-                <h2>This is a stub</h2>
+                <!-- TODO: Display all current driver offered rides -->
+                <table class="table table-striped table-hover">
+                    <thead class="thead-inverse">
+                    <tr>
+                        <th>Ride ID</th>
+                        <th>Start Location</th>
+                        <th>End Location</th>
+                        <th>Start Time/Date</th>
+                        <th>End Time/Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $query = 'SELECT * FROM ride';
+                    $result = pg_query($query);
+                    while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+                        echo "\t<tr>\n";
+                        foreach ($line as $col_value) {
+                            echo "\t\t<td>$col_value</td>\n";
+                        }
+                        echo "\t</tr>\n";
+                    }
+                    ?>
+                    </tbody>
+                </table>
                 <br/>
             </div>
-
+            <br/>
             <div class="container-fluid">
                 <h1 class="text-center">CREATE NEW RIDE OFFER</h1>
                 <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="login-form">
@@ -73,6 +97,7 @@
 
                     <button type="submit" name="createNewRide" class="form-control btn btn-success">ADD RIDE OFFER</button>
                 </form>
+                <br/>
             </div>
         </div>
         <?php include '../footer.shtml'; ?>
@@ -95,8 +120,9 @@
             if (pg_num_rows($check_rides_result) > 0) {
                 echo "<br/><h1 class='text-center'>You already have a ride scheduled for this time!</h1><br/><br/>";
             } else {
+                //Note: Dummy value is put as a placeholder for bidder
                 $add_rides_query = /** @php text */
-                    "INSERT INTO ride(highest_bid, driver, from_address, to_address, start_time) VALUES(0, '$username', '$startAddress', '$endAddress', to_timestamp('$datetime', 'DD/MM/YYYY HH24:MI:SS'))";
+                    "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time) VALUES(0, '$username', '', '$startAddress', '$endAddress', to_timestamp('$datetime', 'DD/MM/YYYY HH24:MI:SS'))";
 
                 $add_rides_query = pg_query($dbconn, $add_rides_query);
 
@@ -107,13 +133,17 @@
                 $next_ride_id_result = pg_query($dbconn, $next_ride_id_query);
 
                 $target_rideID = pg_fetch_row($next_ride_id_result)[0];
-                echo "<h1>'$target_rideID'<h1/>";
 
                 $add_created_rides_query = /** @php text */
                     "INSERT INTO created_rides(driver, ride_id) VALUES('$username', '$target_rideID')";
 
                 $add_created_rides_result = pg_query($dbconn, $add_created_rides_query);
 
+                echo "<h1 class='text-center'>New ride created successfully...<h1/>";
+                echo "<h1 class='text-center'>Updating page. Please wait...<h1/><br/>";
+
+                //Refresh page
+                header("Refresh:0");
             }
 
         }

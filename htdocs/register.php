@@ -78,6 +78,7 @@
                 echo "<div class='container-fluid'><div class='panel panel-default'><form action='login.php'><button type='submit' class='form-control btn btn-primary'>Return To Login Page</button><form/></div></div>";
             }
         }
+        //TODO: Could add session data so that users don't have to enter everything again if mistakes were made
     ?>
 </body>
 </html>
