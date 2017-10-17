@@ -23,8 +23,8 @@
         header("Location: ../login.php");
     }
 
-    if (pg_num_rows($check_car_result)) {
-        header("Location: ../drive-error.php");
+    if (pg_num_rows($check_car_result) > 0) {
+        header("Location: ./drive-error.php");
     }
 ?>
 
