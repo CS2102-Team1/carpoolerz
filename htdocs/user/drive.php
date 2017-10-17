@@ -17,11 +17,13 @@
     $check_car_query = /** @php text */
         "SELECT * FROM owns_car WHERE driver = '$username'";
 
+    $check_car_result = pg_query($dbconn, $check_car_query);
+
     if (pg_num_rows($check_auth_result) == 0) {
         header("Location: ../login.php");
     }
 
-    if (pg_num_rows($check_car_query)) {
+    if (pg_num_rows($check_car_result)) {
         header("Location: ../drive-error.php");
     }
 ?>
