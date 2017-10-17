@@ -33,7 +33,7 @@ if (pg_num_rows($result) == 0) {
         <div class='panel panel-default'>
             <form action='user-profile.php'>
                 <button type='submit' class='form-control btn btn-primary'>Return to Profile Page</button>
-                <form/>
+            <form/>
         </div>
     </div>
 </div>

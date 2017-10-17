@@ -142,10 +142,7 @@
                 $add_created_rides_result = pg_query($dbconn, $add_created_rides_query);
 
                 echo "<h1 class='text-center'>New ride created successfully...<h1/>";
-                echo "<h1 class='text-center'>Updating page. Please wait...<h1/><br/>";
-
-                //Refresh page
-                header("Refresh:0");
+                echo "<div class='container-fluid'><div class='panel panel-default'><form action='user-profile.php'><button type='submit' class='form-control btn btn-primary'>Return to Profile Page</button><form/></div></div>";
             }
 
         }
