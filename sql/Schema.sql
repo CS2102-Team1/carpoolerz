@@ -6,20 +6,28 @@
   is_admin BOOLEAN DEFAULT FALSE
 );
 
+CREATE TABLE car(
+  numplate VARCHAR(10),
+  model VARCHAR(20) NOT NULL,
+  brand VARCHAR(20) NOT NULL,
+  PRIMARY KEY (numplate)
+);
+
 CREATE TABLE owns_car (
   driver VARCHAR(40),
   numplate VARCHAR(10),
-  model		VARCHAR(20) NOT NULL,
-  brand		VARCHAR(20)	NOT NULL,
   FOREIGN KEY (driver) REFERENCES systemuser(username) ON DELETE CASCADE,
+  FOREIGN KEY (numplate) REFERENCES car(numplate) ON DELETE CASCADE,
   PRIMARY KEY (numplate, driver)
 );
 
+-- Ride history table
 CREATE SEQUENCE ride_id;
 CREATE TABLE ride (
   ride_id		NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
   highest_bid NUMERIC DEFAULT '0',
   driver VARCHAR(40) NOT NULL,
+  passenger VARCHAR(40) NOT NULL,
   from_address		VARCHAR(40),
   to_address		VARCHAR(40),
   start_time	TIMESTAMP NOT NULL,
