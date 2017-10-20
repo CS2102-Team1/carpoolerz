@@ -1,7 +1,23 @@
-﻿CREATE TABLE systemuser (
+﻿/*
+Drop Order:
+DROP TABLE bid;
+DROP TABLE created_rides;
+DROP TABLE owns_car;
+DROP TABLE car;
+DROP TABLE systemuser;
+DROP TABLE ride;
+DROP SEQUENCE ride_id;
+*/
+
+/* 
+NOTE: Order of execution of .sql files for data population(tried and tested): 
+systemuser.sql --> car.sql --> owns_car.sql --> ride.sql --> bid.sql --> created_rides.sql
+*/
+
+CREATE TABLE systemuser (
   username	VARCHAR(40) PRIMARY KEY,
   fullname	VARCHAR(40) NOT NULL,
-  password 	VARCHAR(10) NOT NULL,
+  password 	VARCHAR(40) NOT NULL,
   licensenum 	VARCHAR(10) DEFAULT NULL,
   is_admin BOOLEAN DEFAULT FALSE
 );
@@ -51,7 +67,6 @@ CREATE TABLE created_rides (
   FOREIGN KEY (ride_id) REFERENCES ride(ride_id) ON DELETE CASCADE,
   PRIMARY KEY (driver, ride_id)
 );
-
 --**passenger ride "history": select all current bids, successful or not
 --** first ride offer, got bid but amount is null. passenger is driver himself.
 --**amount is not a primary key, each user can only have 1 bid for 1 ride, if he wants to increase his bid amt, he will update his current bid entry
