@@ -41,7 +41,7 @@
             <div class="container-fluid">
                 <h1 class="text-center">RIDE OFFERS YOU MADE</h1>
                 <br/>
-                <!-- TODO: Display all current driver offered rides -->
+
                 <table class="table table-striped table-hover">
                     <thead class="thead-inverse">
                     <tr>
@@ -54,8 +54,10 @@
                     </thead>
                     <tbody>
                     <?php
-                    $query = 'SELECT * FROM ride';
+
+                    $query = "SELECT ride_id, from_address, to_address, start_time, end_time FROM ride WHERE driver = '$username' ORDER BY ride_id DESC";
                     $result = pg_query($query);
+
                     while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
                         echo "\t<tr>\n";
                         foreach ($line as $col_value) {
@@ -142,7 +144,8 @@
                 $add_created_rides_result = pg_query($dbconn, $add_created_rides_query);
 
                 echo "<h1 class='text-center'>New ride created successfully...<h1/>";
-                echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='user-profile.php'><button type='submit' class='form-control btn btn-primary'>Return to Profile Page</button><form/></div></div></div>";
+                echo "<div class='container-fluid'><div class='panel panel-default'><form action='user-profile.php'><button type='submit' class='form-control btn btn-primary'>Return to Profile Page</button><form/></div></div>";
+                echo "<meta http-equiv=\"refresh\" content=\"4;URL=drive.php\">";
             }
 
         }
