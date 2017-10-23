@@ -13,7 +13,7 @@ $query = /** @lang text */
 $result = pg_query($dbconn, $query);
 
 if (pg_num_rows($result) == 0) {
-    header("Location: htdocs/login.php");
+    header("Location: ../login.php");
 }
 ?>
 
