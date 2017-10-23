@@ -16,7 +16,10 @@
                 <a class="nav-link" href="drive.php">Drive!</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="../bid-ride.php">BID!</a>
+                <a class="nav-link" href="bid-ride.php">Bid!</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="history.php">Bid/Ride History</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="../login.php">Sign Out</a>
