@@ -55,7 +55,8 @@
                     <tbody>
                     <?php
 
-                    $query = "SELECT ride_id, from_address, to_address, start_time, end_time FROM ride WHERE driver = '$username' ORDER BY ride_id DESC";
+                    $query = /** @php text */
+                    "SELECT ride_id, from_address, to_address, start_time, end_time FROM ride WHERE driver = '$username' ORDER BY ride_id DESC";
                     $result = pg_query($query);
 
                     while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
