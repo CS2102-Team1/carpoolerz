@@ -52,18 +52,25 @@
 
             $start = $_POST['p_start'];
             $end = $_POST['p_end'];
-            echo "<h1>$start<h1/>";
-            echo "<h1>$end<h1/>";
+
+            $start_query = pg_escape_string($start);
+            $end_query = pg_escape_string($end);
 
             // Get relevant data from rides table
-            // TODO: Fix this weird bug. Why isn't this select statement working
             $ride_matches_query = /** @php text */
-                    "SELECT * FROM ride WHERE from_address LIKE '%'$start'%' AND to_address LIKE '%'$end'%' AND end_time IS NULL";
+                    "SELECT * FROM ride WHERE from_address LIKE '%{$start_query}%' AND to_address LIKE '%{$end_query}%' AND end_time IS NULL";
 
             $ride_matches_result = pg_query($dbconn, $ride_matches_query);
 
-            while ($line = pg_fetch_array($ride_matches_result, NULL, PGSQL_ASSOC)) {
-                echo "$line[0]";
+            while ($row = pg_fetch_array($ride_matches_result, NULL, PGSQL_ASSOC)) {
+                $rideID = $row["ride_id"];
+                $highest_bid = $row["highest_bid"];
+                $driver = $row["driver"];
+                $from_address = $row["from_address"];
+                $to_address = $row["to_address"];
+
+                // Note: Start time must be processed when echoing.
+                $start_time = $row["start_time"];
             }
 
         }
