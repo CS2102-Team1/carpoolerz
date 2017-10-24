@@ -6,34 +6,37 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <br/>
-        <div class="panel panel-default">
-            <h1 class="text-center">Register For New Carpoolerz Account</h1>
-            <form role="form" action="register.php" method="post" name="login-form">
-                <div class="form-group">
-                    <label for="n_username">Username: </label>
-                    <input type="text" name="n_username" required class="form-control" id="n_usr" placeholder="Enter Your Username"/>
-                </div>
-                <div class="form-group">
-                    <label for="n_password">Password: </label>
-                    <input type="password" name="n_password" required class="form-control" id="n_pwd" placeholder="Enter Your Password"/>
-                </div>
-                <div class="form-group">
-                    <label for="cn_password">Confirm Password: </label>
-                    <input type="password" name="cn_password" required class="form-control" id="cn_pwd" placeholder="Confirm Password"/>
-                </div>
-                <div class="form-group">
-                    <label for="n_fullname">Full Name: </label>
-                    <input type="text" name="n_fullname" required class="form-control" id="n_fname" placeholder="Enter Your Full Name"/>
-                </div>
-                <div class="form-group">
-                    <label for="dr_license">Driving License Number: </label>
-                    <input type="text" name="n_license" class="form-control" id="dr_lic" placeholder="Driving License Number (OPTIONAL)"/>
-                </div>
-                <button type="submit" name="createNewAccount" class="form-control btn btn-success">Create New Account</button>
-            </form>
+    <?php include './public-navbar.shtml'?>
+    <div class = "container">
+        <div class="container-fluid">
             <br/>
+            <div class="panel panel-default">
+                <h1 class="text-center">Register For New Carpoolerz Account</h1>
+                <form role="form" action="register.php" method="post" name="login-form">
+                    <div class="form-group">
+                        <label for="n_username">Username: </label>
+                        <input type="text" name="n_username" required class="form-control" id="n_usr" placeholder="Enter Your Username"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="n_password">Password: </label>
+                        <input type="password" name="n_password" required class="form-control" id="n_pwd" placeholder="Enter Your Password"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="cn_password">Confirm Password: </label>
+                        <input type="password" name="cn_password" required class="form-control" id="cn_pwd" placeholder="Confirm Password"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="n_fullname">Full Name: </label>
+                        <input type="text" name="n_fullname" required class="form-control" id="n_fname" placeholder="Enter Your Full Name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="dr_license">Driving License Number: </label>
+                        <input type="text" name="n_license" class="form-control" id="dr_lic" placeholder="Driving License Number (OPTIONAL)"/>
+                    </div>
+                    <button type="submit" name="createNewAccount" class="form-control btn btn-success">Create New Account</button>
+                </form>
+                <br/>
+            </div>
         </div>
     </div>
 
@@ -80,5 +83,6 @@
         }
         //TODO: Could add session data so that users don't have to enter everything again if mistakes were made
     ?>
+    <?php include './footer.shtml'?>
 </body>
 </html>
