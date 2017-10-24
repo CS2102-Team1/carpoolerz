@@ -58,11 +58,11 @@
     if(isset($_POST['adminLogin'])) {
         $_SESSION['username'] = $_POST['username'];
         $_SESSION['password'] = $_POST['password'];
-        $username = $_SESSION['username'];
+		$username = $_SESSION['username'];
         $password = $_SESSION['password'];
 
         $query = /** @php text */
-        "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password' AND is_admin='TRUE'";
+        "SELECT * FROM systemuser s WHERE s.username = '$username' AND s.password = '$password' AND s.is_admin='TRUE'";
 
         $result = pg_query($dbconn, $query);
 
