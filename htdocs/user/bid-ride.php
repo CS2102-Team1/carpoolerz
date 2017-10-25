@@ -82,23 +82,28 @@
                                 <h1>Driver: $driver</h1>
                             </div>
                             <div class=\"card-body\">
-                                <p class='\card-text\'>Ride ID: $rideID</p>
-                                <h4 class=\"card-title\">Start Time: $start_time</h4>
+                                <p class='\card-subtitle\'>Ride ID: $rideID</p>
+                                <h4 class=\"card-text\">Start Time: $start_time</h4>
                                 <p class=\"card-text\">From Address: $from_address</p>
                                 <p class=\"card-text\">Destination: $to_address</p>
-                                <h3 class='\card-text\'>Highest Bid: $SGD $highest_bid</h3>
-                                <a href=\"#\" class=\"btn btn-danger\">ENTER NEW BID</a>
+                                <h3 class='\card-text\'>Highest Bid: SGD $highest_bid</h3>
+                                <br/>
+                                <h5>Make new bid:</h5>
+                                <form role=\"form\" action=\"bid-ride.php\" method=\"post\" name=\"$rideID\">
+                                    <div class=\"form-group\">
+                                        <input type=\"text\" name=\"p_newBid\" class=\"form-control\" id=\"newBid_$rideID\" placeholder=\"$highest_bid\"/>
+                                    </div>
+                                    
+                                    <button type=\"submit\" name=\"submitNewBid\" class=\"form-control btn btn-danger\">SUBMIT NEW BID</button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 ";
-
             }
             echo "<br/>";
-
         }
-
     ?>
 
     <?php include '../footer.shtml'; ?>
