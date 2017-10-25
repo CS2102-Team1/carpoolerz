@@ -58,7 +58,10 @@
 
             // Get relevant data from rides table
             $ride_matches_query = /** @php text */
-                    "SELECT * FROM ride WHERE from_address LIKE '%{$start_query}%' AND to_address LIKE '%{$end_query}%' AND end_time IS NULL";
+                    "SELECT * FROM ride 
+                    WHERE from_address LIKE '%{$start_query}%' 
+                    AND to_address LIKE '%{$end_query}%' AND end_time IS NULL
+                    AND driver <> '$username'";
 
             $ride_matches_result = pg_query($dbconn, $ride_matches_query);
 
@@ -87,7 +90,7 @@
                                 <p class=\"card-text\">Destination: $to_address</p>
                                 <h3 class='\card-text\'>Highest Bid: SGD $highest_bid</h3>
                             </div>
-                            <a class='btn btn-warning' href='new_bid.php?ride_id=".$rideID."'>ENTER NEW BID</a>
+                            <a class='btn btn-warning' href='new_bid.php?ride_id=".$rideID."'>PLACE NEW BID/DELETE BID</a>
                         </div>
                     </div>
                 </div>
