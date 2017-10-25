@@ -7,27 +7,29 @@
 
 <body>
     <?php include "./public-navbar.shtml" ?>
-    <div class="container-fluid">
-        <br/>
-        <div class="panel panel-default">
-            <h1 class="text-center">Log In to Carpoolerz</h1>
-            <form role="form" action="login.php" method="post" name="login-form">
-                <div class="form-group">
-                    <label for="username">Username: </label>
-                    <input type="text" name="username" class="form-control" id="usr" placeholder="Username"/>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password: </label>
-                    <input type="password" name="password" class="form-control" id="pwd" placeholder="Password"/>
-                </div>
-                <button type="submit" name="userLogin" class="form-control btn btn-primary">Login as a User</button>
-                <br />
-                <br />
-                <button type="submit" name="adminLogin" class="form-control btn btn-danger">Login as a Admin</button>
-                <br />
-                <br />
-                <button type="submit" name="registerUser" class="form-control btn btn-success">Register Now</button>
-            </form>
+    <div class="container">
+        <div class="container-fluid">
+            <br/>
+            <div class="panel panel-default">
+                <h1 class="text-center">Log In to Carpoolerz</h1>
+                <form role="form" action="login.php" method="post" name="login-form">
+                    <div class="form-group">
+                        <label for="username">Username: </label>
+                        <input type="text" name="username" class="form-control" id="usr" placeholder="Username"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password: </label>
+                        <input type="password" name="password" class="form-control" id="pwd" placeholder="Password"/>
+                    </div>
+                    <button type="submit" name="userLogin" class="form-control btn btn-primary">Login as a User</button>
+                    <br />
+                    <br />
+                    <button type="submit" name="adminLogin" class="form-control btn btn-danger">Login as a Admin</button>
+                    <br />
+                    <br />
+                    <button type="submit" name="registerUser" class="form-control btn btn-success">Register Now</button>
+                </form>
+            </div>
         </div>
     </div>
     <?php
