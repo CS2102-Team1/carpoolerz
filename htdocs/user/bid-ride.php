@@ -62,6 +62,7 @@
 
             $ride_matches_result = pg_query($dbconn, $ride_matches_query);
 
+            echo "<br/><h1 class='text-center'>Matches:</h1>";
             while ($row = pg_fetch_array($ride_matches_result, NULL, PGSQL_ASSOC)) {
                 $rideID = $row["ride_id"];
                 $highest_bid = $row["highest_bid"];
@@ -71,7 +72,30 @@
 
                 // Note: Start time must be processed when echoing.
                 $start_time = $row["start_time"];
+
+                echo /** @html text */
+                "
+                <div class='container'>
+                    <div class='container-fluid'>
+                        <div class=\"card\">
+                            <div class=\"card-header\">
+                                <h1>Driver: $driver</h1>
+                            </div>
+                            <div class=\"card-body\">
+                                <p class='\card-text\'>Ride ID: $rideID</p>
+                                <h4 class=\"card-title\">Start Time: $start_time</h4>
+                                <p class=\"card-text\">From Address: $from_address</p>
+                                <p class=\"card-text\">Destination: $to_address</p>
+                                <h3 class='\card-text\'>Highest Bid: $SGD $highest_bid</h3>
+                                <a href=\"#\" class=\"btn btn-danger\">ENTER NEW BID</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                ";
+
             }
+            echo "<br/>";
 
         }
 
