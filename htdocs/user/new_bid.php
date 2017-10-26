@@ -41,7 +41,16 @@
     $start_time = $ride_info["start_time"];
     $end_time = $ride_info["end_time"];
 
+    $your_bid_query = /** @php text */
+        "SELECT * FROM bid WHERE passenger = '$username' AND ride_id = '$target_rideID'";
+    $your_bid_result = pg_query($dbconn, $your_bid_query);
 
+    $your_current_bid = "0";
+
+    if (pg_num_rows($your_bid_result) != 0) {
+        $row = pg_fetch_row($your_bid_result, null, PGSQL_ASSOC);
+        $your_current_bid = $row['amount'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -78,7 +87,11 @@
             </div>
 
             <div class="form-group">
-                <label><b>Highest Bid:<b/> <?php echo $highest_bid ?></label>
+                <label><b>Highest Bid:<b/> SGD <?php echo $highest_bid ?></label>
+            </div>
+
+            <div class="form-group">
+                <label><b>Your Current Bid:<b/> SGD <?php echo $your_current_bid ?></label>
             </div>
 
             <div class="form-group">
@@ -135,6 +148,8 @@
             pg_query($dbconn, $update_rides_query);
 
             echo "<h1 class='text-center'>Bid successfully entered<h1/>";
+            echo "<h2 class='text-center'>New Highest Bid: SGD $new_bid<h2/>";
+            echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='bid-ride.php'><button type='submit' class='form-control btn btn-large btn-success'>Return to Your Bids</button><form/></div></div></div>";
             echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='user-profile.php'><button type='submit' class='form-control btn btn-warning'>Return to Profile Page</button><form/></div></div></div>";
 
         } else {
