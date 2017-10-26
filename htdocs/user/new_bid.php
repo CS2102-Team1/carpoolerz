@@ -16,10 +16,18 @@
         header("Location: ../login.php");
     }
 
-    $target_rideID = $_GET['ride_id'];
+    $target_rideID = $ride_driver = $highest_bid = $current_passenger = $from_address = $to_address = $start_time = $end_time = "";
+
+    if ($_GET['ride_id']) {
+        $target_rideID = $_GET['ride_id'];
+    } elseif (isset($_POST['editBidsTrigger'])) {
+        $target_rideID = $_POST['p_rideID'];
+    } else {
+        echo "<h1>Error. No ride ID detected.<h1/>";
+    }
 
     $get_ride_info_query = /** @php text */
-            "SELECT * FROM ride WHERE ride_id = '$target_rideID'";
+        "SELECT * FROM ride WHERE ride_id = '$target_rideID'";
 
     $ride_info_result = pg_query($dbconn, $get_ride_info_query);
 
@@ -32,6 +40,8 @@
     $to_address = $ride_info["to_address"];
     $start_time = $ride_info["start_time"];
     $end_time = $ride_info["end_time"];
+
+
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +85,7 @@
                 <label for="edit_bid"><b>Create/Edit Bid:<b/> </label>
                 <input type="text" name="p_bid" class="form-control" id="p_bid" placeholder="Current Highest Bid: <?php echo $highest_bid ?>"/>
             </div>
-
+            <input type="hidden" name="p_rideID" value="<?php echo $target_rideID; ?>"/>
             <button type="submit" name="editBidsTrigger" class="form-control btn btn-primary">PLACE BID</button>
             <br/>
         </form>
@@ -86,6 +96,11 @@
 
     if (isset($_POST['editBidsTrigger'])) {
 
+        // Prepare relevant post variables
+        $new_bid = $_POST['p_bid'];
+
+        // echo $target_rideID;
+
         $check_bids_query = /** @php text */
                 "SELECT * FROM bid WHERE passenger = '$username'";
 
@@ -93,8 +108,7 @@
 
         $row = pg_fetch_row($check_bids_result, null, PGSQL_ASSOC);
 
-        // Case there is no bid --> Insert into bids table and then exit, sleep then redirect
-        $new_bid = $_POST['p_bid'];
+        // No bid + Better than highest bid --> Insert bid
         if ($new_bid > $highest_bid) {
             $insert_bid_query = /** @php text */
                     "INSERT INTO bid(amount, ride_id, passenger) values ('$new_bid', '$target_rideID', '$username')";
