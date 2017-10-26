@@ -110,21 +110,38 @@
 
         // No bid + Better than highest bid --> Insert bid
         if ($new_bid > $highest_bid) {
-            $insert_bid_query = /** @php text */
+
+            // Check if bid exists.
+            $check_bid_exists_query = /** @php text */
+                    "SELECT * FROM bid WHERE ride_id = '$target_rideID' AND passenger = '$username'";
+
+            $check_bid_exists_result = pg_query($dbconn, $check_bid_exists_query);
+
+            if (pg_num_rows($check_bid_exists_result) == 0) {
+
+                $insert_bid_query = /** @php text */
                     "INSERT INTO bid(amount, ride_id, passenger) values ('$new_bid', '$target_rideID', '$username')";
-            pg_query($dbconn, $insert_bid_query);
+                pg_query($dbconn, $insert_bid_query);
+
+            } else {
+                $edit_bid_query = /** @php text */
+                        "UPDATE bid SET amount = '$new_bid' WHERE ride_id = '$target_rideID' AND passenger = '$username'";
+                pg_query($dbconn, $edit_bid_query);
+            }
 
             $update_rides_query = /** @php text */
-                    "UPDATE ride SET highest_bid = '$new_bid' WHERE ride_id = '$target_rideID'";
+                "UPDATE ride SET highest_bid = '$new_bid' WHERE ride_id = '$target_rideID'";
 
             pg_query($dbconn, $update_rides_query);
 
             echo "<h1 class='text-center'>Bid successfully entered<h1/>";
+            echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='user-profile.php'><button type='submit' class='form-control btn btn-warning'>Return to Profile Page</button><form/></div></div></div>";
 
         } else {
             echo "<h1 class='text-center'>Entered bid is lower than current winning bid!<h1/>";
             exit;
         }
+
 
     }
 
