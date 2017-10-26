@@ -26,17 +26,60 @@
 
 <body>
     <?php include 'navbar-user.shtml'; ?>
-
     <div class="container">
         <div class="container-fluid">
             <br/>
+            <h1 class="text-center">Your Upcoming Bids:</h1>
+            <table class="table table-striped table-hover custom-table2">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>Ride ID</th>
+                    <th>Driver</th>
+                    <th>Your Bid</th>
+                    <th>Highest Bid</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Start Times</th>
+                    <th>View/Edit Bid</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                $get_current_bids_query = /** @php text */
+                        "SELECT b.ride_id, r.driver, b.amount, r.highest_bid, r.from_address, r.to_address, r.start_time FROM bid b
+                        INNER JOIN ride r ON b.ride_id = r.ride_id
+                        WHERE b.passenger = '$username' AND r.end_time IS NULL";
+                $get_current_bids_result = pg_query($get_current_bids_query);
+                while ($row = pg_fetch_array($get_current_bids_result, null, PGSQL_ASSOC)) {
+                    echo "\t<tr>\n";
+                    foreach ($row as $col_value) {
+                        /*if($col_value = 'f'){
+                            echo "\t\t<td>No</td>\n";
+                            }else if($col_value = 't'){
+                            echo "\t\t<td>Yes</td>\n";
+                        }*/
+                        echo "\t\t<td>$col_value</td>\n";
+                    }
+                    echo "\t\t<td><a class='btn btn-primary' href='new_bid.php?ride_id=".$row['ride_id']."'>View/Update</a>
+                            <a class='btn btn-danger' href='delete_bid.php?username=".$row['ride_id']."'>Delete</a>
+                            </td>\n";
+                    echo "\t</tr>\n";
+                }
+                ?>
+                <br/>
+                </tbody>
+            <table/>
+
+            <br/>
+            <h1 class="text-center">Search for Rides:</h1>
+            <br/>
             <form class="row" role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="search-form">
-                <div class="form-group col-6">
+                <div class="form-group">
                     <label for="p_start">Starting Address: </label>
                     <input type="text" name="p_start" class="form-control" id="s_start_address" placeholder="Enter Starting Address"/>
                 </div>
 
-                <div class="form-group col-6">
+                <div class="form-group">
                     <label for="p_end">Car Number Plate: </label>
                     <input type="text" name="p_end" class="form-control" id="s_end_address" placeholder="Enter Destination Address"/>
                 </div>
