@@ -70,12 +70,12 @@
             <br/>
             <form class="row" role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="search-form">
                 <div class="form-group">
-                    <label for="p_start">Starting Address: </label>
+                    <label for="p_start">Start Address: </label>
                     <input type="text" name="p_start" class="form-control" id="s_start_address" placeholder="Enter Starting Address"/>
                 </div>
 
                 <div class="form-group">
-                    <label for="p_end">Car Number Plate: </label>
+                    <label for="p_end">End Address: </label>
                     <input type="text" name="p_end" class="form-control" id="s_end_address" placeholder="Enter Destination Address"/>
                 </div>
                 <button type="submit" name="searchRidesTrigger" class="form-control btn btn-primary">SEARCH RIDES</button>

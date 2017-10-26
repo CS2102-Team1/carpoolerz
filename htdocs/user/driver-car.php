@@ -18,14 +18,12 @@
     }
 
     $getCarDetailsQuery = /** @php text */
-        "SELECT c.numplate, c.model, c.brand, o.driver FROM car c, owns_car o, systemuser u WHERE o.driver = u.username AND u.username = '$username' AND c.numplate = o.numplate";
+        "SELECT c.numplate, c.model, c.brand, o.driver FROM car c, owns_car o WHERE o.driver = '$username' AND c.numplate = o.numplate";
 
     $carDetailsResult = pg_query($dbconn, $getCarDetailsQuery);
-
-    $numplate = '';
-    $model = '';
-    $brand = '';
-    $car_created = false;
+    $numplate = null;
+    $model = null;
+    $brand = null;
 
     if (pg_num_rows($carDetailsResult) > 0) {
         $carInfo = pg_fetch_row($carDetailsResult);
@@ -34,6 +32,7 @@
         $brand = $carInfo[2];
         $car_created = true;
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +46,7 @@
         <div class=container>
             <div class="container-fluid">
                 <br/>
-                <h1 class="text-center">DRIVERS: Update Your Car Details</h1>
+                <h1 class="text-center">DRIVERS: Your Car Details</h1>
                 <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="login-form">
                     <div class="form-group">
                         <label for="p_username">Driver Username: </label>
@@ -84,61 +83,54 @@
             $brand_updated = $_POST['p_brand'];
             $model_updated = $_POST['p_model'];
 
-            if ($car_created) {
-                if ($numplate_updated == $numplate) {
-                    // Number plate is same --> Just update car details
-                    $update_car_query = /** @php text */
-                        "UPDATE car SET model = '$model_updated', brand = '$brand_updated' WHERE numplate = '$numplate'";
-                    pg_query($dbconn, $update_car_query);
-                } else {
-                    // Number plate change. Must reflect on owns_car relation as well as car entity
-                    // New entity + relation creation
-                    $new_car_entity_query = /** @php text */
-                        "INSERT INTO car(numplate, model, brand) VALUES('$numplate_updated', '$model_updated', '$brand_updated')";
-                    $create_new_car_result = pg_query($dbconn, $new_car_entity_query);
+            if ($numplate_updated == null || $brand_updated == null || $model_updated == null){
+                echo "<br/><h1 class='text-center'>Car details not updated properly...<h1/>";
 
-                    $new_owns_car_relation_query = /** @php text */
-                        "INSERT INTO owns_car(driver, numplate) VALUES('$username', '$numplate_updated')";
-                    $create_new_car_relation_result = pg_query($dbconn, $new_owns_car_relation_query);
-
-                    // Deletion of old entities and relations from cars and owns_car
-                    $delete_old_car_query = /** @php text */
-                        "DELETE FROM car WHERE numplate = '$numplate'";
-                    $delete_old_car_result = pg_query($dbconn, $delete_old_car_query);
-
-                    $delete_old_car_relation_query = /** @php text */
-                        "DELETE FROM owns_car WHERE numplate = '$numplate' AND driver = '$username'";
-                    $delete_old_car_relation_result = pg_query($dbconn, $delete_old_car_relation_query);
-                }
             } else {
-                // Create new car entity and new owns_car relation
-                $create_new_car_query = /** @php text */
-                    "INSERT INTO car(numplate, model, brand) VALUES('$numplate_updated', '$model_updated', '$brand_updated')";
-                $create_new_car_result = pg_query($dbconn, $create_new_car_query);
+                //user has license number but does not have any car registered
+                if ($numplate == null){
+                    $insert_car_query = /** @php text */
+                    "INSERT INTO car(model, brand, numplate) VALUES ('$model_updated', '$brand_updated', '$numplate_updated')";
+                    $insert_car_result = pg_query($dbconn, $insert_car_query);
 
-                $create_new_car_relation_query = /** @php text */
-                    "INSERT INTO owns_car(driver, numplate) VALUES('$username', '$numplate_updated')";
-                $create_new_car_relation_result = pg_query($dbconn, $create_new_car_relation_query);
+                    $insert_owns_car_query = /** @php text */
+                    "INSERT INTO owns_car(numplate, driver) VALUES ('$numplate_updated', '$username')";
+                    $insert_owns_car_result = pg_query($dbconn, $insert_owns_car_query);
+
+                //user already has a car registered
+                } else {
+                    $delete_car_query = /** @php text */
+                    "DELETE FROM car WHERE numplate = '$numplate'";
+                    $delete_car_result = pg_query($dbconn, $delete_car_query);
+
+                    $insert_car_query = /** @php text */
+                    "INSERT INTO car(model, brand, numplate) VALUES ('$model_updated', '$brand_updated', '$numplate_updated')";
+                    $insert_car_result = pg_query($dbconn, $insert_car_query);
+
+                    $insert_owns_car_query = /** @php text */
+                    "INSERT INTO owns_car(numplate, driver) VALUES ('$numplate_updated', '$username')";
+                    $insert_owns_car_result = pg_query($dbconn, $insert_owns_car_query);
+                }
+
+                echo "<br/><h1 class='text-center'>Car details updated successfully...<h1/>";
+                echo "<br/><h2 class='text-center'>Updating page now. Please wait...</h2>";
+
             }
-
-            echo "<br/><h1 class='text-center'>Car details updated successfully...<h1/>";
-            echo "<br/><h2 class='text-center'>Updating page now. Please wait...</h2>";
-
             //Refresh page
-            header("Refresh:0");
+            echo "<meta http-equiv=\"refresh\" content=\"0;URL=driver-car.php\">";
         }
 
         if (isset($_POST['deleteCarTrigger'])) {
             // Delete entity --> cascades to relation so deletion for relation owns_car is not required
-            $delete_if_no_numplate_query = /** @php text */
+            $delete_car_query = /** @php text */
                 "DELETE FROM car WHERE numplate = '$numplate'";
-            $delete_if_no_numplate = pg_query($dbconn, $delete_if_no_numplate_query);
+            $delete_car_result = pg_query($dbconn, $delete_car_query);
 
             echo "<br/><h1 class='text-center'>Car Details have been deleted successfully...<h1/>";
             echo "<br/><h2 class='text-center'>Updating page now. Please wait...</h2>";
 
             //Refresh page
-            header("Refresh:0");
+            echo "<meta http-equiv=\"refresh\" content=\"0;URL=driver-car.php\">";
         }
     ?>
 </html>
