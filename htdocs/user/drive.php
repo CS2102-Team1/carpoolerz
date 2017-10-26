@@ -146,7 +146,7 @@
 
                 echo "<h1 class='text-center'>New ride created successfully...<h1/>";
                 echo "<div class='container-fluid'><div class='panel panel-default'><form action='user-profile.php'><button type='submit' class='form-control btn btn-primary'>Return to Profile Page</button><form/></div></div>";
-                echo "<meta http-equiv=\"refresh\" content=\"4;URL=drive.php\">";
+                echo "<meta http-equiv=\"refresh\" content=\"0;URL=drive.php\">";
             }
 
         }

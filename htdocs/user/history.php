@@ -96,7 +96,7 @@ echo "\t</tr>\n";
                          WHEN bid.success = true THEN 'SUCCESSFUL'
                          WHEN '$today' >= ride.start_time and bid.success = false THEN 'UNSUCCESSFUL'
                          END
-                         FROM bid,ride WHERE ride.ride_id = bid.ride_id and bid.passenger = 'testdriver2@driver.com' ORDER BY bid.ride_id DESC";
+                         FROM bid,ride WHERE ride.ride_id = bid.ride_id and bid.passenger = '$username' ORDER BY bid.ride_id DESC";
                     $result = pg_query($query);
 
                     while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
