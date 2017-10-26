@@ -39,7 +39,7 @@
                     <th>Highest Bid</th>
                     <th>From</th>
                     <th>To</th>
-                    <th>Start Times</th>
+                    <th>Start Time</th>
                     <th>View/Edit Bid</th>
                 </tr>
                 </thead>
@@ -53,15 +53,10 @@
                 while ($row = pg_fetch_array($get_current_bids_result, null, PGSQL_ASSOC)) {
                     echo "\t<tr>\n";
                     foreach ($row as $col_value) {
-                        /*if($col_value = 'f'){
-                            echo "\t\t<td>No</td>\n";
-                            }else if($col_value = 't'){
-                            echo "\t\t<td>Yes</td>\n";
-                        }*/
                         echo "\t\t<td>$col_value</td>\n";
                     }
                     echo "\t\t<td><a class='btn btn-primary' href='new_bid.php?ride_id=".$row['ride_id']."'>View/Update</a>
-                            <a class='btn btn-danger' href='delete_bid.php?username=".$row['ride_id']."'>Delete</a>
+                            <a class='btn btn-danger' href='delete_bid.php?ride_id=".$row['ride_id']."'>Delete</a>
                             </td>\n";
                     echo "\t</tr>\n";
                 }
