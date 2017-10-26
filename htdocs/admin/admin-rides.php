@@ -3,18 +3,17 @@ session_start();
 
 $username = $_SESSION['username'];
 $password = $_SESSION['password'];
-$is_admin = $_SESSION['is_admin'];
 
 $dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
 or die('Could not connect: ' . pg_last_error());
 
 $query = /** @lang text */
-"SELECT * FROM systemuser WHERE '$username' = username AND '$password' = password AND is_admin = TRUE";
+"SELECT * FROM systemuser s WHERE '$username' = s.username AND '$password' = s.password AND s.is_admin = 'TRUE'";
 
 $result = pg_query($dbconn, $query);
 
 if (pg_num_rows($result) == 0) {
-    header("Location: login.php");
+    header("Location: /carpoolerz/login.php");
 }
 ?>
 
@@ -38,7 +37,7 @@ if (pg_num_rows($result) == 0) {
             <thead class="thead-inverse">
                 <tr>
                     <th>Ride ID</th>
-                    <th>Highest Bid (Ride Amount)</th>
+                    <th>Highest Bid ($)</th>
                     <th>Driver</th>
                     <th>Passenger</th>
                     <th>From</th>
@@ -80,7 +79,7 @@ if (pg_num_rows($result) == 0) {
             </thead>
             <tbody>
                 <?php
-                $query = 'SELECT * FROM ride r WHERE r.start_time < CURRENT_TIMESTAMP';
+                $query = 'SELECT * FROM ride r WHERE r.end_time IS NULL';
                 $result = pg_query($query);
                 while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
                     echo "\t<tr>\n";

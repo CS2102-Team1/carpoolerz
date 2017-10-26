@@ -46,6 +46,7 @@
         <?php include 'navbar-user.shtml'; ?>
         <div class=container>
             <div class="container-fluid">
+                <br/>
                 <h1 class="text-center">DRIVERS: Update Your Car Details</h1>
                 <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="login-form">
                     <div class="form-group">
