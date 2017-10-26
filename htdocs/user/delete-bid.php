@@ -34,6 +34,14 @@
 
     $ride_info = pg_fetch_array($ride_info_result, NULL, PGSQL_ASSOC);
 
+    $ride_driver = $ride_info["driver"];
+    $highest_bid = $ride_info["highest_bid"];
+    $current_passenger = $ride_info["passenger"];
+    $from_address = $ride_info["from_address"];
+    $to_address = $ride_info["to_address"];
+    $start_time = $ride_info["start_time"];
+    $end_time = $ride_info["end_time"];
+
 ?>
 
 <!DOCTYPE html>
@@ -91,12 +99,23 @@
 
             $delete_bid_result = pg_query($dbconn, $delete_bid_query);
 
-            // TODO: Update ride table with the new highest bids --> In case your bid is the one that is highest
             $updated_highest_bid = 0;
             $check_highest_bid_query = /** @php text */
-                "";
+                "SELECT MAX(amount) from bid WHERE ride_id = '$target_rideID'";
 
             $check_highest_bid_result = pg_query($dbconn, $check_highest_bid_query);
+            $new_highest_bid = 0;
+            if (pg_num_rows($check_highest_bid_result) != 0) {
+                $row = pg_fetch_row($check_highest_bid_result, PGSQL_ASSOC);
+                $max_bid = $row['max'];
+                if ($max_bid > $new_highest_bid) {
+                    $new_highest_bid = $max_bid;
+                }
+            }
+
+            $update_highest_bid_query = /** @php text */
+                    "UPDATE ride SET highest_bid = '$new_highest_bid' WHERE ride_id = $target_rideID";
+            pg_query($dbconn, $update_highest_bid_query);
 
             echo "<h1 class='text-center'>Bid deleted successfully<h1/>";
             echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='bid-ride.php'><button type='submit' class='form-control btn btn-large btn-success'>Return to Your Bids</button><form/></div></div></div>";

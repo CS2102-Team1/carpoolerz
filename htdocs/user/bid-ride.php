@@ -56,7 +56,7 @@
                         echo "\t\t<td>$col_value</td>\n";
                     }
                     echo "\t\t<td><a class='btn btn-primary' href='new_bid.php?ride_id=".$row['ride_id']."'>View/Update</a>
-                            <a class='btn btn-danger' href='delete_bid.php?ride_id=".$row['ride_id']."'>Delete</a>
+                            <a class='btn btn-danger' href='delete-bid.php?ride_id=".$row['ride_id']."'>Delete</a>
                             </td>\n";
                     echo "\t</tr>\n";
                 }
