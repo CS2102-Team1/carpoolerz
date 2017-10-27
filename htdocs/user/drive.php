@@ -50,13 +50,17 @@
                         <th>End Location</th>
                         <th>Start Time/Date</th>
                         <th>End Time/Date</th>
+                        <th>Highest Bid</th>
+                        <th>Bid Owner</th>
+                        <th>Accept Bid</th>
+                        <th>Delete Ride</th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php
 
                     $query = /** @php text */
-                    "SELECT ride_id, from_address, to_address, start_time, end_time FROM ride WHERE driver = '$username' ORDER BY ride_id DESC";
+                    "SELECT ride_id, from_address, to_address, start_time, end_time, highest_bid, passenger FROM ride WHERE driver = '$username' ORDER BY ride_id DESC";
                     $result = pg_query($query);
 
                     while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
@@ -64,6 +68,9 @@
                         foreach ($line as $col_value) {
                             echo "\t\t<td>$col_value</td>\n";
                         }
+                        echo "\t\t<td><a class='btn btn-primary' href='accept_bid.php?ride_id=".$line['ride_id']."'>Accept Bid</a></td>\n";
+                        echo "\t\t<td><a class='btn btn-primary' href='delete_ride.php?ride_id=".$line['ride_id']."'>Delete Ride</a></td>\n";
+
                         echo "\t</tr>\n";
                     }
                     ?>
@@ -127,7 +134,7 @@
             } else {
                 //Note: Dummy value is put as a placeholder for bidder
                 $add_rides_query = /** @php text */
-                    "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time) VALUES(0, '$username', '', '$startAddress', '$endAddress', to_timestamp('$datetime', 'DD/MM/YYYY HH24:MI:SS'))";
+                    "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time) VALUES(0, '$username', ' ', '$startAddress', '$endAddress', to_timestamp('$datetime', 'DD/MM/YYYY HH24:MI:SS'))";
 
                 $add_rides_query = pg_query($dbconn, $add_rides_query);
 

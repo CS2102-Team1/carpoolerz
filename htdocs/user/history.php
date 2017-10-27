@@ -38,6 +38,7 @@
 <thead class="thead-inverse">
 <tr>
 <th>Ride ID</th>
+<th>Driver</th>
 <th>Start Location</th>
 <th>End Location</th>
 <th>Start Time/Date</th>
@@ -49,11 +50,12 @@
 <?php
 
                     $query = /** @php text */
-                    "SELECT ride.ride_id, ride.from_address, ride.to_address, ride.start_time, ride.end_time,
+                    "SELECT ride.ride_id, ride.driver, ride.from_address, ride.to_address, ride.start_time, ride.end_time,
                     CASE WHEN '$today' < ride.start_time THEN 'SCHEDULED'
-                    WHEN '$today' >= ride.start_time THEN 'TAKEN'
+                    WHEN '$today' >= ride.start_time AND bid.success = true THEN 'TAKEN'
+                    WHEN '$today' >= ride.start_time AND bid.success = false THEN 'IGNORED'
                     END
-                    FROM ride WHERE passenger = '$username' ORDER BY ride.ride_id DESC";
+                    FROM ride, bid WHERE ride.passenger = bid.passenger and ride.passenger = '$username' ORDER BY ride.ride_id DESC";
                     $result = pg_query($query);
 
                     while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
