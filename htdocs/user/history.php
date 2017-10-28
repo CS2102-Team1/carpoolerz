@@ -52,10 +52,9 @@
                     $query = /** @php text */
                     "SELECT ride.ride_id, ride.driver, ride.from_address, ride.to_address, ride.start_time, ride.end_time,
                     CASE WHEN '$today' < ride.start_time THEN 'SCHEDULED'
-                    WHEN '$today' >= ride.start_time AND bid.success = true THEN 'TAKEN'
-                    WHEN '$today' >= ride.start_time AND bid.success = false THEN 'IGNORED'
+                    WHEN '$today' >= ride.start_time THEN 'TAKEN'
                     END
-                    FROM ride, bid WHERE ride.passenger = bid.passenger and ride.passenger = '$username' ORDER BY ride.ride_id DESC";
+                    FROM ride, bid WHERE ride.passenger = bid.passenger and ride.passenger = '$username' and bid.success = true ORDER BY ride.ride_id DESC";
                     $result = pg_query($query);
 
                     while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
@@ -94,8 +93,8 @@ echo "\t</tr>\n";
 
                     $query = /** @php text */
                     "SELECT bid.ride_id, ride.driver, ride.from_address, ride.to_address, ride.start_time, ride.end_time, bid.amount,
-                    CASE WHEN '$today' < ride.start_time THEN 'PENDING'
-                         WHEN bid.success = true THEN 'SUCCESSFUL'
+                    CASE WHEN bid.success = true THEN 'SUCCESSFUL'
+                         WHEN '$today' < ride.start_time THEN 'PENDING'
                          WHEN '$today' >= ride.start_time and bid.success = false THEN 'UNSUCCESSFUL'
                          END
                          FROM bid,ride WHERE ride.ride_id = bid.ride_id and bid.passenger = '$username' ORDER BY bid.ride_id DESC";

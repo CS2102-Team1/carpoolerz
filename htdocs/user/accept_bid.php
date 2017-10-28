@@ -8,7 +8,7 @@
     or die('Could not connect: ' . pg_last_error());
 
     $query = /** @lang text */
-        "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password'";
+        "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password' AND licensenum IS NOT NULL";
 
     $result = pg_query($dbconn, $query);
 
@@ -27,7 +27,7 @@
 }
 
 $get_ride_info_query = /** @php text */
-"SELECT * FROM ride WHERE ride_id = '$ride_ID'";
+"SELECT * FROM ride WHERE ride_id = '$target_rideID'";
 
 $ride_info_result = pg_query($dbconn, $get_ride_info_query);
 
@@ -45,52 +45,54 @@ $view_bid_query = /** @php text */
 "SELECT * FROM bid WHERE passenger = '$current_passenger' AND ride_id = '$target_rideID'";
 $view_bid_result = pg_query($dbconn, $view_bid_query);
 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<?php include '../header.shtml'; ?>
-<link href="../main.css" rel="stylesheet" />
+        <?php include '../header.shtml'; ?>
+        <link href="../main.css" rel="stylesheet" />
 </head>
 
 <body>
 <?php include 'navbar-user.shtml'; ?>
 
 <div class="container">
-<div class="container-fluid">
-<br/>
-<div class="page-header">
-<h2 class="text-center">Accept Bid:</h2>
-</div>
-<form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="edit_bid">
-<div class="form-group">
-<label><b>Driver: <?php echo $username ?></label>
-</div>
+        <div class="container-fluid">
+                <br/>
+                <div class="page-header">
+                        <h2 class="text-center">Accept Bid</h2>
+                </div>
+                <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="accept_bid">
+                        <div class="form-group">
+                                <label><b>Driver: <?php echo $username ?></label>
+                        </div>
 
-<div class="form-group">
-<label><b>Pick Up Point:<b/> <?php echo $from_address ?></label>
-</div>
+                        <div class="form-group">
+                                <label><b>Pick Up Point:<b/> <?php echo $from_address ?></label>
+                        </div>
 
-<div class="form-group">
-<label><b>Drop Off Point:<b/> <?php echo $to_address ?></label>
-</div>
+                        <div class="form-group">
+                                <label><b>Drop Off Point:<b/> <?php echo $to_address ?></label>
+                        </div>
 
-<div class="form-group">
-<label><b>Start Time:<b/> <?php echo $start_time ?></label>
-</div>
+                        <div class="form-group">
+                                <label><b>Start Time:<b/> <?php echo $start_time ?></label>
+                        </div>
 
-<div class="form-group">
-<label><b>Highest Bid:<b/> SGD <?php echo $highest_bid ?></label>
-</div>
+                        <div class="form-group">
+                                <label><b>Highest Bid:<b/> SGD <?php echo $highest_bid ?></label>
+                        </div>
 
-<div class="form-group">
-<label><b>Highest Bid Owner:<b/> SGD <?php echo $current_passenger ?></label>
-</div>
-
-<input type="hidden" name="p_rideID" value="<?php echo $target_rideID; ?>"/>
-<button type="submit" name="acceptBidsTrigger" class="form-control btn btn-primary">ACCEPT BID</button>
-<br/>
-</form>
-</div>
+                        <div class="form-group">
+                                <label><b>Bid Owner:<b/> <?php echo $current_passenger ?></label>
+                        </div>
+                       
+                        <input type="hidden" name="p_rideID" value="<?php echo $target_rideID; ?>"/>
+                        <button type="submit" name="acceptBidsTrigger" class="form-control btn btn-primary">CONFIRM ACCEPT BID</button>
+                        <br/>
+                </form>
+        </div>
 </div>
 
 <?php
@@ -98,22 +100,16 @@ $view_bid_result = pg_query($dbconn, $view_bid_query);
     if (isset($_POST['acceptBidsTrigger'])) {
 
 
-        // echo $target_rideID;
-
         $check_bids_query = /** @php text */
-                "UPDATE bid SET success = true WHERE passenger = '$current_passenger' and ride_id = ''$target_rideID'" ;
+                "UPDATE bid SET success = true WHERE passenger = '$current_passenger' AND ride_id = '$target_rideID' ";
 
         $check_bids_result = pg_query($dbconn, $check_bids_query);
-        echo "<h1 class='text-center'>Bid Accepted. Ride has been confirmed!<h1/>";
-        echo "<h2 class='text-center'>Amount: $highest_bid<h2/>";
+
+        echo "<h1 class='text-center'>Bid Accepted<h1/>";
+
         echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='drive.php'><button type='submit' class='form-control btn btn-large btn-success'>Return to Your Ride Offers</button><form/></div></div></div>";
         echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='user-profile.php'><button type='submit' class='form-control btn btn-warning'>Return to Profile Page</button><form/></div></div></div>";
-
-
-
-}
-
-
+        }
 ?>
 
 <?php include '../footer.shtml'; ?>

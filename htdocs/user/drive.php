@@ -134,7 +134,7 @@
             } else {
                 //Note: Dummy value is put as a placeholder for bidder
                 $add_rides_query = /** @php text */
-                    "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time) VALUES(0, '$username', ' ', '$startAddress', '$endAddress', to_timestamp('$datetime', 'DD/MM/YYYY HH24:MI:SS'))";
+                    "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time) VALUES(0, '$username', '', '$startAddress', '$endAddress', to_timestamp('$datetime', 'DD/MM/YYYY HH24:MI:SS'))";
 
                 $add_rides_query = pg_query($dbconn, $add_rides_query);
 
