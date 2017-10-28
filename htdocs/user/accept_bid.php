@@ -98,18 +98,26 @@ $view_bid_result = pg_query($dbconn, $view_bid_query);
 <?php
 
     if (isset($_POST['acceptBidsTrigger'])) {
+            $check_success_bid_query = /** @php text */
+            "SELECT * FROM bid WHERE ride_id = '$target_rideID' and success = true";
+            $result = pg_query($dbconn, $check_success_bid_query);
 
+            if (pg_num_rows($result) > 0) {
+                echo "<h5 class='text-center'>Unable to accept bid. A passenger has already been picked for the ride.<h5/>";
 
-        $check_bids_query = /** @php text */
-                "UPDATE bid SET success = true WHERE passenger = '$current_passenger' AND ride_id = '$target_rideID' ";
+            } else {
 
-        $check_bids_result = pg_query($dbconn, $check_bids_query);
+                $check_bids_query = /** @php text */
+                        "UPDATE bid SET success = true WHERE passenger = '$current_passenger' AND ride_id = '$target_rideID' ";
 
-        echo "<h1 class='text-center'>Bid Accepted<h1/>";
+                $check_bids_result = pg_query($dbconn, $check_bids_query);
 
-        echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='drive.php'><button type='submit' class='form-control btn btn-large btn-success'>Return to Your Ride Offers</button><form/></div></div></div>";
-        echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='user-profile.php'><button type='submit' class='form-control btn btn-warning'>Return to Profile Page</button><form/></div></div></div>";
-        }
+                echo "<h1 class='text-center'>Bid Accepted<h1/>";
+
+                echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='drive.php'><button type='submit' class='form-control btn btn-large btn-success'>Return to Your Ride Offers</button><form/></div></div></div>";
+                echo "<div class='container'><div class='container-fluid'><div class='panel panel-default'><form action='user-profile.php'><button type='submit' class='form-control btn btn-warning'>Return to Profile Page</button><form/></div></div></div>";
+            }
+    }
 ?>
 
 <?php include '../footer.shtml'; ?>
