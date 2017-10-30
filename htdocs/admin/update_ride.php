@@ -17,27 +17,33 @@
 	}
 	
 	// Define variables and initialize with empty values
-	$highest_bid = $driver = $passenger = $from_address = $to_address = $start_time= $start_date = $end_date = $end_time = $start = $end = "";
+	$ride_id = $highest_bid = $driver = $passenger = $from_address = $to_address = $start_time= $start_date = $end_date = $end_time = $start = $end = "";
 	$driver_err = $passenger_err = "";
+	
+	$curr_id = null;
+	
+    if (!empty($_GET['id'])) {
+		$curr_id = intval($_REQUEST['id']);
+	}
 	
 	// Processing form data when form is submitted
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		
+		$curr_id = $_POST['this_ride'];
 		//Validate driver username
 		$input_driver = trim($_POST["driver"]);
-			//Nothing was submitted
+		//Nothing was submitted
 		if(empty($input_driver)){
 			$driver_err = "Please enter a driver username.";
-		}else{	//something was submitted
+			}else{	//something was submitted
 			//check if a driver with this username exists
 			$sql = "SELECT * FROM systemuser s WHERE s.username ='$input_driver' AND s.licensenum IS NOT NULL";
 			$result = pg_query($dbconn,$sql);
 			if(!$result){	//query was unsuccessful
 				echo pg_last_error($dbconn);
-			}else{	//query was successful
+				}else{	//query was successful
 				if (pg_num_rows($result) == 0) {
 					$driver_err = "Driver does not exist in the system";
-				}else{
+					}else{
 					$driver = $input_driver;
 				}
 			}			
@@ -45,27 +51,27 @@
 		
 		// Validate passenger username
 		$input_passenger = trim($_POST["passenger"]);
-			//Nothing was submitted
+		//Nothing was submitted
 		if(empty($input_passenger)){
 			$passenger_err = "Please enter a passenger username.";
-		}else{	//something was submitted
+			}else{	//something was submitted
 			//check if a passenger with this username exists
 			$sql = "SELECT * FROM systemuser s WHERE s.username ='$input_passenger'";
 			$result = pg_query($dbconn,$sql);
 			if(!$result){	//query was unsuccessful
 				echo pg_last_error($dbconn);
-			}else{	//query was successful
+				}else{	//query was successful
 				if (pg_num_rows($result) == 0) {
 					$passenger_err = "Passenger does not exist in the system";
-				}else{
+					}else{
 					$passenger = $input_passenger;
 				}
 			}			
 		}
 		
-		
-		// Check input errors before inserting in database
+		// Check input errors before updating in database
 		if(empty($driver_err) && empty($passenger_err)){
+			$ride_id = $_POST['ride_id'];
 			$start_date = $_POST['start_date'];
 			$start_time = $_POST['start_time'];
 			$end_date = $_POST['end_date'];
@@ -74,21 +80,51 @@
 			$to_address = $_POST['to_address'];
 			$highest_bid = $_POST['highest_bid'];
 			
+			
 			$start = $start_date." ".$start_time;
 			$end = $end_date." ".$end_time;
 			
-			$sql = "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time, end_time) VALUES('$highest_bid', '$driver', '$passenger', '$from_address', '$to_address', to_timestamp('$start', 'DD/MM/YYYY HH24:MI:SS'), to_timestamp('$end', 'DD/MM/YYYY HH24:MI:SS'))";
+			$sql = "UPDATE ride SET highest_bid='$highest_bid', driver='$driver', passenger='$passenger', from_address='$from_address', to_address='$to_address', start_time='$start', end_time='$end' WHERE ride_id='$curr_id'";
 			
 			$result = pg_query($dbconn, $sql);
 			
 			if(!$result){
 				echo pg_last_error($dbconn);
 				} else {
-				echo "<h3>Ride Created successfully</h3>"."<br>";
+				echo "<h3>Ride Updated successfully</h3>"."<br>";
 				echo "<h4>Redirecting you back to View Rides page</h4>";
 				header("refresh:3;url=admin-rides.php");
 			} 
 		}
+	} elseif(null != $curr_id){//there is no form submission, pull existing data from current ride id to view it in the form		
+		// Prepare a select statement
+		$sql = "SELECT * FROM ride r WHERE r.ride_id = '$curr_id'";
+        
+        // Attempt to execute the prepared statement
+		$result = pg_query($dbconn, $sql);
+		if (!$result) {
+			echo pg_last_error($dbconn);
+			exit;
+		}
+		$row = pg_fetch_row($result);
+		$ride_id = (int)$row[0];
+		$highest_bid = $row[1];
+		$driver = $row[2];
+		$passenger = $row[3];
+		$from_address = $row[4];
+		$to_address = $row[5];
+		$start = $row[6];
+		//split the stored start timestamp back to date and time
+		$split_start_time = explode(" ",$start); 
+		$start_date = $split_start_time[0];
+		$start_time = $split_start_time[1];
+		$end = $row[7];
+		//split the stored end timestamp back to date and time
+		$split_end_time = explode(" ",$end);
+		$end_date = $split_end_time[0];
+		$end_time = $split_end_time[1];
+	} else{//couldnt even detect this ride
+		echo "Parameter was not received on this page";
 	}
 ?>
 
@@ -96,7 +132,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Create Ride</title>
+		<title>Update Ride</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 		<style type="text/css">
 			.wrapper{
@@ -111,11 +147,14 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="page-header">
-							<h2>Create Ride</h2>
+							<h2>Update Ride</h2>
 						</div>
-						<p>Please fill this form and submit to add ride to the database.</p>
+						<p>Please fill this form and submit to update ride.</p>
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-							
+							<!--<div class="form-group">
+								<label>Ride ID</label>
+								<input type="number" name="ride_id" class="form-control" value="<?php echo $ride_id; ?>" disabled>
+							</div>-->
 							<div class="form-group">
 								<label>Start Time</label>
 								<input required type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
@@ -149,7 +188,8 @@
 								<label>Passenger</label>
 								<input required type="text" name="passenger" class="form-control" value="<?php echo $passenger; ?>">
 								<span class="help-block"><?php echo $passenger_err;?></span>
-							</div>							
+							</div>
+							<input type="hidden" name="this_ride" value="<?php echo $curr_id; ?>"/>
 							<input type="submit" class="btn btn-primary" value="Submit">
 							<input type="reset" class="btn btn-warning" value="Reset">
 							<a href="admin-rides.php" class="btn btn-default">Go Back To Rides Page</a>

@@ -52,7 +52,7 @@
 				</thead>
 				<tbody>
 					<?php
-						$query = 'SELECT * FROM ride r WHERE r.end_time IS NOT NULL';
+						$query = 'SELECT * FROM ride r WHERE r.end_time IS NOT NULL ORDER BY r.ride_id ASC';
 						$result = pg_query($query);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";
