@@ -70,12 +70,12 @@
             <br/>
             <form class="row" role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="search-form">
                 <div class="form-group">
-                    <label for="p_start">Starting Address: </label>
+                    <label for="p_start">Start Address: </label>
                     <input type="text" name="p_start" class="form-control" id="s_start_address" placeholder="Enter Starting Address"/>
                 </div>
 
                 <div class="form-group">
-                    <label for="p_end">Car Number Plate: </label>
+                    <label for="p_end">End Address: </label>
                     <input type="text" name="p_end" class="form-control" id="s_end_address" placeholder="Enter Destination Address"/>
                 </div>
                 <button type="submit" name="searchRidesTrigger" class="form-control btn btn-primary">SEARCH RIDES</button>
@@ -96,8 +96,8 @@
 
             // Get relevant data from rides table
             $ride_matches_query = /** @php text */
-                    "SELECT * FROM ride 
-                    WHERE from_address LIKE '%{$start_query}%' 
+                    "SELECT * FROM ride
+                    WHERE from_address LIKE '%{$start_query}%'
                     AND to_address LIKE '%{$end_query}%' AND end_time IS NULL
                     AND driver <> '$username'";
 
@@ -114,27 +114,35 @@
                 // Note: Start time must be processed when echoing.
                 $start_time = $row["start_time"];
 
-                echo /** @html text */
-                "
-                <div class='container'>
-                    <div class='container-fluid'>
-                        <div class=\"card\">
-                            <div class=\"card-header\">
-                                <h1>Driver: $driver</h1>
+                //reflect only the rides with no accepted bids.
+                //Those with accepted bids are rides with confirmed passengers and no longer of use to other riders.
+                $check_bid_confirmed_query = /** @php text */
+                "SELECT * FROM bid WHERE ride_id = '$rideID' and success = true";
+                $check_bid_result = pg_query($dbconn, $check_bid_confirmed_query);
+                if (pg_num_rows($result) == 0) {
+                    echo /** @html text */
+                    "
+                    <div class='container'>
+                        <div class='container-fluid'>
+                            <div class=\"card\">
+                                <div class=\"card-header\">
+                                    <h1>Driver: $driver</h1>
+                                </div>
+                                <div class=\"card-body\">
+                                    <h4 class=\"card-text\">Start Time: $start_time</h4>
+                                    <p class=\"card-text\">From Address: $from_address</p>
+                                    <p class=\"card-text\">Destination: $to_address</p>
+                                    <h3 class='\card-text\'>Highest Bid: SGD $highest_bid</h3>
+                                </div>
+                                <a class='btn btn-warning' href='new_bid.php?ride_id=".$rideID."'>PLACE NEW BID/DELETE BID</a>
                             </div>
-                            <div class=\"card-body\">
-                                <h4 class=\"card-text\">Start Time: $start_time</h4>
-                                <p class=\"card-text\">From Address: $from_address</p>
-                                <p class=\"card-text\">Destination: $to_address</p>
-                                <h3 class='\card-text\'>Highest Bid: SGD $highest_bid</h3>
-                            </div>
-                            <a class='btn btn-warning' href='new_bid.php?ride_id=".$rideID."'>PLACE NEW BID/DELETE BID</a>
                         </div>
                     </div>
-                </div>
-                ";
+                    ";
+                    echo "<br/>";
+                }
             }
-            echo "<br/>";
+
         }
     ?>
 

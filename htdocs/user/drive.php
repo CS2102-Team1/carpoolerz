@@ -50,13 +50,17 @@
                         <th>End Location</th>
                         <th>Start Time/Date</th>
                         <th>End Time/Date</th>
+                        <th>Highest Bid</th>
+                        <th>Bid Owner</th>
+                        <th>Accept Bid</th>
+                        <th>Delete Ride</th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php
 
                     $query = /** @php text */
-                    "SELECT ride_id, from_address, to_address, start_time, end_time FROM ride WHERE driver = '$username' ORDER BY ride_id DESC";
+                    "SELECT ride_id, from_address, to_address, start_time, end_time, highest_bid, passenger FROM ride WHERE driver = '$username' ORDER BY ride_id DESC";
                     $result = pg_query($query);
 
                     while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
@@ -64,6 +68,9 @@
                         foreach ($line as $col_value) {
                             echo "\t\t<td>$col_value</td>\n";
                         }
+                        echo "\t\t<td><a class='btn btn-primary' href='accept_bid.php?ride_id=".$line['ride_id']."'>Accept Bid</a></td>\n";
+                        echo "\t\t<td><a class='btn btn-primary' href='delete_ride.php?ride_id=".$line['ride_id']."'>Delete Ride</a></td>\n";
+
                         echo "\t</tr>\n";
                     }
                     ?>
@@ -146,7 +153,7 @@
 
                 echo "<h1 class='text-center'>New ride created successfully...<h1/>";
                 echo "<div class='container-fluid'><div class='panel panel-default'><form action='user-profile.php'><button type='submit' class='form-control btn btn-primary'>Return to Profile Page</button><form/></div></div>";
-                echo "<meta http-equiv=\"refresh\" content=\"4;URL=drive.php\">";
+                echo "<meta http-equiv=\"refresh\" content=\"0;URL=drive.php\">";
             }
 
         }
