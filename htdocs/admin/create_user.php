@@ -69,7 +69,7 @@
 				} else {
 				echo "<h3>User Created successfully</h3>"."<br>";
 				echo "<h4>Redirecting you back to View Users page</h4>";
-				header("refresh:4;url=admin-users.php");
+				header("refresh:3;url=admin-users.php");
 			} 
 		}
 	}
