@@ -35,8 +35,8 @@
 		<div class=container>
 			<br>
 			<!-- Display all cars information -->
-			<h3>All Cars</h3>
 			<div class="alert alert-info"><strong>Hello!</strong> This page shows all cars, with and without an owner. If you want to change car ownership, <a href="admin-carownership.php" class="alert-link">click here instead!</a></div>
+			<h3  class="text-center">All Cars</h3>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">
 					<tr>

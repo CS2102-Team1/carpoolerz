@@ -35,7 +35,7 @@
 		<div class=container>
 			<!-- Display all previous rides -->
 			<br>
-			<h3>Past Rides</h3>
+			<h3 class="text-center">Past Rides</h3>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">
 					<tr>
@@ -71,7 +71,7 @@
 		</div>
 		<div class=container>
 			<!-- Display all rides currently on journey-->
-			<h3>Ongoing Rides</h3>
+			<h3 class="text-center">Ongoing Rides</h3>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">
 					<tr>
@@ -109,7 +109,7 @@
 		</div>
 		<div class=container>
 			<!-- Display rides currently available for bidding-->
-			<h3>Rides Available For Bidding</h3>
+			<h3 class="text-center">Rides Available For Bidding</h3>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">
 					<tr>

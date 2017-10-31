@@ -54,7 +54,7 @@
 		<div class=container>
 			<!-- Display all drivers -->
 			<br>
-			<h3>Drivers</h3>
+			<h3 class="text-center">Drivers</h3>
 			<div id=usersTable>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">
@@ -94,7 +94,7 @@
 		<div class=container>
 			<!-- Display all riders -->
 			<br>
-			<h3>Riders</h3>
+			<h3 class="text-center">Riders</h3>
 			<div id=usersTable>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">
@@ -133,7 +133,7 @@
 		<div class=container>
 			<!-- Display all admins -->
 			<br>
-			<h3>Admins</h3>
+			<h3 class="text-center">Admins</h3>
 			<div id=usersTable>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">

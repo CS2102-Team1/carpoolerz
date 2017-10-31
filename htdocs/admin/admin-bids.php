@@ -35,7 +35,7 @@
 		<div class=container>
 			<br>
 			<!-- Display all bids -->
-			<h3>All Bids</h3>
+			<h3 class="text-center">All Bids</h3>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">
 					<tr>
