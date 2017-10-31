@@ -22,8 +22,8 @@
 	<head>
 		<?php include '../header.shtml'; ?>
 		<?php include 'admin-navbar.shtml'; ?>
-		<style>
-		usersTable{
+		<style type="text/css">
+		.usersTable{
 			overflow-y: auto;
 		}
 		</style>
