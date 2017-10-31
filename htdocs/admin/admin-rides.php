@@ -11,7 +11,7 @@
 	"SELECT * FROM systemuser s WHERE '$username' = s.username AND '$password' = s.password AND s.is_admin = 'TRUE'";
 	
 	$result = pg_query($dbconn, $query);
-	
+
 	if (pg_num_rows($result) == 0) {
 		header("Location: /carpoolerz/login.php");
 	}
@@ -60,9 +60,9 @@
 								echo "\t\t<td>$col_value</td>\n";
 							}
 							echo "\t\t<td><a class='btn btn-primary' href='view_ride.php?id=".$row['ride_id']."'>View</a>
-								<a class='btn btn-warning' href='update_ride.php?id=".$row['ride_id']."'>Update</a>
-								<a class='btn btn-danger' href='delete_ride.php?id=".$row['ride_id']."'>Delete</a>
-								</td>\n";
+							<a class='btn btn-warning' href='update_ride.php?id=".$row['ride_id']."'>Update</a>
+							<a class='btn btn-danger' href='delete_ride.php?id=".$row['ride_id']."'>Delete</a>
+							</td>\n";
 							echo "\t</tr>\n";
 						}
 					?>
@@ -88,17 +88,19 @@
 				</thead>
 				<tbody>
 					<?php
-						$query = 'SELECT * FROM ride r WHERE r.end_time IS NULL';
-						$result = pg_query($query);
+						//need to use different query variable for storage.
+						$query2 = 'SELECT * FROM ride r WHERE r.end_time IS NULL AND r.start_time < NOW()::timestamp';
+						//ride has started but has not ended 
+						$result = pg_query($query2);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";
 							foreach ($row as $col_value) {
 								echo "\t\t<td>$col_value</td>\n";
 							}
 							echo "\t\t<td><a class='btn btn-primary' href='view_ride.php?id=".$row['ride_id']."'>View</a>
-								<a class='btn btn-warning' href='update_ride.php?id=".$row['ride_id']."'>Update</a>
-								<a class='btn btn-danger' href='delete_ride.php?id=".$row['ride_id']."'>Delete</a>
-								</td>\n";
+							<a class='btn btn-warning' href='update_ride.php?id=".$row['ride_id']."'>Update</a>
+							<a class='btn btn-danger' href='delete_ride.php?id=".$row['ride_id']."'>Delete</a>
+							</td>\n";
 							echo "\t</tr>\n";
 						}
 					?>
@@ -124,23 +126,19 @@
 				</thead>
 				<tbody>
 					<?php
-						$query = '
-						SELECT cr.ride_id, cr.driver, r.start_time, r.from_address, r.to_address  
-						FROM ride r, created_rides cr
-						WHERE r.ride_id = cr.ride_id AND r.start_time > CURRENT_TIMESTAMP';
-						
-						//If ride start time is later than current time, ride has not started and hence is available for bidding
-						
-						$result = pg_query($query);
+						//need to use different query variable for storage.
+						$query3 = 'SELECT * FROM ride r WHERE r.end_time IS NULL AND r.start_time >= NOW()::timestamp';
+						//Ride has not started, so its available for bidding					
+						$result = pg_query($query3);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";
 							foreach ($row as $col_value) {
 								echo "\t\t<td>$col_value</td>\n";
 							}
 							echo "\t\t<td><a class='btn btn-primary' href='view_ride.php?id=".$row['ride_id']."'>View</a>
-								<a class='btn btn-warning' href='update_ride.php?id=".$row['ride_id']."'>Update</a>
-								<a class='btn btn-danger' href='delete_ride.php?id=".$row['ride_id']."'>Delete</a>
-								</td>\n";
+							<a class='btn btn-warning' href='update_ride.php?id=".$row['ride_id']."'>Update</a>
+							<a class='btn btn-danger' href='delete_ride.php?id=".$row['ride_id']."'>Delete</a>
+							</td>\n";
 							echo "\t</tr>\n";
 						}
 					?>

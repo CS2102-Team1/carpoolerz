@@ -7,7 +7,6 @@
 		$ride_id = trim($_POST["ride_id"]);
 		// Prepare delete statements
 		$sql = "DELETE FROM ride r WHERE r.ride_id = '$ride_id';";
-		$sql .= "DELETE FROM bid b WHERE b.ride_id = '$ride_id';";
 		// Attempt to execute the prepared statement
 		$result = pg_query($dbconn, $sql);
 		if(!$result){

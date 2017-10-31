@@ -18,17 +18,19 @@
 	
 	// Define variables and initialize with empty values
 	$ride_id = $highest_bid = $driver = $passenger = $from_address = $to_address = $start_time= $start_date = $end_date = $end_time = $start = $end = "";
+	$end = null; //to allow for update of ride to an ongoing ride
 	$driver_err = $passenger_err = "";
 	
 	$curr_id = null;
-	
+	//extract ride_id for this selected row from the url parameter 'id'
     if (!empty($_GET['id'])) {
 		$curr_id = intval($_REQUEST['id']);
 	}
 	
 	// Processing form data when form is submitted
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-		$curr_id = $_POST['this_ride'];
+		// Get hidden input value
+		$curr_id = $_POST["this_ride"];
 		//Validate driver username
 		$input_driver = trim($_POST["driver"]);
 		//Nothing was submitted
@@ -69,22 +71,36 @@
 			}			
 		}
 		
-		// Check input errors before updating in database
-		if(empty($driver_err) && empty($passenger_err)){
-			$ride_id = $_POST['ride_id'];
+		
+		// Check input errors before inserting in database
+		if(empty($driver_err) && empty($passenger_err)){				
 			$start_date = $_POST['start_date'];
 			$start_time = $_POST['start_time'];
-			$end_date = $_POST['end_date'];
-			$end_time = $_POST['end_time'];
-			$from_address = $_POST['from_address'];
-			$to_address = $_POST['to_address'];
-			$highest_bid = $_POST['highest_bid'];
-			
-			
 			$start = $start_date." ".$start_time;
-			$end = $end_date." ".$end_time;
+			$start = str_replace('-','/',$start);//must submit with '/' instead of '-'
+			$from_address = $_POST['from_address'];
+			$to_address = $_POST['to_address'];		
 			
-			$sql = "UPDATE ride SET highest_bid='$highest_bid', driver='$driver', passenger='$passenger', from_address='$from_address', to_address='$to_address', start_time='$start', end_time='$end' WHERE ride_id='$curr_id'";
+			//if highest bid is no empty, extract that value. Else, put in 0.
+			if(!empty(trim($_POST['highest_bid']))){
+				$highest_bid = $_POST['highest_bid'];
+				}else{
+				$highest_bid = 0;
+			}
+			//if end date and time are not empty strings, extract values and concatenate into end
+			if(!empty(trim($_POST['end_date'])) && !empty(trim($_POST['end_time']))){
+				$end_date = $_POST['end_date'];
+				$end_time = $_POST['end_time'];
+				$end = $end_date." ".$end_time;
+				$end = str_replace('-','/',$end);//must submit with '/' instead of '-'
+			}
+			
+			if(!is_null($end)){//end time & date were entered, so input that into database
+				$sql = "UPDATE ride SET highest_bid = '$highest_bid', driver='$driver', passenger='$passenger', from_address='$from_address', to_address='$to_address', start_time=to_timestamp('$start', 'YYYY/MM/DD HH24:MI:SS'), end_time=to_timestamp('$end', 'YYYY/DD/MM HH24:MI:SS') WHERE ride_id='$curr_id'";
+				}else{//$end remains null, so there wasnt any end time & date entered
+				$sql = "UPDATE ride SET highest_bid = '$highest_bid', driver='$driver', passenger='$passenger', from_address='$from_address', to_address='$to_address', start_time=to_timestamp('$start', 'YYYY/MM/DD HH24:MI:SS') WHERE ride_id='$curr_id'";
+			}
+			
 			
 			$result = pg_query($dbconn, $sql);
 			
@@ -96,7 +112,8 @@
 				header("refresh:3;url=admin-rides.php");
 			} 
 		}
-	} elseif(null != $curr_id){//there is no form submission, pull existing data from current ride id to view it in the form		
+	} 
+	elseif(null != $curr_id){//there is no form submission, pull existing data from current ride id to view it in the form		
 		// Prepare a select statement
 		$sql = "SELECT * FROM ride r WHERE r.ride_id = '$curr_id'";
         
@@ -107,7 +124,7 @@
 			exit;
 		}
 		$row = pg_fetch_row($result);
-		$ride_id = (int)$row[0];
+		$ride_id = $row[0];
 		$highest_bid = $row[1];
 		$driver = $row[2];
 		$passenger = $row[3];
@@ -119,11 +136,14 @@
 		$start_date = $split_start_time[0];
 		$start_time = $split_start_time[1];
 		$end = $row[7];
-		//split the stored end timestamp back to date and time
-		$split_end_time = explode(" ",$end);
-		$end_date = $split_end_time[0];
-		$end_time = $split_end_time[1];
-	} else{//couldnt even detect this ride
+		//if end date IS NOT NULL, split the stored end timestamp back to date and time
+		if(!is_null($end)){
+			$split_end_time = explode(" ",$end);
+			$end_date = $split_end_time[0];
+			$end_time = $split_end_time[1];
+		}
+	} 
+	else{//couldnt even detect this ride
 		echo "Parameter was not received on this page";
 	}
 ?>
@@ -151,21 +171,17 @@
 						</div>
 						<p>Please fill this form and submit to update ride.</p>
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-							<!--<div class="form-group">
-								<label>Ride ID</label>
-								<input type="number" name="ride_id" class="form-control" value="<?php echo $ride_id; ?>" disabled>
-							</div>-->
 							<div class="form-group">
-								<label>Start Time</label>
-								<input required type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
 								<label>Start Date</label>
+								<input required type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
+								<label>Start Time</label>
 								<input required type="time" name="start_time" class="form-control" value="<?php echo $start_time; ?>">
 							</div>
 							<div class="form-group">
-								<label>End Time</label>
-								<input required type="date" name="end_date" class="form-control" value="<?php echo $end_date; ?>">
 								<label>End Date</label>
-								<input required type="time" name="end_time" class="form-control" value="<?php echo $end_time; ?>">
+								<input type="date" name="end_date" class="form-control" value="<?php echo $end_date; ?>">
+								<label>End Time</label>
+								<input type="time" name="end_time" class="form-control" value="<?php echo $end_time; ?>">
 							</div>							
 							<div class="form-group">
 								<label>Origin Address</label>
@@ -181,12 +197,12 @@
 							</div>
 							<div class="form-group <?php echo (!empty($driver_err)) ? 'has-error' : ''; ?>">
 								<label>Driver</label>
-								<input required type="text" name="driver" class="form-control" value="<?php echo $driver; ?>">
+								<input required type="text" name="driver" class="form-control" value="<?php echo $driver; ?>" readonly>
 								<span class="help-block"><?php echo $driver_err;?></span>
 							</div>
 							<div class="form-group <?php echo (!empty($passenger_err)) ? 'has-error' : ''; ?>">
 								<label>Passenger</label>
-								<input required type="text" name="passenger" class="form-control" value="<?php echo $passenger; ?>">
+								<input required type="text" name="passenger" class="form-control" value="<?php echo $passenger; ?>" readonly>
 								<span class="help-block"><?php echo $passenger_err;?></span>
 							</div>
 							<input type="hidden" name="this_ride" value="<?php echo $curr_id; ?>"/>

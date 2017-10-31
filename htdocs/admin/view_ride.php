@@ -17,7 +17,7 @@
 			exit;
 		}
 		$row = pg_fetch_row($result);
-	}else{
+		}else{
 		echo "Parameter was not received on this page";
 	}
 ?>

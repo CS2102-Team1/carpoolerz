@@ -17,7 +17,8 @@
 	}
 	
 	// Define variables and initialize with empty values
-	$highest_bid = $driver = $passenger = $from_address = $to_address = $start_time= $start_date = $end_date = $end_time = $start = $end = "";
+	$ride_id = $highest_bid = $driver = $passenger = $from_address = $to_address = $start_time= $start_date = $end_date = $end_time = $start = $end = "";
+	$end = null; //to allow for creation of an ongoing ride												
 	$driver_err = $passenger_err = "";
 	
 	// Processing form data when form is submitted
@@ -25,19 +26,19 @@
 		
 		//Validate driver username
 		$input_driver = trim($_POST["driver"]);
-			//Nothing was submitted
+		//Nothing was submitted
 		if(empty($input_driver)){
 			$driver_err = "Please enter a driver username.";
-		}else{	//something was submitted
+			}else{	//something was submitted
 			//check if a driver with this username exists
 			$sql = "SELECT * FROM systemuser s WHERE s.username ='$input_driver' AND s.licensenum IS NOT NULL";
 			$result = pg_query($dbconn,$sql);
 			if(!$result){	//query was unsuccessful
 				echo pg_last_error($dbconn);
-			}else{	//query was successful
+				}else{	//query was successful
 				if (pg_num_rows($result) == 0) {
 					$driver_err = "Driver does not exist in the system";
-				}else{
+					}else{
 					$driver = $input_driver;
 				}
 			}			
@@ -45,19 +46,19 @@
 		
 		// Validate passenger username
 		$input_passenger = trim($_POST["passenger"]);
-			//Nothing was submitted
+		//Nothing was submitted
 		if(empty($input_passenger)){
 			$passenger_err = "Please enter a passenger username.";
-		}else{	//something was submitted
+			}else{	//something was submitted
 			//check if a passenger with this username exists
 			$sql = "SELECT * FROM systemuser s WHERE s.username ='$input_passenger'";
 			$result = pg_query($dbconn,$sql);
 			if(!$result){	//query was unsuccessful
 				echo pg_last_error($dbconn);
-			}else{	//query was successful
+				}else{	//query was successful
 				if (pg_num_rows($result) == 0) {
 					$passenger_err = "Passenger does not exist in the system";
-				}else{
+					}else{
 					$passenger = $input_passenger;
 				}
 			}			
@@ -65,25 +66,53 @@
 		
 		
 		// Check input errors before inserting in database
-		if(empty($driver_err) && empty($passenger_err)){
+		if(empty($driver_err) && empty($passenger_err)){			
 			$start_date = $_POST['start_date'];
 			$start_time = $_POST['start_time'];
-			$end_date = $_POST['end_date'];
-			$end_time = $_POST['end_time'];
+			$start = $start_date." ".$start_time;
+			$start = str_replace('-','/',$start);//must submit with '/' instead of '-'
 			$from_address = $_POST['from_address'];
 			$to_address = $_POST['to_address'];
-			$highest_bid = $_POST['highest_bid'];
 			
-			$start = $start_date." ".$start_time;
-			$end = $end_date." ".$end_time;
+			//if highest bid is no empty, extract that value. Else, put in 0.
+			if(!empty(trim($_POST['highest_bid']))){
+				$highest_bid = $_POST['highest_bid'];
+				}else{
+				$highest_bid = 0;
+			}
+			//if end date and time are not empty strings, extract values and concatenate into end
+			if(!empty(trim($_POST['end_date'])) && !empty(trim($_POST['end_time']))){
+				$end_date = $_POST['end_date'];
+				$end_time = $_POST['end_time'];
+				$end = $end_date." ".$end_time;
+				$end = str_replace('-','/',$end);//must submit with '/' instead of '-'
+			}
 			
-			$sql = "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time, end_time) VALUES('$highest_bid', '$driver', '$passenger', '$from_address', '$to_address', to_timestamp('$start', 'DD/MM/YYYY HH24:MI:SS'), to_timestamp('$end', 'DD/MM/YYYY HH24:MI:SS'))";
+			if(!is_null($end)){//end time & date were entered, so input that into database
+				$sql = "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time, end_time) VALUES('$highest_bid', '$driver', '$passenger', '$from_address', '$to_address', to_timestamp('$start', 'YYYY/DD/MM HH24:MI:SS'), to_timestamp('$end', 'YYYY/MM/DD HH24:MI:SS'))";
+				
+				}else{//$end remains null, so there wasnt any end time & date entered
+				$sql = "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time, end_time) VALUES('$highest_bid', '$driver', '$passenger', '$from_address', '$to_address', to_timestamp('$start', 'YYYY/MM/DD HH24:MI:SS'), DEFAULT)";
+			}
 			
 			$result = pg_query($dbconn, $sql);
 			
 			if(!$result){
 				echo pg_last_error($dbconn);
 				} else {
+				//INSERT RECORD TO CREATED RIDES JOIN TABLE
+				//Get Ride ID
+                $next_ride_id_query = /** @php text */
+				"SELECT last_value FROM ride_id";
+				
+                $next_ride_id_result = pg_query($dbconn, $next_ride_id_query);
+				
+                $target_rideID = pg_fetch_row($next_ride_id_result)[0];
+				
+                $add_created_rides_query = /** @php text */
+				"INSERT INTO created_rides(driver, ride_id) VALUES('$driver', '$target_rideID')";
+				
+                $add_created_rides_result = pg_query($dbconn, $add_created_rides_query);
 				echo "<h3>Ride Created successfully</h3>"."<br>";
 				echo "<h4>Redirecting you back to View Rides page</h4>";
 				header("refresh:3;url=admin-rides.php");
@@ -115,18 +144,17 @@
 						</div>
 						<p>Please fill this form and submit to add ride to the database.</p>
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-							
 							<div class="form-group">
-								<label>Start Time</label>
-								<input required type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
 								<label>Start Date</label>
+								<input required type="date" name="start_date" class="form-control" value="<?php echo $start_date; ?>">
+								<label>Start Time</label>
 								<input required type="time" name="start_time" class="form-control" value="<?php echo $start_time; ?>">
 							</div>
 							<div class="form-group">
-								<label>End Time</label>
-								<input required type="date" name="end_date" class="form-control" value="<?php echo $end_date; ?>">
 								<label>End Date</label>
-								<input required type="time" name="end_time" class="form-control" value="<?php echo $end_time; ?>">
+								<input type="date" name="end_date" class="form-control" value="<?php echo $end_date; ?>">
+								<label>End Time</label>
+								<input type="time" name="end_time" class="form-control" value="<?php echo $end_time; ?>">
 							</div>							
 							<div class="form-group">
 								<label>Origin Address</label>
