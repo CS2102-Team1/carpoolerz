@@ -4,55 +4,38 @@
 	
 	// Define variables and initialize with empty values
 	$numplate = $brand = $model = $driver= "";
-	$driver_err = "";
 	$curr_numplate = null;
 	if (!empty($_GET['numplate'])) {
         $curr_numplate = $_REQUEST['numplate'];
 	}
 	// Processing form data when form is submitted
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
-	
-		//Validate driver username
+
 		$input_driver = trim($_POST["driver"]);
-		//Nothing was submitted
-		if(empty($input_driver)){
-			$driver_err = "Please enter a driver username.";
-		}else{	//something was submitted
-			//check if a driver with this username exists
-			$sql1 = "SELECT * FROM systemuser s WHERE s.username ='$input_driver' AND s.licensenum IS NOT NULL;";
-			$result = pg_query($dbconn,$sql1);
-			if(!$result){	//query was unsuccessful
-				echo pg_last_error($dbconn);
-			}else{	//query was successful
-				if (pg_num_rows($result) == 0) {
-					$driver_err = "This is not a valid driver!";
-				}else{
-					$driver = $input_driver;
-				}
-			}			
-		}
-		
-		// Check input errors before inserting in database
-		if(empty($driver_err)){
-			$numplate=$_POST['numplate'];
-			$brand=$_POST['brand'];
-			$model=$_POST['model'];
+		//This car has a driver
+		if(!empty($input_driver)){
+			$driver = $input_driver;//this is to carry forward driver value after form submission
+		}		
+		// Enter updated car data into database	
+		$numplate=$_POST['numplate'];
+		$brand=$_POST['brand'];
+		$model=$_POST['model'];
 		//update car info in car table
-			$sql2 = "UPDATE car SET brand='$brand', model='$model' WHERE numplate='$numplate';";
-			$result = pg_query($dbconn, $sql2);
-			
-			if(!$result){
-				echo pg_last_error($dbconn);
-			} else {
-				echo "<h3>Car Updated successfully</h3>"."<br>";
-				echo "<h4>Redirecting you back to View Cars page</h4>";
-				header("refresh:3;url=admin-cars.php");
-			} 
-		}
+		$sql2 = "UPDATE car SET brand='$brand', model='$model' WHERE numplate='$numplate';";
+		$result = pg_query($dbconn, $sql2);
+		
+		if(!$result){
+			echo pg_last_error($dbconn);
+		} else {
+			echo "<h3>Car Updated successfully</h3>"."<br>";
+			echo "<h4>Redirecting you back to View Cars page</h4>";
+			header("refresh:3;url=admin-cars.php");
+		} 
+	
 	}elseif(null != $curr_numplate){//there is no form submission, pull existing data from current numplate to view it in the form		
 		
 		// Prepare a select statement
-		$sql3 = "SELECT c.numplate, c.brand, c.model, s.username FROM car c, systemuser s, owns_car o WHERE c.numplate=o.numplate AND s.username=o.driver AND c.numplate='$curr_numplate';";
+		$sql3 = "SELECT c.numplate, c.brand, c.model, o.driver FROM car c LEFT JOIN owns_car o ON c.numplate=o.numplate WHERE c.numplate='$curr_numplate';";
         
         // Attempt to execute the prepared statement
 		$result = pg_query($dbconn, $sql3);
@@ -64,7 +47,9 @@
 		$numplate = $row[0];
 		$brand = $row[1];
 		$model = $row[2];
-		$driver = $row[3];
+		if(!is_null($row[3])){//if this car has a driver
+			$driver = $row[3];
+		}
 	} 
 	else{//couldnt even detect this ride
 		echo "Parameter was not received on this page";

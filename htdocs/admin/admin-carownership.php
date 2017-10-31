@@ -35,8 +35,7 @@
 		<div class=container>
 			<br>
 			<!-- Display all cars information -->
-			<h3>All Cars</h3>
-			<div class="alert alert-info"><strong>Hello!</strong> This page shows all cars, with and without an owner. If you want to change car ownership, <a href="admin-carownership.php" class="alert-link">click here instead!</a></div>
+			<h3>Car Ownserhip</h3>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">
 					<tr>
@@ -49,7 +48,7 @@
 				</thead>
 				<tbody>
 					<?php
-						$query = 'SELECT c.numplate, c.brand, c.model, o.driver FROM car c LEFT JOIN owns_car o ON c.numplate=o.numplate ORDER BY c.numplate ASC;';
+						$query = 'SELECT c.numplate, c.brand, c.model, s.username FROM car c, systemuser s, owns_car o WHERE c.numplate=o.numplate AND s.username=o.driver ORDER BY c.numplate ASC;';
 						$result = pg_query($query);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";
