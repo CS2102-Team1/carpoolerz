@@ -10,11 +10,15 @@
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		// Validate username
 		$input_username = trim($_POST["username"]);
-		if(empty($input_username)){
-			$username_err = "Please enter a username.";
-			} /*elseif(!filter_var(trim($_POST["name"]), FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z'-.\s ]+$/")))){
-			$name_err = 'Please enter a valid username.';
-			} */else{
+		$username_check = "SELECT * FROM systemuser WHERE username = '$input_username';";
+		$result = pg_query($dbconn,$username_check);
+		if (!$result) {
+			echo pg_last_error($dbconn);
+			exit;
+		}
+		if (pg_num_rows($result) != 0) {
+			$username_err = "That username is taken";
+		}else{
 			$username = $input_username;
 		}
 		
@@ -36,14 +40,6 @@
 			$password = $input_pw;
 		}
 		
-		// Validate license number
-		$input_ln = trim($_POST["licensenum"]);
-		if(empty($input_ln)){
-			$licensenum_err = 'Please enter a license number.';     
-			} else{
-			$licensenum = $input_ln;
-		}
-		
 		// Validate is_admin
 		$input_is_admin = trim($_POST["is_admin"]);
 		if(empty($input_is_admin)){
@@ -59,9 +55,13 @@
 		}
 		
 		// Check input errors before inserting in database
-		if(empty($username_err) && empty($name_err) && empty($password_err) && empty($licensenum_err) && empty($is_admin_err)){
-			$sql = "INSERT into systemuser VALUES('$username', '$name', '$password', '$licensenum', '$is_admin')";
-			
+		if(empty($username_err) && empty($name_err) && empty($password_err) && empty($is_admin_err)){
+			$input_ln = trim($_POST["licensenum"]);
+			if(empty($input_ln)){
+				$sql = "INSERT into systemuser VALUES('$username', '$name', '$password', DEFAULT, '$is_admin')";
+			} else{
+				$sql = "INSERT into systemuser VALUES('$username', '$name', '$password', '$licensenum', '$is_admin')";
+			}
 			$result = pg_query($dbconn, $sql);
 			
 			if(!$result){
@@ -100,27 +100,27 @@
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 							<div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
 								<label>Full Name</label>
-								<input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
+								<input type="text" name="name" class="form-control" value="<?php echo $name; ?>" required>
 								<span class="help-block"><?php echo $name_err;?></span>
 							</div>
 							<div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
 								<label>Username</label>
-								<input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+								<input type="text" name="username" class="form-control" value="<?php echo $username; ?>" required>
 								<span class="help-block"><?php echo $username_err;?></span>
 							</div>
 							<div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
 								<label>Password</label>
-								<input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+								<input type="password" name="password" class="form-control" value="<?php echo $password; ?>" required>
 								<span class="help-block"><?php echo $password_err;?></span>
 							</div>
 							<div class="form-group <?php echo (!empty($licensenum_err)) ? 'has-error' : ''; ?>">
 								<label>License Number</label>
-								<input type="text" name="licensenum" class="form-control" value="<?php echo $licensenum; ?>">
+								<input type="number" name="licensenum" placeholder="Default: You have no license plate" class="form-control" value="<?php echo $licensenum; ?>">
 								<span class="help-block"><?php echo $licensenum_err;?></span>
 							</div>
 							<div class="form-group <?php echo (!empty($is_admin_err)) ? 'has-error' : ''; ?>">
 								<label>Admin Priviliges (Y/N)</label>
-								<input type="text" name="is_admin" class="form-control" value="<?php echo $is_admin; ?>">
+								<input type="text" name="is_admin" class="form-control" value="<?php echo $is_admin; ?>" required>
 								<span class="help-block"><?php echo $is_admin_err;?></span>
 							</div>
 							<input type="submit" class="btn btn-primary" value="Submit">

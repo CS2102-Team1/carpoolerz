@@ -31,13 +31,13 @@
 			$driver_err = "Please enter a driver username.";
 			}else{	//something was submitted
 			//check if a driver with this username exists
-			$sql = "SELECT * FROM systemuser s WHERE s.username ='$input_driver' AND s.licensenum <> 'NULL'";
+			$sql = "SELECT * FROM systemuser s WHERE s.username ='$input_driver' AND s.licensenum IS NOT NULL;";
 			$result = pg_query($dbconn,$sql);
 			if(!$result){	//query was unsuccessful
 				echo pg_last_error($dbconn);
 				}else{	//query was successful
 				if (pg_num_rows($result) == 0) {
-					$driver_err = "Driver does not exist in the system";
+					$driver_err = "This is not a valid driver!";
 					}else{
 					$driver = $input_driver;
 				}
@@ -70,7 +70,7 @@
 			$start_date = $_POST['start_date'];
 			$start_time = $_POST['start_time'];
 			$start = $start_date." ".$start_time;
-			$start = str_replace('-','/',$start);//must submit with '/' instead of '-'
+			$start = str_replace('-','/',$start);//must submit with '/' instead of '-' because of to_timestamp function in postgres. It can only parse dates with / instead of -.
 			$from_address = $_POST['from_address'];
 			$to_address = $_POST['to_address'];
 			
@@ -85,7 +85,7 @@
 				$end_date = $_POST['end_date'];
 				$end_time = $_POST['end_time'];
 				$end = $end_date." ".$end_time;
-				$end = str_replace('-','/',$end);//must submit with '/' instead of '-'
+				$end = str_replace('-','/',$end);//must submit with '/' instead of '-' because of to_timestamp function in postgres. It can only parse dates with / instead of -.
 			}
 			
 			if(!is_null($end)){//end time & date were entered, so input that into database

@@ -38,13 +38,13 @@
 			$driver_err = "Please enter a driver username.";
 			}else{	//something was submitted
 			//check if a driver with this username exists
-			$sql = "SELECT * FROM systemuser s WHERE s.username ='$input_driver' AND s.licensenum <> 'NULL'";
+			$sql = "SELECT * FROM systemuser s WHERE s.username ='$input_driver' AND s.licensenum IS NOT NULL;";
 			$result = pg_query($dbconn,$sql);
 			if(!$result){	//query was unsuccessful
 				echo pg_last_error($dbconn);
 				}else{	//query was successful
 				if (pg_num_rows($result) == 0) {
-					$driver_err = "This is not a valid driver";
+					$driver_err = "This is not a valid driver!";
 					}else{
 					$driver = $input_driver;
 				}

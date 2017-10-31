@@ -19,13 +19,13 @@
 			$driver_err = "Please enter a driver username.";
 		}else{	//something was submitted
 			//check if a driver with this username exists
-			$sql = "SELECT * FROM systemuser s WHERE s.username ='$input_driver' AND s.licensenum <> 'NULL'";
-			$result = pg_query($dbconn,$sql);
+			$sql1 = "SELECT * FROM systemuser s WHERE s.username ='$input_driver' AND s.licensenum IS NOT NULL;";
+			$result = pg_query($dbconn,$sql1);
 			if(!$result){	//query was unsuccessful
 				echo pg_last_error($dbconn);
 			}else{	//query was successful
 				if (pg_num_rows($result) == 0) {
-					$driver_err = "Driver does not exist in the system";
+					$driver_err = "This is not a valid driver!";
 				}else{
 					$driver = $input_driver;
 				}
@@ -38,8 +38,8 @@
 			$brand=$_POST['brand'];
 			$model=$_POST['model'];
 		//update car info in car table
-			$sql = "UPDATE car SET brand='$brand', model='$model' WHERE numplate='$numplate';";
-			$result = pg_query($dbconn, $sql);
+			$sql2 = "UPDATE car SET brand='$brand', model='$model' WHERE numplate='$numplate';";
+			$result = pg_query($dbconn, $sql2);
 			
 			if(!$result){
 				echo pg_last_error($dbconn);
@@ -52,10 +52,10 @@
 	}elseif(null != $curr_numplate){//there is no form submission, pull existing data from current numplate to view it in the form		
 		
 		// Prepare a select statement
-		$sql = "SELECT c.numplate, c.brand, c.model, s.username FROM car c, systemuser s, owns_car o WHERE c.numplate=o.numplate AND s.username=o.driver AND c.numplate='$curr_numplate';";
+		$sql3 = "SELECT c.numplate, c.brand, c.model, s.username FROM car c, systemuser s, owns_car o WHERE c.numplate=o.numplate AND s.username=o.driver AND c.numplate='$curr_numplate';";
         
         // Attempt to execute the prepared statement
-		$result = pg_query($dbconn, $sql);
+		$result = pg_query($dbconn, $sql3);
 		if (!$result) {
 			echo pg_last_error($dbconn);
 			exit;
