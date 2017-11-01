@@ -61,8 +61,8 @@
 								echo "\t\t<td>$col_value</td>\n";
 							}
 							echo "\t\t<td><a class='btn btn-primary' href='view_bid.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>View</a>
-							<a class='btn btn-warning' href='update_car.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>Update</a>
-							<a class='btn btn-danger' href='delete_car.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>Delete</a>
+							<a class='btn btn-warning' href='update_bid.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>Update</a>
+							<a class='btn btn-danger' href='delete_bid.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>Delete</a>
 							</td>\n";
 							echo "\t</tr>\n";
 						}

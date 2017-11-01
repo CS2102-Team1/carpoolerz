@@ -1,35 +1,43 @@
 <?php
 	$dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
 	or die('Could not connect: ' . pg_last_error());
-	
+
+    $passenger = $ride_id = null;
+    if (!empty($_GET['passenger'])) {
+        $passenger = $_REQUEST['passenger'];
+    }
+    if (!empty($_GET['ride_id'])) {
+        $ride_id = $_REQUEST['ride_id'];
+    }
+
 	// Process delete operation after confirmation
-	if(isset($_POST["username"]) && !empty($_POST["username"])){
-		$username = trim($_POST["username"]);
+	if(isset($_POST["passenger"])) {
 		// Prepare a delete statement
-		$sql = "DELETE FROM systemuser s WHERE s.username = '$username'";
+
+		$sql = "DELETE FROM bid b WHERE b.passenger = '$passenger' AND b.ride_id = '$ride_id'";
 		// Attempt to execute the prepared statement
 		$result = pg_query($dbconn, $sql);
-		if(!$result){
+		if (!$result){
 			echo pg_last_error($dbconn);
-			} else {
-			echo "<h3>User Deleted successfully</h3>"."<br>";
-			echo "<h4>Redirecting you back to View Users page</h4>";
-			header("refresh:4;url=admin-users.php");
-		} 
-		} else{
-		// Check existence of username parameter
-		if(empty(trim($_GET["username"]))){
-			// URL doesn't contain username parameter.
-			echo "Parameter was not passed to this page.";
-			exit();
-		}
+        } else {
+            echo "<h3>User Deleted successfully</h3>"."<br>";
+            echo "<h4>Redirecting you back to View Bids page</h4>";
+            header("refresh:4;url=admin-bids.php");
+        }
+    } else{
+        // Check existence of username parameter
+        if(empty(trim($_GET["passenger"]))){
+            // URL doesn't contain username parameter.
+            echo "Parameter was not passed to this page.";
+            exit();
+        }
 	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Delete User</title>
+		<title>Delete Bid Confirmation</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 		<style type="text/css">
 			.wrapper{
@@ -44,15 +52,16 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="page-header">
-							<h1>Delete User</h1>
+							<h1>Delete Bid</h1>
 						</div>
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 							<div class="alert alert-danger fade in">
-								<input type="hidden" name="username" value="<?php echo trim($_GET["username"]); ?>"/>
-								<p>Are you sure you want to delete this user?</p><br>
+								<input type="hidden" name="passenger" value="<?php echo $_GET["passenger"]; ?>"/>
+                                <input type="hidden" name="ride_id" value="<?php echo $_GET["ride_id"]; ?>"/>
+								<p>Are you sure you want to delete this bid?</p><br>
 								<p>
 									<input type="submit" value="Yes" class="btn btn-danger">
-									<a href="admin-users.php" class="btn btn-default">No</a>
+									<a href="admin-bids.php" class="btn btn-default">No</a>
 								</p>
 							</div>
 						</form>
