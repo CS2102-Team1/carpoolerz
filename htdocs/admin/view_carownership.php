@@ -1,14 +1,17 @@
 <?php
 	$dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
 	or die('Could not connect: ' . pg_last_error());
-	$numplate = null;
+	$numplate = $driver = null;
     if (!empty($_GET['numplate'])) {
         $numplate = $_REQUEST['numplate'];
 	}
-	//Check existence of numplate parameter before processing further
-	if(null != $numplate){
+	if (!empty($_GET['driver'])) {
+        $driver = $_REQUEST['driver'];
+	}
+	//Check existence of numplate & driver parameters before processing further
+	if(null != $numplate && null != $driver){
 		// Prepare a select statement
-		$sql = "SELECT c.numplate, c.brand, c.model, s.username FROM car c, systemuser s, owns_car o WHERE c.numplate=o.numplate AND s.username=o.driver AND c.numplate='$numplate';";
+		$sql = "SELECT c.numplate, c.brand, c.model, o.driver FROM car c, owns_car o WHERE c.numplate=o.numplate AND o.driver='$driver' AND o.numplate='$numplate';";
         
         // Attempt to execute the prepared statement
 		$result = pg_query($dbconn, $sql);
@@ -18,7 +21,7 @@
 		}
 		$row = pg_fetch_row($result);
 	}else{
-		echo "Parameter was not received on this page";
+		echo "Parameter(s) was not received on this page";
 	}
 ?>
 
@@ -26,7 +29,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>View Car</title>
+		<title>View Ownership Link</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 		<style type="text/css">
 			.wrapper{
@@ -41,7 +44,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="page-header">
-							<h1>View Car</h1>
+							<h1>View Ownership Link</h1>
 						</div>
 						<div class="form-group">
 							<label>Number Plate</label>
@@ -59,7 +62,7 @@
 							<label>Driver (Owner)</label>
 							<p class="form-control-static"><?php echo $row[3]; ?></p>
 						</div>
-						<p><a href="admin-cars.php" class="btn btn-primary">Back</a></p>
+						<p><a href="admin-carownership.php" class="btn btn-primary">Back</a></p>
 					</div>
 				</div>        
 			</div>

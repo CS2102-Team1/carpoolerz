@@ -62,7 +62,7 @@
         $password = $_SESSION['password'];
 
         $query = /** @php text */
-        "SELECT * FROM systemuser s WHERE s.username = '$username' AND s.password = '$password' AND s.is_admin='TRUE'";
+        "SELECT * FROM systemuser s WHERE s.username = '$username' AND s.password = '$password' AND s.is_admin=TRUE";
 
         $result = pg_query($dbconn, $query);
 

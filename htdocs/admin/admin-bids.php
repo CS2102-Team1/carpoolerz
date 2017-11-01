@@ -29,7 +29,7 @@
 		<div class=container>
 			<h1>Bids</h1>
 			<p>
-				<a href="create_bid.php" class="btn btn-success">Create</a>
+				<a href="create_bid.php" class="btn btn-success">Create A Bid</a>
 			</p>
 		</div>
 		<div class=container>
