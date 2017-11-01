@@ -1,25 +1,38 @@
 <?php
 	$dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
 	or die('Could not connect: ' . pg_last_error());
-	$username = null;
-    if (!empty($_GET['username'])) {
-        $username = $_REQUEST['username'];
+	$passenger = $ride_id = null;
+    if (!empty($_GET['passenger'])) {
+        $passenger = $_REQUEST['passenger'];
 	}
+    if (!empty($_GET['ride_id'])) {
+        $ride_id = $_REQUEST['ride_id'];
+    }
 	//Check existence of username parameter before processing further
-	if(null != $username){
-		// Prepare a select statement
-		$sql = "SELECT * FROM systemuser s WHERE s.username = '$username'";
-        
-        // Attempt to execute the prepared statement
-		$result = pg_query($dbconn, $sql);
-		if (!$result) {
-			echo pg_last_error($dbconn);
-			exit;
-		}
-		$row = pg_fetch_row($result);
-	}else{
-		echo "Parameter was not received on this page";
+	if($passenger == null || $ride_id == null){
+        echo "Parameter was not received on this page";
+        exit;
 	}
+    // Prepare a select statement
+    $sql = /** @php text */
+        "SELECT r.ride_id, r.highest_bid, r.driver, r.from_address, r.to_address, r.start_time, b.amount, b.passenger
+        FROM  ride r, bid b WHERE b.ride_id = r.ride_id AND b.passenger LIKE '$passenger' AND r.ride_id = '$ride_id'";
+
+    // Attempt to execute the prepared statement
+    $result = pg_query($dbconn, $sql);
+    if (!$result) {
+        echo pg_last_error($dbconn);
+        exit;
+    }
+    $row = pg_fetch_row($result, null,PGSQL_ASSOC);
+    $ride_id = $row['ride_id'];
+    $highest_bid = $row['highest_bid'];
+    $driver = $row['driver'];
+    $from_address = $row['from_address'];
+    $to_address = $row['to_address'];
+    $start_time = $row['start_time'];
+    $amount = $row['amount'];
+    $passenger = $row['passenger'];
 ?>
 
 <!DOCTYPE html>
@@ -41,29 +54,37 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="page-header">
-							<h1>View User</h1>
+							<h1>View Bid</h1>
 						</div>
 						<div class="form-group">
-							<label>Name</label>
-							<p class="form-control-static"><?php echo $row[1]; ?></p>
+							<label>Ride ID</label>
+							<p class="form-control-static"><?php echo $ride_id; ?></p>
 						</div>
 						<div class="form-group">
-							<label>Username</label>
-							<p class="form-control-static"><?php echo $row[0]; ?></p>
+							<label>Driver</label>
+							<p class="form-control-static"><?php echo $driver; ?></p>
 						</div>
 						<div class="form-group">
-							<label>Password</label>
-							<p class="form-control-static" type="password"><?php echo $row[2]; ?></p>
+							<label>From Address</label>
+							<p class="form-control-static"><?php echo $from_address; ?></p>
 						</div>
 						<div class="form-group">
-							<label>License Number</label>
-							<p class="form-control-static"><?php echo $row[3]; ?></p>
+							<label>Destination Address</label>
+							<p class="form-control-static"><?php echo $to_address; ?></p>
 						</div>
 						<div class="form-group">
-							<label>Admin?</label>
-							<p class="form-control-static"><?php echo $row[4]; ?></p>
+							<label>Start Time</label>
+							<p class="form-control-static"><?php echo $start_time; ?></p>
 						</div>
-						<p><a href="admin-users.php" class="btn btn-primary">Back</a></p>
+                        <div class="form-group">
+                            <label>Highest Bid</label>
+                            <p class="form-control-static"><?php echo $highest_bid; ?></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Bid</label>
+                            <p class="form-control-static"><?php echo $amount; ?></p>
+                        </div>
+						<p><a href="admin-bids.php" class="btn btn-primary">Back</a></p>
 					</div>
 				</div>        
 			</div>
