@@ -28,14 +28,14 @@
 	<body>
 		<div class=container>
 			<h1>Car Ownership</h1>
-			<p>
-				<a href="create_car.php" class="btn btn-success">Create</a>
-			</p>
 		</div>
 		<div class=container>
 			<br>
 			<!-- Display all cars with owners -->
 			<h3 class="text-center">Cars With Owners</h3>
+			<p>
+				<a href="create_carownership.php" class="btn btn-success">Create New Link Between Car & Driver</a>
+			</p>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">
 					<tr>
@@ -48,16 +48,15 @@
 				</thead>
 				<tbody>
 					<?php
-						$query1 = 'SELECT c.numplate, c.brand, c.model, s.username FROM car c, systemuser s, owns_car o WHERE c.numplate=o.numplate AND s.username=o.driver ORDER BY c.numplate ASC;';
+						$query1 = 'SELECT c.numplate, c.brand, c.model, o.driver FROM car c, owns_car o WHERE c.numplate=o.numplate ORDER BY c.numplate ASC;';
 						$result = pg_query($query1);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";
 							foreach ($row as $col_value) {
 								echo "\t\t<td>$col_value</td>\n";
 							}
-							echo "\t\t<td><a class='btn btn-primary' href='view_car.php?numplate=".$row['numplate']."'>View</a>
-							<a class='btn btn-warning' href='update_car.php?numplate=".$row['numplate']."'>Update</a>
-							<a class='btn btn-danger' href='delete_car.php?numplate=".$row['numplate']."'>Delete</a>
+							echo "\t\t<td><a class='btn btn-primary' href='view_carownership.php?numplate=".$row['numplate']."&driver=".$row['driver']."'>View</a>
+							<a class='btn btn-danger' href='delete_carownership.php?numplate=".$row['numplate']."&driver=".$row['driver']."'>Delete</a>
 							</td>\n";
 							echo "\t</tr>\n";
 						}
