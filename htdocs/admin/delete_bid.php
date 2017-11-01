@@ -13,15 +13,18 @@
 	// Process delete operation after confirmation
 	if(isset($_POST["passenger"])) {
 		// Prepare a delete statement
+        $passenger = $_POST['passenger'];
+        $ride_id = $_POST['ride_id'];
 
-		$sql = "DELETE FROM bid b WHERE b.passenger = '$passenger' AND b.ride_id = '$ride_id'";
+		$sql = /** @php text */
+                "DELETE FROM bid WHERE ride_id = '$ride_id' AND passenger = '$passenger'";
 		// Attempt to execute the prepared statement
 		$result = pg_query($dbconn, $sql);
 		if (!$result){
 			echo pg_last_error($dbconn);
         } else {
-            echo "<h3>User Deleted successfully</h3>"."<br>";
-            echo "<h4>Redirecting you back to View Bids page</h4>";
+            echo "<h3 class='text-center'>User Deleted successfully</h3>"."<br>";
+            echo "<h4 class='text-center'>Redirecting you back to View Bids page</h4>";
             header("refresh:4;url=admin-bids.php");
         }
     } else{
