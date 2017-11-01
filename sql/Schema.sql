@@ -43,9 +43,9 @@ CREATE TABLE ride (
   ride_id			NUMERIC DEFAULT nextval('ride_id') PRIMARY KEY,
   highest_bid   	NUMERIC DEFAULT '0',
   driver            VARCHAR(40) NOT NULL,
-  passenger         VARCHAR(40) NOT NULL,
-  from_address		VARCHAR(40),
-  to_address		VARCHAR(40),
+  passenger         VARCHAR(40),
+  from_address		VARCHAR(40) NOT NULL,
+  to_address		VARCHAR(40) NOT NULL,
   start_time	TIMESTAMP NOT NULL,
   end_time		TIMESTAMP DEFAULT NULL -- driver to press end_time button. eliminate all estimated time complications
 );

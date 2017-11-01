@@ -22,19 +22,40 @@
 	<head>
 		<?php include '../header.shtml'; ?>
 		<?php include 'admin-navbar.shtml'; ?>
+		<style type="text/css">
+		.usersTable{
+			overflow-y: auto;
+		}
+		</style>
+		<script type="text/javascript">
+		function formatTableRows() {
+            var maxRows = 5;
+            var table = document.getElementById('usersTable');
+            var wrapper = table.parentNode;
+            var rowsInTable = table.rows.length;
+            var height = 0;
+            if (rowsInTable > maxRows) {
+                for (var i = 0; i < maxRows; i++) {
+                    height += table.rows[i].clientHeight;
+                }
+                wrapper.style.height = height + "px";
+            }
+        }
+		</script>	
 	</head>
 	
-	<body>
+	<body onload="formatTableRows();">
 		<div class=container>
 			<h1>Users</h1>
-		</div>
-		<div class=container>
-			<!-- Display all user information -->
-			<br>
-			<h3>All Users</h3>
 			<p>
 				<a href="create_user.php" class="btn btn-success">Create</a>
-			</p>		
+			</p>
+		</div>
+		<div class=container>
+			<!-- Display all drivers -->
+			<br>
+			<h3 class="text-center">Drivers</h3>
+			<div id=usersTable>
 			<table class="table table-striped table-hover custom-table">
 				<thead class="thead-inverse">
 					<tr>
@@ -42,23 +63,17 @@
 						<th>Full Name</th>
 						<th>Password</th>
 						<th>License Number</th>
-						<th>Is Admin?</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-						$query = 'SELECT * FROM systemuser ORDER BY fullname ASC';
+						$query = 'SELECT username,fullname,password,licensenum FROM systemuser WHERE licensenum IS NOT NULL AND NOT is_admin ORDER BY fullname ASC;';
 						if($result){
 							$result = pg_query($query);
 							while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 								echo "\t<tr>\n";
 								foreach ($row as $col_value) {
-									/*if($col_value = 'f'){
-										echo "\t\t<td>No</td>\n";
-										}else if($col_value = 't'){
-										echo "\t\t<td>Yes</td>\n";
-									}*/
 									echo "\t\t<td>$col_value</td>\n";
 								}
 								echo "\t\t<td><a class='btn btn-primary' href='view_user.php?username=".$row['username']."'>View</a>
@@ -67,13 +82,93 @@
 								</td>\n";
 								echo "\t</tr>\n";
 							}
-							}else{
+						}else{
 							echo pg_last_error($dbconn);
 							exit;
 						}
 					?>
 				</tbody>
 			</table>
+			</div>
+		</div>
+		<div class=container>
+			<!-- Display all riders -->
+			<br>
+			<h3 class="text-center">Riders</h3>
+			<div id=usersTable>
+			<table class="table table-striped table-hover custom-table">
+				<thead class="thead-inverse">
+					<tr>
+						<th>Username</th>
+						<th>Full Name</th>
+						<th>Password</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						$query = 'SELECT username, fullname, password FROM systemuser WHERE licensenum IS NULL AND NOT is_admin ORDER BY fullname ASC;';
+						if($result){
+							$result = pg_query($query);
+							while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+								echo "\t<tr>\n";
+								foreach ($row as $col_value) {
+									echo "\t\t<td>$col_value</td>\n";
+								}
+								echo "\t\t<td><a class='btn btn-primary' href='view_user.php?username=".$row['username']."'>View</a>
+								<a class='btn btn-warning' href='update_user.php?username=".$row['username']."'>Update</a>
+								<a class='btn btn-danger' href='delete_user.php?username=".$row['username']."'>Delete</a>
+								</td>\n";
+								echo "\t</tr>\n";
+							}
+						}else{
+							echo pg_last_error($dbconn);
+							exit;
+						}
+					?>
+				</tbody>
+			</table>
+			</div>
+		</div>
+		<div class=container>
+			<!-- Display all admins -->
+			<br>
+			<h3 class="text-center">Admins</h3>
+			<div id=usersTable>
+			<table class="table table-striped table-hover custom-table">
+				<thead class="thead-inverse">
+					<tr>
+						<th>Username</th>
+						<th>Full Name</th>
+						<th>Password</th>
+						<th>License Number</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						$query = 'SELECT username,fullname,password,licensenum FROM systemuser WHERE is_admin ORDER BY fullname ASC;';
+						if($result){
+							$result = pg_query($query);
+							while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+								echo "\t<tr>\n";
+								foreach ($row as $col_value) {
+									echo "\t\t<td>$col_value</td>\n";
+								}
+								echo "\t\t<td><a class='btn btn-primary' href='view_user.php?username=".$row['username']."'>View</a>
+								<a class='btn btn-warning' href='update_user.php?username=".$row['username']."'>Update</a>
+								<a class='btn btn-danger' href='delete_user.php?username=".$row['username']."'>Delete</a>
+								</td>\n";
+								echo "\t</tr>\n";
+							}
+						}else{
+							echo pg_last_error($dbconn);
+							exit;
+						}
+					?>
+				</tbody>
+			</table>
+			</div>
 		</div>
 	</body>
 	

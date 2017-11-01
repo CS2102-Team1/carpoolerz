@@ -1,4 +1,4 @@
-<?php	
+<?php
 	$dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
 	or die('Could not connect: ' . pg_last_error());
 	
@@ -78,7 +78,7 @@
 				} else {
 				echo "<h3>User Updated successfully</h3>"."<br>";
 				echo "<h4>Redirecting you back to View Users page</h4>";
-				header("refresh:3;url=admin-users.php");
+				header("refresh:4;url=admin-users.php");
 			} 
 		}
 		} elseif(null != $curr_username){		
