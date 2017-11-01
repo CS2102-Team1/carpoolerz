@@ -48,11 +48,11 @@
 							<p class="form-control-static"><?php echo $row[0]; ?></p>
 						</div>
 						<div class="form-group">
-							<label>Model</label>
+							<label>Brand</label>
 							<p class="form-control-static"><?php echo $row[1]; ?></p>
 						</div>
 						<div class="form-group">
-							<label>Brand</label>
+							<label>Model</label>
 							<p class="form-control-static"><?php echo $row[2]; ?></p>
 						</div>
 						<div class="form-group">

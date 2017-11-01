@@ -48,7 +48,7 @@
 		<div class=container>
 			<h1>Users</h1>
 			<p>
-				<a href="create_user.php" class="btn btn-success">Create</a>
+				<a href="create_user.php" class="btn btn-success">Create A User</a>
 			</p>
 		</div>
 		<div class=container>

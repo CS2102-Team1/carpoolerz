@@ -51,7 +51,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Create Car</title>
+		<title>Create Ownership Link</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 		<style type="text/css">
 			.wrapper{
@@ -66,7 +66,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="page-header">
-							<h2>Create Car</h2>
+							<h2>Create Ownership Link</h2>
 						</div>
 						<p>Please fill this form and submit to add car to the database.</p>
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">

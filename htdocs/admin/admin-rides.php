@@ -29,7 +29,7 @@
 		<div class=container>
 			<h1>Rides</h1>
 			<p>
-				<a href="create_ride.php" class="btn btn-success">Create</a>
+				<a href="create_ride.php" class="btn btn-success">Create A Ride</a>
 			</p>
 		</div>
 		<div class=container>
