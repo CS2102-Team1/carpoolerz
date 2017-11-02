@@ -151,8 +151,6 @@
                             $edit_bid_query = /** @php text */
                                     "UPDATE bid SET amount = '$new_bid' WHERE ride_id = '$target_rideID' AND passenger = '$username'";
                             pg_query($dbconn, $edit_bid_query);
-
-
                         }
 
                         $update_rides_query = /** @php text */
