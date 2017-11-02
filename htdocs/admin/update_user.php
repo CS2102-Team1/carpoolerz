@@ -76,8 +76,8 @@
 			if(!$result){
 				echo pg_last_error($dbconn);
 				} else {
-				echo "<h3>User Updated successfully</h3>"."<br>";
-				echo "<h4>Redirecting you back to View Users page</h4>";
+				echo "<h3 class='text-center'>User Updated successfully</h3>"."<br>";
+				echo "<h4 class='text-center'>Redirecting you back to View Users page</h4>";
 				header("refresh:3;url=admin-users.php");
 			} 
 		}
@@ -132,7 +132,7 @@
 							</div>
 							<div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
 								<label>Username</label>
-								<input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+								<input readonly type="text" name="username" class="form-control" value="<?php echo $username; ?>">
 								<span class="help-block"><?php echo $username_err;?></span>
 							</div>
 							<div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">

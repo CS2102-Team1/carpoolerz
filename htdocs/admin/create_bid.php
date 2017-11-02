@@ -109,17 +109,17 @@
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 							<div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
 								<label>Username</label>
-								<input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+								<input required type="text" name="username" class="form-control" value="<?php echo $username; ?>">
 								<span class="help-block"><?php echo $username_err;?></span>
 							</div>
 							<div class="form-group <?php echo (!empty($ride_id_err)) ? 'has-error' : ''; ?>">
 								<label>Ride ID</label>
-								<input type="text" name="ride_id" class="form-control" value="<?php echo $ride_id; ?>">
+								<input required type="number" name="ride_id" class="form-control" value="<?php echo $ride_id; ?>">
 								<span class="help-block"><?php echo $ride_id_err;?></span>
 							</div>
                             <div class="form-group <?php echo (!empty($amount_err)) ? 'has-error' : ''; ?>">
                                 <label>Bid Amount</label>
-                                <input type="text" name="bid_amount" class="form-control" value="<?php echo $bid_amount; ?>">
+                                <input required type="number" name="bid_amount" class="form-control" value="<?php echo $bid_amount; ?>" step="0.01">
                                 <span class="help-block"><?php echo $amount_err;?></span>
                             </div>
 							<input type="submit" class="btn btn-primary" value="Submit">
