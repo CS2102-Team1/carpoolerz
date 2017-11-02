@@ -7,7 +7,7 @@
 	$dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
 	or die('Could not connect: ' . pg_last_error());
 	
-	$query = /** @lang text */
+	$query = /** @php text */
 	"SELECT * FROM systemuser s WHERE '$username' = s.username AND '$password' = s.password AND s.is_admin = 'TRUE'";
 	
 	$result = pg_query($dbconn, $query);
@@ -60,9 +60,9 @@
 							foreach ($row as $col_value) {
 								echo "\t\t<td>$col_value</td>\n";
 							}
-							echo "\t\t<td><a class='btn btn-primary' href='view_car.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>View</a>
-							<a class='btn btn-warning' href='update_car.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>Update</a>
-							<a class='btn btn-danger' href='delete_car.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>Delete</a>
+							echo "\t\t<td><a class='btn btn-primary' href='view_bid.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>View</a>
+							<a class='btn btn-warning' href='update_bid.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>Update</a>
+							<a class='btn btn-danger' href='delete_bid.php?ride_id=".$row['ride_id']."&passenger=".$row['passenger']."'>Delete</a>
 							</td>\n";
 							echo "\t</tr>\n";
 						}
