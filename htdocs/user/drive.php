@@ -26,6 +26,8 @@
     if (pg_num_rows($check_car_result) == 0) {
         header("Location: ./drive-error.php");
     }
+    date_default_timezone_set('Singapore');
+    $today = date('Y-m-d H:i:s');
 ?>
 
 <!DOCTYPE html>
@@ -72,6 +74,45 @@
                         echo "\t\t<td><a class='btn btn-primary' href='delete_ride.php?ride_id=".$line['ride_id']."'>Delete Ride</a></td>\n";
 
                         echo "\t</tr>\n";
+                    }
+                    ?>
+                    </tbody>
+                </table>
+                <br/>
+            </div>
+            <br/>
+            <div class="container-fluid">
+                <h1 class="text-center">ONGOING RIDES</h1>
+                <br/>
+
+                <table class="table table-striped table-hover">
+                    <thead class="thead-inverse">
+                    <tr>
+                        <th>Ride ID</th>
+                        <th>Start Location</th>
+                        <th>End Location</th>
+                        <th>Start Time/Date</th>
+                        <th>End Time/Date</th>
+                        <th>Bid Amount</th>
+                        <th>Passenger</th>
+                        <th>End Ride</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+
+                    $query = /** @php text */
+                    "SELECT r.ride_id, r.from_address, r.to_address, r.start_time, r.end_time, r.highest_bid, r.passenger FROM ride r, bid b WHERE
+                    b.ride_id = r.ride_id AND b.success = true AND r.driver = '$username' AND r.start_time <= '$today' AND r.end_time IS NULL";
+                    $result = pg_query($query);
+
+                    while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+                        echo "\t<tr>\n";
+                    foreach ($line as $col_value) {
+                    echo "\t\t<td>$col_value</td>\n";
+                    }
+                    echo "\t\t<td><a class='btn btn-primary' href='end_ride.php?ride_id=".$line['ride_id']."'>End Ride</a></td>\n";
+                    echo "\t</tr>\n";
                     }
                     ?>
                     </tbody>

@@ -119,7 +119,7 @@
                 $check_bid_confirmed_query = /** @php text */
                 "SELECT * FROM bid WHERE ride_id = '$rideID' and success = true";
                 $check_bid_result = pg_query($dbconn, $check_bid_confirmed_query);
-                if (pg_num_rows($result) == 0) {
+                if (pg_num_rows($check_bid_result) == 0) {
                     echo /** @html text */
                     "
                     <div class='container'>
