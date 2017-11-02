@@ -7,7 +7,7 @@
     $dbconn = pg_connect("host=localhost port=5432 dbname=carpoolerz user=postgres password=postgres")
     or die('Could not connect: ' . pg_last_error());
 
-    $query = /** @lang text */
+    $query = /** @php text */
         "SELECT * FROM systemuser WHERE username = '$username' AND password = '$password'";
 
     $result = pg_query($dbconn, $query);
@@ -96,8 +96,8 @@
 
             // Get relevant data from rides table
             $ride_matches_query = /** @php text */
-                    "SELECT * FROM ride 
-                    WHERE from_address LIKE '%{$start_query}%' 
+                    "SELECT * FROM ride
+                    WHERE from_address LIKE '%{$start_query}%'
                     AND to_address LIKE '%{$end_query}%' AND end_time IS NULL
                     AND driver <> '$username'";
 
@@ -114,27 +114,35 @@
                 // Note: Start time must be processed when echoing.
                 $start_time = $row["start_time"];
 
-                echo /** @html text */
-                "
-                <div class='container'>
-                    <div class='container-fluid'>
-                        <div class=\"card\">
-                            <div class=\"card-header\">
-                                <h1>Driver: $driver</h1>
+                //reflect only the rides with no accepted bids.
+                //Those with accepted bids are rides with confirmed passengers and no longer of use to other riders.
+                $check_bid_confirmed_query = /** @php text */
+                "SELECT * FROM bid WHERE ride_id = '$rideID' and success = true";
+                $check_bid_result = pg_query($dbconn, $check_bid_confirmed_query);
+                if (pg_num_rows($result) == 0) {
+                    echo /** @html text */
+                    "
+                    <div class='container'>
+                        <div class='container-fluid'>
+                            <div class=\"card\">
+                                <div class=\"card-header\">
+                                    <h1>Driver: $driver</h1>
+                                </div>
+                                <div class=\"card-body\">
+                                    <h4 class=\"card-text\">Start Time: $start_time</h4>
+                                    <p class=\"card-text\">From Address: $from_address</p>
+                                    <p class=\"card-text\">Destination: $to_address</p>
+                                    <h3 class='\card-text\'>Highest Bid: SGD $highest_bid</h3>
+                                </div>
+                                <a class='btn btn-warning' href='new_bid.php?ride_id=".$rideID."'>PLACE NEW BID/DELETE BID</a>
                             </div>
-                            <div class=\"card-body\">
-                                <h4 class=\"card-text\">Start Time: $start_time</h4>
-                                <p class=\"card-text\">From Address: $from_address</p>
-                                <p class=\"card-text\">Destination: $to_address</p>
-                                <h3 class='\card-text\'>Highest Bid: SGD $highest_bid</h3>
-                            </div>
-                            <a class='btn btn-warning' href='new_bid.php?ride_id=".$rideID."'>PLACE NEW BID/DELETE BID</a>
                         </div>
                     </div>
-                </div>
-                ";
+                    ";
+                    echo "<br/>";
+                }
             }
-            echo "<br/>";
+
         }
     ?>
 
