@@ -48,7 +48,7 @@
 				</thead>
 				<tbody>
 					<?php
-						$query1 = 'SELECT c.numplate, c.brand, c.model, o.driver FROM car c, owns_car o WHERE c.numplate=o.numplate ORDER BY c.numplate ASC;';
+						$query1 = 'SELECT c.numplate, c.brand, c.model, o.driver FROM car c, owns_car o WHERE c.numplate=o.numplate ORDER BY c.brand, c.model ASC;';
 						$result = pg_query($query1);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";
@@ -78,7 +78,7 @@
 				</thead>
 				<tbody>
 					<?php
-						$query2 = 'SELECT * FROM car c WHERE c.numplate NOT IN(SELECT o.numplate FROM owns_car o);';
+						$query2 = 'SELECT * FROM car c WHERE c.numplate NOT IN(SELECT o.numplate FROM owns_car o) ORDER BY c.brand, c.model ASC;';
 						$result = pg_query($query2);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";

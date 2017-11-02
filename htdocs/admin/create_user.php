@@ -60,6 +60,8 @@
 			if(empty($input_ln)){
 				$sql = "INSERT into systemuser VALUES('$username', '$name', '$password', DEFAULT, '$is_admin')";
 			} else{
+				//store the input into the page variable, so that it can be shown again on success page
+				$licensenum=$input_ln;
 				$sql = "INSERT into systemuser VALUES('$username', '$name', '$password', '$licensenum', '$is_admin')";
 			}
 			$result = pg_query($dbconn, $sql);

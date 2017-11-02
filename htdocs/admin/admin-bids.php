@@ -47,12 +47,11 @@
 					</tr>
 				</thead>
 				<tbody>
-					<!-- Pull relevant driver by jumping through bids -> ride -> created rides -->
 					<?php
 						$query = '
 						SELECT b.ride_id, b.amount, b.passenger, cr.driver
 						FROM bid b, created_rides cr 
-						WHERE b.ride_id = cr.ride_id AND b.success;';
+						WHERE b.ride_id = cr.ride_id AND b.success ORDER BY b.ride_id ASC;';
 						$result = pg_query($query);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";
@@ -84,12 +83,11 @@
 					</tr>
 				</thead>
 				<tbody>
-					<!-- Pull relevant driver by jumping through bids -> ride -> created rides -->
 					<?php
 						$query = '
 						SELECT b.ride_id, b.amount, b.passenger, cr.driver
 						FROM bid b, created_rides cr 
-						WHERE b.ride_id = cr.ride_id AND NOT b.success;';
+						WHERE b.ride_id = cr.ride_id AND NOT b.success ORDER BY b.ride_id ASC;';
 						$result = pg_query($query);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";

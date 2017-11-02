@@ -52,7 +52,8 @@
 				</thead>
 				<tbody>
 					<?php
-						$query = 'SELECT * FROM ride r WHERE r.end_time IS NOT NULL ORDER BY r.ride_id ASC';
+						//Sort by latest completed rides
+						$query = 'SELECT * FROM ride r WHERE r.end_time IS NOT NULL ORDER BY r.end_time DESC;';
 						$result = pg_query($query);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";
@@ -88,8 +89,8 @@
 				</thead>
 				<tbody>
 					<?php
-						//need to use different query variable for storage.
-						$query2 = 'SELECT * FROM ride r WHERE r.end_time IS NULL AND r.start_time < NOW()::timestamp';
+						//Sort by latest start time 
+						$query2 = 'SELECT * FROM ride r WHERE r.end_time IS NULL AND r.start_time < NOW()::timestamp ORDER BY r.start_time DESC;';
 						//ride has started but has not ended 
 						$result = pg_query($query2);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
@@ -126,8 +127,8 @@
 				</thead>
 				<tbody>
 					<?php
-						//need to use different query variable for storage.
-						$query3 = 'SELECT * FROM ride r WHERE r.end_time IS NULL AND r.start_time >= NOW()::timestamp';
+						//Sort by latest start time
+						$query3 = 'SELECT * FROM ride r WHERE r.end_time IS NULL AND r.start_time >= NOW()::timestamp ORDER BY r.start_time DESC;';
 						//Ride has not started, so its available for bidding					
 						$result = pg_query($query3);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
