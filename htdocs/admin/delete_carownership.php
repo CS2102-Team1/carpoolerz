@@ -3,24 +3,25 @@
 	or die('Could not connect: ' . pg_last_error());
 	
 	// Process delete operation after confirmation
-	if(isset($_POST["username"]) && !empty($_POST["username"])){
-		$username = trim($_POST["username"]);
+	if(isset($_POST["numplate"]) && !empty($_POST["numplate"]) && isset($_POST["driver"]) && !empty($_POST["driver"])){
+		$numplate = trim($_POST["numplate"]);
+		$driver = trim($_POST["driver"]);
 		// Prepare a delete statement
-		$sql = "DELETE FROM systemuser s WHERE s.username = '$username'";
+		$sql = "DELETE FROM owns_car o WHERE o.numplate = '$numplate' AND o.driver = '$driver'";
 		// Attempt to execute the prepared statement
 		$result = pg_query($dbconn, $sql);
 		if(!$result){
 			echo pg_last_error($dbconn);
 			} else {
-			echo "<h3>User Deleted successfully</h3>"."<br>";
-			echo "<h4>Redirecting you back to View Users page</h4>";
-			header("refresh:3;url=admin-users.php");
+			echo "<h3>Car ownership link deleted successfully</h3>"."<br>";
+			echo "<h4>Redirecting you back to View Car Ownership page</h4>";
+			header("refresh:3;url=admin-carownership.php");
 		} 
-		} else{
-		// Check existence of username parameter
-		if(empty(trim($_GET["username"]))){
-			// URL doesn't contain username parameter.
-			echo "Parameter was not passed to this page.";
+	} else{
+		// Check existence of numplate & driver parameter
+		if(empty(trim($_GET["numplate"])) || empty(trim($_GET["numplate"]))){
+			// URL doesn't contain numplate & driver parameter.
+			echo "Parameter(s) not passed to this page.";
 			exit();
 		}
 	}
@@ -29,7 +30,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Delete User</title>
+		<title>Delete Ownership Link</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 		<style type="text/css">
 			.wrapper{
@@ -44,15 +45,16 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="page-header">
-							<h1>Delete User</h1>
+							<h1>Delete Ownership Link</h1>
 						</div>
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 							<div class="alert alert-danger fade in">
-								<input type="hidden" name="username" value="<?php echo trim($_GET["username"]); ?>"/>
-								<p>Are you sure you want to delete this user?</p><br>
+								<input type="hidden" name="numplate" value="<?php echo trim($_GET["numplate"]); ?>"/>
+								<input type="hidden" name="driver" value="<?php echo trim($_GET["driver"]); ?>"/>
+								<p>Are you sure you want to delete this car?</p><br>
 								<p>
 									<input type="submit" value="Yes" class="btn btn-danger">
-									<a href="admin-users.php" class="btn btn-default">No</a>
+									<a href="admin-carownership.php" class="btn btn-default">No</a>
 								</p>
 							</div>
 						</form>

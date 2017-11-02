@@ -151,18 +151,12 @@
                             $edit_bid_query = /** @php text */
                                     "UPDATE bid SET amount = '$new_bid' WHERE ride_id = '$target_rideID' AND passenger = '$username'";
                             pg_query($dbconn, $edit_bid_query);
-
-
                         }
 
                         $update_rides_query = /** @php text */
-                            "UPDATE ride SET highest_bid = '$new_bid' WHERE ride_id = '$target_rideID'";
-
-                        $update_ride_passenger_query = /** @php text */
-                        "UPDATE ride SET passenger = '$username' WHERE ride_id = '$target_rideID'";
+                            "UPDATE ride SET highest_bid = '$new_bid', passenger = '$username' WHERE ride_id = '$target_rideID'";
 
                         pg_query($dbconn, $update_rides_query);
-                        pg_query($dbconn, $update_ride_passenger_query);
 
                         echo "<h1 class='text-center'>Bid successfully entered<h1/>";
                         echo "<h2 class='text-center'>New Highest Bid: SGD $new_bid<h2/>";
