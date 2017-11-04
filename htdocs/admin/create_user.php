@@ -60,6 +60,8 @@
 			if(empty($input_ln)){
 				$sql = "INSERT into systemuser VALUES('$username', '$name', '$password', DEFAULT, '$is_admin')";
 			} else{
+				//store the input into the page variable, so that it can be shown again on success page
+				$licensenum=$input_ln;
 				$sql = "INSERT into systemuser VALUES('$username', '$name', '$password', '$licensenum', '$is_admin')";
 			}
 			$result = pg_query($dbconn, $sql);
@@ -67,8 +69,8 @@
 			if(!$result){
 				echo pg_last_error($dbconn);
 				} else {
-				echo "<h3>User Created successfully</h3>"."<br>";
-				echo "<h4>Redirecting you back to View Users page</h4>";
+				echo "<h3 class='text-center'>User Created successfully</h3>"."<br>";
+				echo "<h4 class='text-center'>Redirecting you back to View Users page</h4>";
 				header("refresh:3;url=admin-users.php");
 			} 
 		}
@@ -113,9 +115,9 @@
 								<input type="password" name="password" class="form-control" value="<?php echo $password; ?>" required>
 								<span class="help-block"><?php echo $password_err;?></span>
 							</div>
-							<div class="form-group <?php echo (!empty($licensenum_err)) ? 'has-error' : ''; ?>">
+							<div class="form-group">
 								<label>License Number</label>
-								<input type="number" name="licensenum" placeholder="Default: You have no license plate" class="form-control" value="<?php echo $licensenum; ?>">
+								<input type="number" name="licensenum" placeholder="Default: You have no license number" class="form-control" value="<?php echo $licensenum; ?>">
 								<span class="help-block"><?php echo $licensenum_err;?></span>
 							</div>
 							<div class="form-group <?php echo (!empty($is_admin_err)) ? 'has-error' : ''; ?>">

@@ -12,8 +12,8 @@
 		if(!$result){
 			echo pg_last_error($dbconn);
 			} else {
-			echo "<h3>Ride Deleted successfully</h3>"."<br>";
-			echo "<h4>Redirecting you back to View Rides page</h4>";
+			echo "<h3 class='text-center'>Ride Deleted successfully</h3>"."<br>";
+			echo "<h4 class='text-center'>Redirecting you back to View Rides page</h4>";
 			header("refresh:3;url=admin-rides.php");
 		} 
 		} else{

@@ -4,11 +4,31 @@
 	
 	// Define variables and initialize with empty values
 	$numplate = $driver= "";
-	$driver_err = "";
+	$driver_err = $numplate_err = "";
 	
 	// Processing form data when form is submitted
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 	
+		//Validate numplate
+		$input_numplate = trim($_POST["numplate"]);
+		//Nothing was submitted
+		if(empty($input_numplate)){
+			$driver_err = "Please enter a number plate.";
+		}else{	//something was submitted
+			//check whether car is already owned by someone or not
+			$sql = "SELECT * FROM owns_car o WHERE o.numplate ='$input_numplate';";
+			$result = pg_query($dbconn,$sql);
+			if(!$result){	//query was unsuccessful
+				echo pg_last_error($dbconn);
+			}else{	//query was successful
+				if (pg_num_rows($result) != 0) {
+					$numplate_err = "This car is already owned by a driver.";
+				}else{
+					$numplate = $input_numplate;
+				}
+			}			
+		}
+		
 		//Validate driver username
 		$input_driver = trim($_POST["driver"]);
 		//Nothing was submitted
@@ -30,7 +50,7 @@
 		}
 		
 		// Check input errors before inserting in database
-		if(empty($driver_err)){
+		if(empty($driver_err)&&empty($numplate_err)){
 			$numplate=$_POST['numplate'];
 		//insert new ownership link into owns_car table
 			$sql = "INSERT into owns_car VALUES('$driver','$numplate');";
@@ -39,8 +59,8 @@
 			if(!$result){
 				echo pg_last_error($dbconn);
 			} else {
-				echo "<h3>Ownership link successfully</h3>"."<br>";
-				echo "<h4>Redirecting you back to View Car Ownership page</h4>";
+				echo "<h3 class='text-center'>Ownership link successfully</h3>"."<br>";
+				echo "<h4 class='text-center'>Redirecting you back to View Car Ownership page</h4>";
 				header("refresh:3;url=admin-carownership.php");
 			} 
 		}
@@ -70,9 +90,10 @@
 						</div>
 						<p>Please fill this form and submit to add car to the database.</p>
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-							<div class="form-group">
+							<div class="form-group <?php echo (!empty($numplate_err)) ? 'has-error' : ''; ?>">
 								<label>Number Plate</label>
 								<input type="text" name="numplate" class="form-control" value="<?php echo $numplate; ?>" required>
+								<span class="help-block"><?php echo $numplate_err;?></span>
 							</div>
 							<div class="form-group <?php echo (!empty($driver_err)) ? 'has-error' : ''; ?>">
 								<label>Driver (Owner)</label>

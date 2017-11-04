@@ -27,8 +27,8 @@
 		if(!$result){
 			echo pg_last_error($dbconn);
 		} else {
-			echo "<h3>Car Updated successfully</h3>"."<br>";
-			echo "<h4>Redirecting you back to View Cars page</h4>";
+			echo "<h3 class='text-center'>Car Updated successfully</h3>"."<br>";
+			echo "<h4 class='text-center'>Redirecting you back to View Cars page</h4>";
 			header("refresh:3;url=admin-cars.php");
 		} 
 	
@@ -60,7 +60,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Create Car</title>
+		<title>Update Car</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 		<style type="text/css">
 			.wrapper{
@@ -75,9 +75,9 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="page-header">
-							<h2>Create Car</h2>
+							<h2>Update Car</h2>
 						</div>
-						<p>Please fill this form and submit to add car to the database.</p>
+						<p>Please fill this form and submit to update car.</p>
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 							<div class="form-group">
 								<label>Number Plate</label>

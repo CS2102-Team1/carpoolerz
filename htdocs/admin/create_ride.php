@@ -46,10 +46,12 @@
 		
 		// Validate passenger username
 		$input_passenger = trim($_POST["passenger"]);
-		//Nothing was submitted
+		//If no passenger entered but there is end date&time entered, 
 		if(empty($input_passenger)){
-			$passenger_err = "Please enter a passenger username.";
-			}else{	//something was submitted
+			if(!empty(trim($_POST['end_date'])) && !empty(trim($_POST['end_time']))){
+				$passenger_err = "Please enter a passenger username.";
+			}			
+		}else{	//something was submitted
 			//check if a passenger with this username exists
 			$sql = "SELECT * FROM systemuser s WHERE s.username ='$input_passenger'";
 			$result = pg_query($dbconn,$sql);
@@ -113,8 +115,8 @@
 				"INSERT INTO created_rides(driver, ride_id) VALUES('$driver', '$target_rideID')";
 				
                 $add_created_rides_result = pg_query($dbconn, $add_created_rides_query);
-				echo "<h3>Ride Created successfully</h3>"."<br>";
-				echo "<h4>Redirecting you back to View Rides page</h4>";
+				echo "<h3 class='text-center'>Ride Created successfully</h3>"."<br>";
+				echo "<h4 class='text-center'>Redirecting you back to View Rides page</h4>";
 				header("refresh:3;url=admin-rides.php");
 			} 
 		}
@@ -175,7 +177,7 @@
 							</div>
 							<div class="form-group <?php echo (!empty($passenger_err)) ? 'has-error' : ''; ?>">
 								<label>Passenger</label>
-								<input required type="text" name="passenger" class="form-control" value="<?php echo $passenger; ?>">
+								<input type="text" name="passenger" class="form-control" value="<?php echo $passenger; ?>">
 								<span class="help-block"><?php echo $passenger_err;?></span>
 							</div>							
 							<input type="submit" class="btn btn-primary" value="Submit">
