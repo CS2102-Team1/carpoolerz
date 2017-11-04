@@ -54,16 +54,17 @@
                     CASE WHEN '$today' < ride.start_time THEN 'SCHEDULED'
                     WHEN '$today' >= ride.start_time THEN 'TAKEN'
                     END
-                    FROM ride, bid WHERE ride.passenger = bid.passenger and ride.passenger = '$username' and bid.success = true ORDER BY ride.ride_id DESC";
+                    FROM ride, bid WHERE ride.passenger = bid.passenger and ride.ride_id = bid.ride_id and ride.passenger = '$username'
+                    and bid.success = true ORDER BY ride.ride_id DESC";
                     $result = pg_query($query);
 
                     while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
                         echo "\t<tr>\n";
-foreach ($line as $col_value) {
-echo "\t\t<td>$col_value</td>\n";
-}
-echo "\t</tr>\n";
-}
+                        foreach ($line as $col_value) {
+                            echo "\t\t<td>$col_value</td>\n";
+                        }
+                        echo "\t</tr>\n";
+                    }
 ?>
 </tbody>
 </table>
