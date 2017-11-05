@@ -96,7 +96,7 @@
 			}
 			
 			if(!is_null($end)){//end time & date were entered, so input that into database
-				$sql = "UPDATE ride SET highest_bid = '$highest_bid', driver='$driver', passenger='$passenger', from_address='$from_address', to_address='$to_address', start_time=to_timestamp('$start', 'YYYY/MM/DD HH24:MI:SS'), end_time=to_timestamp('$end', 'YYYY/DD/MM HH24:MI:SS') WHERE ride_id='$curr_id'";
+				$sql = "UPDATE ride SET highest_bid = '$highest_bid', driver='$driver', passenger='$passenger', from_address='$from_address', to_address='$to_address', start_time=to_timestamp('$start', 'YYYY/MM/DD HH24:MI:SS'), end_time=to_timestamp('$end', 'YYYY/MM/DD HH24:MI:SS') WHERE ride_id='$curr_id'";
 				}else{//$end remains null, so there wasnt any end time & date entered
 				$sql = "UPDATE ride SET highest_bid = '$highest_bid', driver='$driver', passenger='$passenger', from_address='$from_address', to_address='$to_address', start_time=to_timestamp('$start', 'YYYY/MM/DD HH24:MI:SS') WHERE ride_id='$curr_id'";
 			}
@@ -107,8 +107,8 @@
 			if(!$result){
 				echo pg_last_error($dbconn);
 				} else {
-				echo "<h3>Ride Updated successfully</h3>"."<br>";
-				echo "<h4>Redirecting you back to View Rides page</h4>";
+				echo "<h3 class='text-center'>Ride Updated successfully</h3>"."<br>";
+				echo "<h4 class='text-center'>Redirecting you back to View Rides page</h4>";
 				header("refresh:3;url=admin-rides.php");
 			} 
 		}

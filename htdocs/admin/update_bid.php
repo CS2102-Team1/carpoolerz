@@ -92,7 +92,7 @@
             } else {
 				echo "<h3 class='text-center'>Bid Updated Successfully</h3>"."<br>";
 				echo "<h4 class='text-center'>Redirecting you back to View Bids page</h4>";
-				header("refresh:4;url=admin-bids.php");
+				header("refresh:3;url=admin-bids.php");
 			}
 		}
 	}
@@ -132,7 +132,7 @@
                             </div>
 							<div class="form-group <?php echo (!empty($bid_err)) ? 'has-error' : ''; ?>">
 								<label>New Bid</label>
-								<input type="text" name="bid" class="form-control" value="<?php echo $bid; ?>">
+								<input required type="number" name="bid" class="form-control" value="<?php echo $bid; ?>" step="0.01" min="0">
 								<span class="help-block"><?php echo $bid_err;?></span>
 							</div>
 							<input type="hidden" name="passenger" value="<?php echo $passenger; ?>"/>

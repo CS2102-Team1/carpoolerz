@@ -13,8 +13,8 @@
 		if(!$result){
 			echo pg_last_error($dbconn);
 			} else {
-			echo "<h3>Car ownership link deleted successfully</h3>"."<br>";
-			echo "<h4>Redirecting you back to View Car Ownership page</h4>";
+			echo "<h3 class='text-center'>Car ownership link deleted successfully</h3>"."<br>";
+			echo "<h4 class='text-center'>Redirecting you back to View Car Ownership page</h4>";
 			header("refresh:3;url=admin-carownership.php");
 		} 
 	} else{

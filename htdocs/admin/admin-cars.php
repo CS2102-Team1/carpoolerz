@@ -49,7 +49,7 @@
 				</thead>
 				<tbody>
 					<?php
-						$query = 'SELECT c.numplate, c.brand, c.model, o.driver FROM car c LEFT JOIN owns_car o ON c.numplate=o.numplate ORDER BY c.numplate ASC;';
+						$query = 'SELECT c.numplate, c.brand, c.model, o.driver FROM car c LEFT JOIN owns_car o ON c.numplate=o.numplate ORDER BY c.brand,c.model ASC;';
 						$result = pg_query($query);
 						while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 							echo "\t<tr>\n";
