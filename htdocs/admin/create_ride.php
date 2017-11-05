@@ -91,7 +91,7 @@
 			}
 			
 			if(!is_null($end)){//end time & date were entered, so input that into database
-				$sql = "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time, end_time) VALUES('$highest_bid', '$driver', '$passenger', '$from_address', '$to_address', to_timestamp('$start', 'YYYY/DD/MM HH24:MI:SS'), to_timestamp('$end', 'YYYY/MM/DD HH24:MI:SS'))";
+				$sql = "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time, end_time) VALUES('$highest_bid', '$driver', '$passenger', '$from_address', '$to_address', to_timestamp('$start', 'YYYY/MM/DD HH24:MI:SS'), to_timestamp('$end', 'YYYY/MM/DD HH24:MI:SS'))";
 				
 				}else{//$end remains null, so there wasnt any end time & date entered
 				$sql = "INSERT INTO ride(highest_bid, driver, passenger, from_address, to_address, start_time, end_time) VALUES('$highest_bid', '$driver', '$passenger', '$from_address', '$to_address', to_timestamp('$start', 'YYYY/MM/DD HH24:MI:SS'), DEFAULT)";
