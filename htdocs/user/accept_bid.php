@@ -24,26 +24,26 @@
         $target_rideID = $_POST['p_rideID'];
     } else {
         echo "<h1>Error. No ride ID detected.<h1/>";
-}
+    }
 
-$get_ride_info_query = /** @php text */
-"SELECT * FROM ride WHERE ride_id = '$target_rideID'";
+    $get_ride_info_query = /** @php text */
+    "SELECT * FROM ride WHERE ride_id = '$target_rideID'";
 
-$ride_info_result = pg_query($dbconn, $get_ride_info_query);
+    $ride_info_result = pg_query($dbconn, $get_ride_info_query);
 
-$ride_info = pg_fetch_array($ride_info_result, NULL, PGSQL_ASSOC);
+    $ride_info = pg_fetch_array($ride_info_result, NULL, PGSQL_ASSOC);
 
-$ride_driver = $ride_info["driver"];
-$highest_bid = $ride_info["highest_bid"];
-$current_passenger = $ride_info["passenger"];
-$from_address = $ride_info["from_address"];
-$to_address = $ride_info["to_address"];
-$start_time = $ride_info["start_time"];
-$end_time = $ride_info["end_time"];
+    $ride_driver = $ride_info["driver"];
+    $highest_bid = $ride_info["highest_bid"];
+    $current_passenger = $ride_info["passenger"];
+    $from_address = $ride_info["from_address"];
+    $to_address = $ride_info["to_address"];
+    $start_time = $ride_info["start_time"];
+    $end_time = $ride_info["end_time"];
 
-$view_bid_query = /** @php text */
-"SELECT * FROM bid WHERE passenger = '$current_passenger' AND ride_id = '$target_rideID'";
-$view_bid_result = pg_query($dbconn, $view_bid_query);
+    $view_bid_query = /** @php text */
+    "SELECT * FROM bid WHERE passenger = '$current_passenger' AND ride_id = '$target_rideID'";
+    $view_bid_result = pg_query($dbconn, $view_bid_query);
 
 ?>
 

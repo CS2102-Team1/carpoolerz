@@ -41,7 +41,7 @@
         <?php include 'navbar-user.shtml'; ?>
         <div class=container>
             <div class="container-fluid">
-                <h1 class="text-center">RIDE OFFERS YOU MADE</h1>
+                <h1 class="text-center">Ride Offers You Made</h1>
                 <br/>
 
                 <table class="table table-striped table-hover">
@@ -82,7 +82,7 @@
             </div>
             <br/>
             <div class="container-fluid">
-                <h1 class="text-center">ONGOING RIDES</h1>
+                <h1 class="text-center">My Ongoing Rides</h1>
                 <br/>
 
                 <table class="table table-striped table-hover">
@@ -121,7 +121,7 @@
             </div>
             <br/>
             <div class="container-fluid">
-                <h1 class="text-center">CREATE NEW RIDE OFFER</h1>
+                <h1 class="text-center">Create a New Ride Offer</h1>
                 <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="login-form">
                     <div class="form-group">
                         <label for="p_username">Username: </label>
