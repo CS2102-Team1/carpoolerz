@@ -22,27 +22,27 @@
         $target_rideID = $_POST['p_rideID'];
     } else {
         echo "<h1>Error. No ride ID detected.<h1/>";
-exit;
-}
+        exit;
+    }
 
-$get_ride_info_query = /** @php text */
-"SELECT * FROM ride WHERE ride_id = '$target_rideID'";
+    $get_ride_info_query = /** @php text */
+    "SELECT * FROM ride WHERE ride_id = '$target_rideID'";
 
-$ride_info_result = pg_query($dbconn, $get_ride_info_query);
+    $ride_info_result = pg_query($dbconn, $get_ride_info_query);
 
-$ride_info = pg_fetch_array($ride_info_result, NULL, PGSQL_ASSOC);
+    $ride_info = pg_fetch_array($ride_info_result, NULL, PGSQL_ASSOC);
 
-$ride_id = $ride_info["ride_id"];
-$ride_driver = $ride_info["driver"];
-$highest_bid = $ride_info["highest_bid"];
-$current_passenger = $ride_info["passenger"];
-$from_address = $ride_info["from_address"];
-$to_address = $ride_info["to_address"];
-$start_time = $ride_info["start_time"];
-$end_time = $ride_info["end_time"];
+    $ride_id = $ride_info["ride_id"];
+    $ride_driver = $ride_info["driver"];
+    $highest_bid = $ride_info["highest_bid"];
+    $current_passenger = $ride_info["passenger"];
+    $from_address = $ride_info["from_address"];
+    $to_address = $ride_info["to_address"];
+    $start_time = $ride_info["start_time"];
+    $end_time = $ride_info["end_time"];
 
-date_default_timezone_set('Singapore');
-$today = date('Y-m-d H:i:s');
+    date_default_timezone_set('Singapore');
+    $today = date('Y-m-d H:i:s');
 ?>
 
 <!DOCTYPE html>

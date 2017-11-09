@@ -37,7 +37,7 @@
 
 		<div class="container-fluid">
 
-            <h1 class="text-center">YOUR DETAILS</h1>
+            <h1 class="text-center">Your Details</h1>
             <form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="login-form">
                 <div class="form-group">
                     <label for="p_username">Username: </label>

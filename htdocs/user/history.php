@@ -31,7 +31,7 @@
 <?php include 'navbar-user.shtml'; ?>
 <div class=container>
 <div class="container-fluid">
-<h1 class="text-center">YOUR SCHEDULED RIDES</h1>
+<h1 class="text-center">Your Scheduled Rides</h1>
 <br/>
 
 <table class="table table-striped table-hover">
@@ -73,7 +73,7 @@
 <br/>
 
 <div class="container-fluid">
-<h1 class="text-center">YOUR BIDS</h1>
+<h1 class="text-center">Your Bids</h1>
 <br/>
 
 <table class="table table-striped table-hover">
