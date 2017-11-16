@@ -12,3 +12,7 @@
     height: 100px;
     overflow: auto;
 }
+
+.homepageBody {
+    background-image: url("carpoolingHomepage.png");
+}

@@ -6,12 +6,8 @@
     <link href="main.css" rel="stylesheet" />
 </head>
 
-<body>
+<body class="homepageBody">
     <?php include 'public-navbar.shtml'; ?>
-
-    <div class=container>
-        <h1>Hello World Index page</h1>
-    </div>
 
     <?php include 'footer.shtml'; ?>
 </body>
